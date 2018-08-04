@@ -11,8 +11,10 @@
 <form method="post" name="toolbar" id="toolbar">
     <input asp-action="AddRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Ban" />
     <input asp-action="RemoveRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Unban" />
+    <span class="btn-separator"></span>
     <input asp-action="AddRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Give admin" />
     <input asp-action="RemoveRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Remove admin" />
+    <span class="btn-separator"></span>
     <input asp-action="DeleteUsers" class="btn btn-danger" type="submit" value="Delete" />
 
     <div class="table-responsive">

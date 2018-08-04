@@ -43,6 +43,15 @@ body {
 .glyphicon-remove {
     color: #f02454;
 }
+
+.btn-separator {
+    /*display: block;*/
+    /*float: left;*/
+    background: #ADADAD;
+    margin: 0 10px;
+    height: 34px;
+    width: 1px;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
 
