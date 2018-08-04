@@ -36,6 +36,13 @@ body {
 .brand-img {
     max-width: 105px;
 }
+.glyphicon-ok {
+    color: #11da7e;
+}
+
+.glyphicon-remove {
+    color: #f02454;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
 
