@@ -23,6 +23,8 @@ namespace GuideHaven.Areas.Identity
                 {
                     config.SignIn.RequireConfirmedEmail = true;
                 })
+                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<IdentityContext>();
             });
         }
