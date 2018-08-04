@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+<form method="post" name="toolbar" id="toolbar">
+    <input asp-action="AddRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Ban" />
+    <input asp-action="RemoveRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Unban" />
+    <span class="btn-separator"></span>
+    <input asp-action="AddRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Give admin" />
+    <input asp-action="RemoveRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Remove admin" />
+    <span class="btn-separator"></span>
+    <input asp-action="DeleteUsers" class="btn btn-danger" type="submit" value="Delete" />
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" value="Select all" id="checkAll" /></th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Admin</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int i = 0;}
+                @foreach (var user in UserManager.Users.ToList())
+                {
+                    i++;
+                    string name = user.UserName;
+                    string email = user.Email;
+
+                    <tr>
+                        <td><input name="list" id="check-@i" class="check" type="checkbox" value="@name" /></td>
+                        <td>@name</td>
+                        <td>@email</td>
+                        @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            <td><span class="glyphicon glyphicon-ok"></span></td>
+                        }
+                        else
+                        {
+                            <td><span class="glyphicon glyphicon-remove"></span></td>
+                        }
+
+                        @if (await UserManager.IsInRoleAsync(user, "Banned"))
+                        {
+                            <td>Banned</td>
+                            <script>
+                                document.getElementById("check-@i").classList.add("block");
+                            </script>
+                        }
+                        else
+                        {
+                            <td>Not Banned</td>
+                            <script>
+                                document.getElementById("check-@i").classList.add("unlock");
+                            </script>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+}
