@@ -5,33 +5,24 @@ body {
     padding-bottom: 20px;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 10px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.shadow {
+    background-color: #fff;
+    box-shadow: 4px 0px 6px rgba(0,0,0,0.16), 4px 0px 9px rgba(0,0,0,0.23);
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+.navbar-toggle .icon-bar {
+    background-color: gray;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.navbar-toggle {
+    border: 1px solid buttonface;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+
 }
