@@ -56,9 +56,10 @@ namespace GuideHaven.Controllers
             }
         }
 
-        //[Authorize(Roles = "Admin")] does not work
-        public IActionResult AdminPanel()
+        public async Task <IActionResult> AdminPanel()
         {
+            if (!(await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+                return RedirectToAction("AccessDenied", "Identity/Account");
             return View();
         }
 
