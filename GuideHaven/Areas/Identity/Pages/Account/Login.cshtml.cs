@@ -17,11 +17,13 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -80,6 +82,12 @@ namespace GuideHaven.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                if (!await _userManager.IsEmailConfirmedAsync(_userManager.Users.First(x => x.UserName == Input.UserName)))
+                {
+                    ModelState.AddModelError(string.Empty, "You must have a cofirmed email in order to procced.");
+                    //await _signInManager.SignOutAsync();
+                    return Page();
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

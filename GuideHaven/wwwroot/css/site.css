@@ -3,6 +3,7 @@ for details on configuring this project to bundle and minify static web assets. 
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    /*background-color: #282828;*/
 }
 
 .body-content {
@@ -11,17 +12,30 @@ body {
 
 .shadow {
     background-color: #fff;
-    box-shadow: 4px 0px 6px rgba(0,0,0,0.16), 4px 0px 9px rgba(0,0,0,0.23);
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.16), 0px 4px 9px rgba(0,0,0,0.23);
 }
 
 .navbar-toggle .icon-bar {
     background-color: gray;
 }
 
+.navbar {
+    /*border: 0;
+    border-radius: 0;*/
+    transition: top 0.2s ease-in-out;
+}
+
+.navbar-hidden {
+    top: -51px;
+}
+
 .navbar-toggle {
     border: 1px solid buttonface;
 }
 
+.brand-img {
+    max-width: 105px;
+}
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
 

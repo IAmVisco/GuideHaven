@@ -4,9 +4,11 @@
     ViewData["Title"] = "Confirm email";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Confirmation successful</h2>
 <div>
+    <script>setTimeout(function () { location.href = './Login/'; }, 5000);</script>
     <p>
-        Thank you for confirming your email.
+        Thank you for confirming your email. You will now be redirected to the login page. <br />
+        If it doesn't happen or your browser doesn't support redirection, <a href="~/Identity/Account/Login/">click here.</a>
     </p>
 </div>
