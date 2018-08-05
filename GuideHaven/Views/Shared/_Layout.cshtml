@@ -13,10 +13,11 @@
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <link rel="stylesheet" href="~/css/light.min.css" id="theme" />
 </head>
 <body>
-    <nav class="navbar navbar-fixed-top shadow">
+    <nav class="navbar navbar-fixed-top shadow" id="nav">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -47,6 +48,11 @@
     <div class="container body-content">
         <div>
             @await Html.PartialAsync("_SelectLanguagePartial")
+            <label style="font-weight:100;">(Temp) Theme: </label>
+            <label class="switch">
+                <input type="checkbox" id="themeChanger">
+                <span class="slider"></span>
+            </label>
         </div>
         @RenderBody()
         <hr />
@@ -54,7 +60,7 @@
             <p>&copy; 2018 - Guide Haven</p>
         </footer>
     </div>
-
+    <script src="~/js/theme.js"></script>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>

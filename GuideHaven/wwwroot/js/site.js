@@ -58,4 +58,8 @@
         $("#checkAll").prop('checked', false, checkBoxes.filter(':checked').length < checkBoxes.length)
         $("#checkAll").prop('checked', checkBoxes.filter(':checked').length === checkBoxes.length)
     });
+
+    $("#themeChanger").click(function () {
+        changeTheme();
+    });
 });

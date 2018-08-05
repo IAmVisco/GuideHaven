@@ -1,18 +1,11 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-body {
+﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    /*background-color: #282828;*/
+    transition:all 0.2s ease-in-out;
 }
 
 .body-content {
     padding: 10px;
-}
-
-.shadow {
-    background-color: #fff;
-    box-shadow: 0px 4px 6px rgba(0,0,0,0.16), 0px 4px 9px rgba(0,0,0,0.23);
 }
 
 .navbar-toggle .icon-bar {
@@ -20,8 +13,6 @@ body {
 }
 
 .navbar {
-    /*border: 0;
-    border-radius: 0;*/
     transition: top 0.2s ease-in-out;
 }
 
@@ -55,4 +46,56 @@ body {
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
 
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        display: none;
+    }
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e2e2e2;
+    -webkit-transition: .3s;
+    transition: .3s;
+    border-radius: 28px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 6px;
+    bottom: 4px;
+    background-color: #fff;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider:before {
+    background-color: #282828;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
 }
