@@ -33,12 +33,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Guide" asp-action="Index">@Localizer["Guides"]</a></li>
-                    @{if (signInManager.IsSignedIn(User) && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"))
-                        {
-                            <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>
-                        }}
+                    @if (signInManager.IsSignedIn(User) && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>
+                    }
                 </ul>
                 <partial name="_LoginPartial" />
+                <input type="checkbox" id="themeChanger" class="switch-input">
+                <label for="themeChanger" class="switch-label navbar-text">Theme</label>
             </div>
         </div>
     </nav>
@@ -46,18 +48,11 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
-        <div>
-            @await Html.PartialAsync("_SelectLanguagePartial")
-            <label style="font-weight:100;">(Temp) Theme: </label>
-            <label class="switch">
-                <input type="checkbox" id="themeChanger">
-                <span class="slider"></span>
-            </label>
-        </div>
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - Guide Haven</p>
+            <p style="display:inline-block;">&copy; 2018 - Guide Haven</p>
+            @await Html.PartialAsync("_SelectLanguagePartial")
         </footer>
     </div>
     <script src="~/js/theme.js"></script>

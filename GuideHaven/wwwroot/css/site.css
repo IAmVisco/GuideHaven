@@ -45,57 +45,85 @@
 }
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-
+    .switch-label {
+        float: initial !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        margin: 15px 0 !important;
+    }
 }
 
-.switch {
+.switch-input {
+    display: none;
+}
+
+.switch-label {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 30px;
-}
-
-    /* Hide default HTML checkbox */
-    .switch input {
-        display: none;
-    }
-
-/* The slider */
-.slider {
-    position: absolute;
+    min-width: 112px;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #e2e2e2;
-    -webkit-transition: .3s;
-    transition: .3s;
-    border-radius: 28px;
+    font-weight: 500;
+    text-align: left;
+    margin-top: 15px;
+    float: right;
+    margin-right: -15px;
+    padding-left: 50px;
+    color: #337ab7;
 }
 
-.slider:before {
-    position: absolute;
+.switch-label:before, .switch-label:after {
     content: "";
-    height: 22px;
-    width: 22px;
-    left: 6px;
-    bottom: 4px;
-    background-color: #fff;
-    transition: .3s;
+    position: absolute;
+    margin: 0;
+    outline: 0;
+    top: 50%;
+    -ms-transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.switch-label:before {
+    left: 1px;
+    width: 34px;
+    height: 14px;
+    background-color: #9E9E9E;
+    border-radius: 8px;
+}
+
+.switch-label:after {
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #FAFAFA;
     border-radius: 50%;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
 }
 
-input:checked + .slider:before {
-    background-color: #282828;
+.switch-label .toggle--on {
+    display: none;
 }
 
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+.switch-label .toggle--off {
+    display: inline-block;
 }
 
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+.switch-input:checked + .switch-label:before {
+    background-color: #A5D6A7;
+}
+
+.switch-input:checked + .switch-label:after {
+    background-color: #4CAF50;
+    -ms-transform: translate(80%, -50%);
+    -webkit-transform: translate(80%, -50%);
+    transform: translate(80%, -50%);
+}
+
+.switch-input:checked + .switch-label .toggle--on {
+    display: inline-block;
+}
+
+.switch-input:checked + .switch-label .toggle--off {
+    display: none;
 }
