@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using GuideHaven.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace GuideHaven.Controllers
 {
@@ -16,19 +19,34 @@ namespace GuideHaven.Controllers
         private readonly IServiceProvider serviceProvider;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IStringLocalizer<HomeController> localizer;
 
         public HomeController(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider, 
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager)
+            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IStringLocalizer<HomeController> localizer)
         {
             this.userManager = userManager;
             this.serviceProvider = serviceProvider;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
+            this.localizer = localizer;
         }
 
         public IActionResult Index()
         {
+            //ViewData["Title"] = localizer["Title"];
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
 
         //public async Task<IActionResult> Index()
