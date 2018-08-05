@@ -11,10 +11,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Owner)
+            @Html.DisplayNameFor(model => model.GuideName)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.GuideSteps)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Owner)
+            @Html.DisplayFor(model => model.GuideName)
+        </dd>
+        <dd>
+            @*@Model.GuideSteps.Count*@
         </dd>
     </dl>
 </div>
