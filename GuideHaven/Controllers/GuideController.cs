@@ -34,8 +34,8 @@ namespace GuideHaven.Models
                 return NotFound();
             }
 
-            var guide = await _context.Guide
-                .FirstOrDefaultAsync(m => m.GuideId == id);
+            var guide = _context.GetGuide(_context, id);
+            //guide.GuideSteps = await _context.Steps.Where(x => x.GuideId == guide.GuideId).ToListAsync();
             if (guide == null)
             {
                 return NotFound();
@@ -55,7 +55,7 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuideId,GuideName")] Guide guide)
+        public async Task<IActionResult> Create([Bind("GuideId,GuideName,GuideSteps")] Guide guide)
         {
             if (ModelState.IsValid)
             {
