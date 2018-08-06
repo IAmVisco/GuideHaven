@@ -1,7 +1,9 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<IdentityLocalizer> Localizer
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Personal Data";
+    ViewData["Title"] = Localizer["PersonalData"];
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
@@ -9,15 +11,15 @@
 
 <div class="row">
     <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
+        <p>@Localizer["AccContainsData"]</p>
         <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+            <strong>@Localizer["DeleteWarning"]</strong>
         </p>
         <form asp-page="DownloadPersonalData" method="post" class="form-group">
-            <button class="btn btn-default" type="submit">Download</button>
+            <button class="btn btn-default" type="submit">@Localizer["Download"]</button>
         </form>
         <p>
-            <a asp-page="DeletePersonalData" class="btn btn-default">Delete</a>
+            <a asp-page="DeletePersonalData" class="btn btn-danger">@Localizer["Delete"]</a>
         </p>
     </div>
 </div>

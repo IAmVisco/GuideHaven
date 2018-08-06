@@ -41,7 +41,14 @@ namespace GuideHaven
             });
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.AddMvc().AddViewLocalization().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddViewLocalization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    factory.Create(typeof(IdentityLocalizer));
+                });
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -103,7 +110,9 @@ namespace GuideHaven
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            var locOptions = app
+                .ApplicationServices
+                .GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(locOptions.Value);
 
             app.UseHttpsRedirection();

@@ -76,7 +76,7 @@ namespace GuideHaven.Controllers
 
         public async Task <IActionResult> AdminPanel()
         {
-            if (!(await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+            if (!signInManager.IsSignedIn(User) || !(await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
                 return RedirectToAction("AccessDenied", "Identity/Account");
             return View();
         }

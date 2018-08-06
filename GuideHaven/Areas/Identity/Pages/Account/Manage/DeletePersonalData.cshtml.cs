@@ -4,24 +4,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace GuideHaven.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ILogger<DeletePersonalDataModel> logger;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.logger = logger;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -31,6 +35,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Password")]
             public string Password { get; set; }
         }
 
@@ -38,44 +43,44 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user);
+            RequirePassword = await userManager.HasPasswordAsync(user);
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user);
+            RequirePassword = await userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
-                if (!await _userManager.CheckPasswordAsync(user, Input.Password))
+                if (!await userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Password not correct.");
+                    ModelState.AddModelError(string.Empty, localizer["WrongPass"]);
                     return Page();
                 }
             }
 
-            var result = await _userManager.DeleteAsync(user);
-            var userId = await _userManager.GetUserIdAsync(user);
+            var result = await userManager.DeleteAsync(user);
+            var userId = await userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
             }
 
-            await _signInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
 
-            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 
             return Redirect("~/");
         }

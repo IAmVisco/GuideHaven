@@ -44,11 +44,11 @@
                             <td>@email</td>
                             @if (await UserManager.IsInRoleAsync(user, "Admin"))
                             {
-                                <td><span class="glyphicon glyphicon-ok"></span></td>
+                                <td><span class="glyphicon glyphicon-ok admin-user"></span></td>
                             }
                             else
                             {
-                                <td><span class="glyphicon glyphicon-remove"></span></td>
+                                <td><span class="glyphicon glyphicon-remove not-admin-user"></span></td>
                             }
 
                             @if (await UserManager.IsInRoleAsync(user, "Banned"))

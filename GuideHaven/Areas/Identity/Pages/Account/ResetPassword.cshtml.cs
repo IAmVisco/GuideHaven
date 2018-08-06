@@ -7,17 +7,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
-        public ResetPasswordModel(UserManager<IdentityUser> userManager)
+        public ResetPasswordModel(
+            UserManager<IdentityUser> userManager,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _userManager = userManager;
+            this.userManager = userManager;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -30,13 +35,13 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "ConfPass")]
+            [Compare("Password", ErrorMessage = "PassMismatch")]
             public string ConfirmPassword { get; set; }
 
             public string Code { get; set; }
@@ -46,7 +51,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
             if (code == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
+                return BadRequest(localizer["CodeMustBeSupplied"].ToString());
             }
             else
             {
@@ -65,14 +70,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var user = await userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+            var result = await userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
                 return RedirectToPage("./ResetPasswordConfirmation");

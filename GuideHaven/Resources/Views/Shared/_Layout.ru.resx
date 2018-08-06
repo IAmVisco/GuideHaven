@@ -123,6 +123,9 @@
   <data name="Guides" xml:space="preserve">
     <value>Инструкции</value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
   <data name="ToggleNav" xml:space="preserve">
     <value>Показать меню</value>
   </data>

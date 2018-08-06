@@ -8,19 +8,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IEmailSender emailSender;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(
+            UserManager<IdentityUser> userManager, 
+            IEmailSender emailSender,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _userManager = userManager;
-            _emailSender = emailSender;
+            this.userManager = userManager;
+            this.emailSender = emailSender;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -37,8 +43,8 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                var user = await userManager.FindByEmailAsync(Input.Email);
+                if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
@@ -46,17 +52,17 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var code = await userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",
                     pageHandler: null,
                     values: new { code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                await emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    localizer["ResetPass"],
+                    localizer["PlsReset"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" + localizer["ClickingHere"] + "</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
