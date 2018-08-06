@@ -78,7 +78,7 @@ namespace GuideHaven.Models
                 return NotFound();
             }
 
-            var guide = await _context.Guide.FindAsync(id);
+            var guide = _context.GetGuide(_context, id);
             if (guide == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GuideId,Owner")] Guide guide)
+        public async Task<IActionResult> Edit(int id, [Bind("GuideId, GuideName, GuideSteps")] Guide guide)
         {
             if (id != guide.GuideId)
             {
@@ -102,6 +102,7 @@ namespace GuideHaven.Models
             {
                 try
                 {
+                    _context.Steps.RemoveRange(_context.Steps.Where(x => x.GuideId == guide.GuideId));
                     _context.Update(guide);
                     await _context.SaveChangesAsync();
                 }
@@ -129,8 +130,7 @@ namespace GuideHaven.Models
                 return NotFound();
             }
 
-            var guide = await _context.Guide
-                .FirstOrDefaultAsync(m => m.GuideId == id);
+            var guide = _context.GetGuide(_context, id);
             if (guide == null)
             {
                 return NotFound();
@@ -144,7 +144,7 @@ namespace GuideHaven.Models
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var guide = await _context.Guide.FindAsync(id);
+            var guide = _context.GetGuide(_context, id);
             _context.Guide.Remove(guide);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
