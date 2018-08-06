@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GuideHaven.Models
 {
+    [Authorize]
     public class GuideController : Controller
     {
         private readonly GuideContext _context;
@@ -21,12 +23,14 @@ namespace GuideHaven.Models
         }
 
         // GET: Guide
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Guide.ToListAsync());
         }
 
         // GET: Guide/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,7 +39,6 @@ namespace GuideHaven.Models
             }
 
             var guide = _context.GetGuide(_context, id);
-            //guide.GuideSteps = await _context.Steps.Where(x => x.GuideId == guide.GuideId).ToListAsync();
             if (guide == null)
             {
                 return NotFound();
