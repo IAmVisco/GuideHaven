@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <section>
             <form method="post">
-                <h4>Use a local account to log in.</h4>
+                <h4>@Localizer["UseLocalAcc"]</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -54,12 +54,12 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <div>
+                    @*<div>
                         <p>
                             There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
                             for details on setting up this ASP.NET application to support logging in via external services.
                         </p>
-                    </div>
+                    </div>*@
                 }
                 else
                 {
