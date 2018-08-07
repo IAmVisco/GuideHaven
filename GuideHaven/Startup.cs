@@ -119,6 +119,7 @@ namespace GuideHaven
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}"); // or Redirects
 
             app.UseMvc(routes =>
             {
