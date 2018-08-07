@@ -4,6 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
+<script>var index = 0;</script>
+
 <h2>Create</h2>
 
 <h4>Guide</h4>
@@ -17,6 +19,14 @@
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
             </div>
+            <div id="step_holder" class="form-group">
+                <label class="control-label" style="display: block">Step 1</label>
+                <label asp-for="GuideSteps[0].Header" class="control-label"></label>
+                @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block" })
+                <label asp-for="GuideSteps[0].Content" class="control-label"></label>
+                @Html.TextAreaFor(model => model.GuideSteps[0].Content, new { style = "display: block" })
+            </div>
+            <button type="button" id="create_step" class="btn btn-primary" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
             <div class="form-group">    
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -27,6 +37,18 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    function createStep() {
+        index++;
+        document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
+        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" style="display: block">'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+        +'<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" style="display: block"></textarea>');
+        console.log(index.toString());
+    };
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
