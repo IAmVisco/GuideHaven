@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
@@ -18,15 +19,18 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -44,6 +48,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
             public string Login { get; set; }
         }
 
@@ -65,13 +70,13 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
+                ErrorMessage = localizer["ProviderError"] + remoteError;
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information.";
+                ErrorMessage = localizer["ExternalLoginError"];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
@@ -80,7 +85,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             if (result.Succeeded && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
             {
                 await signInManager.SignOutAsync();
-                ErrorMessage = "You're banned.";
+                ErrorMessage = localizer["Banned"];
                 return RedirectToPage("./Login");
             }
             if (result.Succeeded)
@@ -108,7 +113,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information during confirmation.";
+                ErrorMessage = localizer["ExternalLoginConfError"];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 

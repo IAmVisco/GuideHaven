@@ -36,14 +36,14 @@
         lastScrollTop = st;
     }
 
-    $(".glyphicon-ok").popover({
+    $(".admin-user").popover({
         animation: true,
         content: "This user has admin privileges.",
         trigger: "hover",
         placement: "auto top",
     });
 
-    $(".glyphicon-remove").popover({
+    $(".not-admin-user").popover({
         animation: true,
         content: "This user does not have admin privileges.",
         trigger: "hover",
@@ -57,5 +57,9 @@
     $(".check").click(function () {
         $("#checkAll").prop('checked', false, checkBoxes.filter(':checked').length < checkBoxes.length)
         $("#checkAll").prop('checked', checkBoxes.filter(':checked').length === checkBoxes.length)
+    });
+
+    $("#themeChanger").click(function () {
+        changeTheme();
     });
 });

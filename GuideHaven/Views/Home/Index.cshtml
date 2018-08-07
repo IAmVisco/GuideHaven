@@ -1,5 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = Localizer["Title"];
 }
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 <img src="~/images/longtest.jpg" />

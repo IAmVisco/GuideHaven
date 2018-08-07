@@ -1,72 +1,74 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = Localizer["Title"];
 }
 
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
-<form method="post" name="toolbar" id="toolbar">
-    <input asp-action="AddRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Ban" />
-    <input asp-action="RemoveRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="Unban" />
-    <span class="btn-separator"></span>
-    <input asp-action="AddRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Give admin" />
-    <input asp-action="RemoveRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="Remove admin" />
-    <span class="btn-separator"></span>
-    <input asp-action="DeleteUsers" class="btn btn-danger" type="submit" value="Delete" />
+    <form method="post" name="toolbar" id="toolbar">
+        <input asp-action="AddRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="@Localizer["Ban"]" />
+        <input asp-action="RemoveRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="@Localizer["Unban"]" />
+        <span class="btn-separator"></span>
+        <input asp-action="AddRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="@Localizer["GiveAdmin"]" />
+        <input asp-action="RemoveRole" asp-route-role="Admin" class="btn btn-default" type="submit" value="@Localizer["RemoveAdmin"]" />
+        <span class="btn-separator"></span>
+        <input asp-action="DeleteUsers" class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col"><input type="checkbox" value="Select all" id="checkAll" /></th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Admin</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{int i = 0;}
-                @foreach (var user in UserManager.Users.ToList())
-                {
-                    i++;
-                    string name = user.UserName;
-                    string email = user.Email;
-
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td><input name="list" id="check-@i" class="check" type="checkbox" value="@name" /></td>
-                        <td>@name</td>
-                        <td>@email</td>
-                        @if (await UserManager.IsInRoleAsync(user, "Admin"))
-                        {
-                            <td><span class="glyphicon glyphicon-ok"></span></td>
-                        }
-                        else
-                        {
-                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                        }
-
-                        @if (await UserManager.IsInRoleAsync(user, "Banned"))
-                        {
-                            <td>Banned</td>
-                            <script>
-                                document.getElementById("check-@i").classList.add("block");
-                            </script>
-                        }
-                        else
-                        {
-                            <td>Not Banned</td>
-                            <script>
-                                document.getElementById("check-@i").classList.add("unlock");
-                            </script>
-                        }
+                        <th scope="col"><input type="checkbox" value="Select all" id="checkAll" /></th>
+                        <th scope="col">@Localizer["Username"]</th>
+                        <th scope="col">@Localizer["Email"]</th>
+                        <th scope="col">@Localizer["Admin"]</th>
+                        <th scope="col">@Localizer["Status"]</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</form>
+                </thead>
+                <tbody>
+                    @{int i = 0;}
+                    @foreach (var user in UserManager.Users.ToList())
+                    {
+                        i++;
+                        string name = user.UserName;
+                        string email = user.Email;
+
+                        <tr>
+                            <td><input name="list" id="check-@i" class="check" type="checkbox" value="@name" /></td>
+                            <td>@name</td>
+                            <td>@email</td>
+                            @if (await UserManager.IsInRoleAsync(user, "Admin"))
+                            {
+                                <td><span class="glyphicon glyphicon-ok admin-user"></span></td>
+                            }
+                            else
+                            {
+                                <td><span class="glyphicon glyphicon-remove not-admin-user"></span></td>
+                            }
+
+                            @if (await UserManager.IsInRoleAsync(user, "Banned"))
+                            {
+                                <td>@Localizer["Banned"]</td>
+                                <script>
+                                document.getElementById("check-@i").classList.add("block");
+                                </script>
+                            }
+                            else
+                            {
+                                <td>@Localizer["NotBanned"]</td>
+                                <script>
+                                document.getElementById("check-@i").classList.add("unlock");
+                                </script>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
 }

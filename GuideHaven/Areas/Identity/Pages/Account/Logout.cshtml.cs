@@ -13,13 +13,13 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ILogger<LogoutModel> logger;
 
         public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
         {
-            _signInManager = signInManager;
-            _logger = logger;
+            this.signInManager = signInManager;
+            this.logger = logger;
         }
 
         public void OnGet()
@@ -28,8 +28,8 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            await signInManager.SignOutAsync();
+            logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

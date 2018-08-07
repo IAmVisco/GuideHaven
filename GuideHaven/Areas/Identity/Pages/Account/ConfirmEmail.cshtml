@@ -1,14 +1,16 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<IdentityLocalizer> Localizer
 @model ConfirmEmailModel
 @{
-    ViewData["Title"] = "Confirm email";
+    ViewData["Title"] = Localizer["ConfEmail"];
 }
 
-<h2>Confirmation successful</h2>
+<h2>@Localizer["ConfSuccess"]</h2>
 <div>
     <script>setTimeout(function () { location.href = './Login/'; }, 5000);</script>
     <p>
-        Thank you for confirming your email. You will now be redirected to the login page. <br />
-        If it doesn't happen or your browser doesn't support redirection, <a href="~/Identity/Account/Login/">click here.</a>
+        @Localizer["TyPart1"]<br />
+        @Localizer["TyPart2"] <a href="~/Identity/Account/Login/">@Localizer["ClickHere"]</a>
     </p>
 </div>

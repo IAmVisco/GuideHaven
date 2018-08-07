@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
@@ -15,21 +16,24 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<RegisterModel> logger;
+        private readonly IEmailSender emailSender;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.logger = logger;
+            this.emailSender = emailSender;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -41,7 +45,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
 
             [Required]
-            [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(32, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
             public string UserName { get; set; }
@@ -52,14 +56,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "ConfPass")]
+            [Compare("Password", ErrorMessage = "PassMismatch")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -74,23 +78,23 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await emailSender.SendEmailAsync(Input.Email, localizer["ConfEmail"],
+                        localizer["PlsConfirm"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" + localizer["ClickingHere"] + "</a>.");
 
                     // await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    return RedirectToPage("./RegisterSuccess");
                 }
                 foreach (var error in result.Errors)
                 {
