@@ -13,6 +13,25 @@ namespace GuideHaven.Models
         {
         }
 
-        public DbSet<GuideHaven.Models.Guide> Guide { get; set; }
+        public DbSet<Guide> Guide { get; set; }
+        public DbSet<Step> Steps { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Guide>().ToTable("Guide");
+            modelBuilder.Entity<Step>().ToTable("Step");
+            modelBuilder.Entity<Comment>().ToTable("Comment");
+            modelBuilder.Entity<Like>().ToTable("Like");
+            modelBuilder.Entity<Rating>().ToTable("Rating");
+        }
+
+        public Guide GetGuide(GuideContext context ,int? id)
+        {
+            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
+            return guides.FirstOrDefault(m => m.GuideId == id);
+        }
     }
 }
