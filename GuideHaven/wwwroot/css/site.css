@@ -1,7 +1,10 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    transition:all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    background: #eee;
 }
 
 .body-content {
@@ -35,6 +38,31 @@
     color: #f02454;
 }
 
+#toolbar {
+    padding-top:20px;
+}
+
+.login-icon {
+    padding-right: 5px;
+}
+
+.navbar-brand {
+    margin-right: 10px;
+}
+
+.nav > li > a {
+    color: #4b7ada;
+    font-weight: 600;
+}
+
+hr {
+    border-color: #ccc;
+}
+
+th {
+    font-weight: 600;
+}
+
 .btn-separator {
     /*display: block;*/
     /*float: left;*/
@@ -42,6 +70,12 @@
     margin: 0 10px;
     height: 34px;
     width: 1px;
+}
+.btn-primary {
+    background-color: #4b7ada;
+}
+label {
+    font-weight: 500;
 }
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
@@ -62,13 +96,13 @@
     display: inline-block;
     min-width: 112px;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 600;
     text-align: left;
     margin-top: 15px;
     float: right;
-    margin-right: -15px;
+    margin-right: 15px;
     padding-left: 50px;
-    color: #337ab7;
+    color: #4b7ada;
 }
 
 .switch-label:before, .switch-label:after {
@@ -126,4 +160,35 @@
 
 .switch-input:checked + .switch-label .toggle--off {
     display: none;
+}
+
+.bs-textarea {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.control-label {
+    margin-top: 5px;
+}
+
+.row {
+    display: inline;
 }
