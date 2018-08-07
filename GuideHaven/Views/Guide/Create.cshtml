@@ -39,17 +39,24 @@
 </div>
 
 
-<script>
+<script> // TODO: move to .js file
     function createStep() {
         index++;
-        document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div style="position:relative"><hr/><label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
+        document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
+        + '<hr/><label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
         + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
         + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea"></textarea>'
-        +'<button type="button" class="btn btn-link delete-btn" value="Delete"><span class="glyphicon glyphicon-remove"></span></button></div > ');
-        console.log(index.toString());
+        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+        + '<span class="glyphicon glyphicon-remove"></span></button></div > ');
+        // console.log(index.toString());
     };
+
+    function deleteStep(id) {
+        document.getElementById("step" + id).remove();
+        index--;
+    }
 </script>
 
 @section Scripts {
