@@ -236,3 +236,8 @@ label {
 .step-content > p > img {
     max-width: 75%;
 }
+
+.owner-label {
+    display: inline-block;
+    margin-left: 10px;
+}

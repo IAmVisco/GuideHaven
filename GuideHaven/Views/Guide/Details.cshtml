@@ -1,17 +1,23 @@
 ﻿@model GuideHaven.Models.Guide
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 
 <div>
-    <h2>@Html.DisplayFor(model => model.GuideName)</h2>
+    <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
+    @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
+    <p class="owner-label">By @owner.UserName</p>
     <hr />
+    @Html.DisplayFor(model => model.Description)
+    @Html.DisplayFor(model => model.Image)
     <div class="row">
         <div class="col-xs-8 steps-wrap">
             @{int i = 0;
-            string step = "";}
+                string step = "";}
             @foreach (var item in Model.GuideSteps)
             {
                 i++;

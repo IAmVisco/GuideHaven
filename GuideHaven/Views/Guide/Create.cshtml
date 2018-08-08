@@ -10,7 +10,7 @@
     var visual_index = 0;
 </script>
 
-<h2 style="display:inline-block">@Localizer["CreateGuide"]</h2>
+<h2>@Localizer["CreateGuide"]</h2>
 
 <hr />
 <div class="row">
@@ -22,21 +22,23 @@
                 <input asp-for="GuideName" class="form-control" required />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
-                @Html.TextAreaFor(model => model.Description, new { style = "display: block", @class = "bs-textarea", rows = "3" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
+                @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
+                @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
             </div>
             <div id="step_holder" class="form-group">
                 <div style="position: relative">
                     <hr />
                     <label class="control-label" style="display: block">@Localizer["Step"] 1</label>
                     <label asp-for="GuideSteps[0].Header" class="control-label">@Localizer["Title"]</label>
-                    @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block", @class = "form-control", required = "" })
+                    @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { @class = "form-control", required = "" })
                     <label asp-for="GuideSteps[0].Content" class="control-label">@Localizer["Content"]</label>
-                   <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="3"></textarea>
-                   @Html.TextAreaFor(model => model.GuideSteps[0].Content, new {
-                       @class = " mdhtmlform-html",
-                       data_mdhtmlform_group = "0",
-                       style = "display: none;"
-                   })
+                    <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="3"></textarea>
+                    @Html.TextAreaFor(model => model.GuideSteps[0].Content, new {
+                        @class = " mdhtmlform-html",
+                        data_mdhtmlform_group = "0",
+                        style = "display: none;"
+                    })
                 </div>
             </div>
             <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
@@ -50,7 +52,9 @@
 
 
 
-<script async src="/js/step_functions.js"></script>
+<script src="/js/step_functions.js"></script>
+<script src="~/js/showdown.js"></script>
+<script src="~/js/mdhtmlform.js"></script>
 
 
 @section Scripts {

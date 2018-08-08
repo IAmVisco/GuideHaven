@@ -60,7 +60,7 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuideId,GuideName,GuideSteps")] Guide guide)
+        public async Task<IActionResult> Create([Bind("GuideId, GuideName, GuideSteps, Description, Image")] Guide guide)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GuideId, GuideName, GuideSteps")] Guide guide)
+        public async Task<IActionResult> Edit(int id, [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image")] Guide guide)
         {
             if (id != guide.GuideId)
             {

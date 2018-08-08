@@ -48,6 +48,7 @@
                 <partial name="_LoginPartial" />
                 <input type="checkbox" id="themeChanger" class="switch-input">
                 <label for="themeChanger" class="switch-label navbar-text">@Localizer["Theme"]</label>
+                <script async src="~/js/theme.js"></script>
             </div>
         </div>
     </nav>
@@ -62,17 +63,13 @@
             @await Html.PartialAsync("_SelectLanguagePartial")
         </footer>
     </div>
-    <script src="~/js/theme.js"></script>
+
     <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
             crossorigin="anonymous"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
     </script>
-    @* For MD *@
-    <script src="~/js/showdown.js"></script>
-    <script src="~/js/mdhtmlform.js"></script>
-
     <script src="~/js/site.min.js"></script>
 
     @RenderSection("Scripts", required: false)
