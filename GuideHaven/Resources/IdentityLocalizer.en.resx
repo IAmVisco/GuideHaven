@@ -531,4 +531,64 @@
   <data name="YouShould" xml:space="preserve">
     <value>You should</value>
   </data>
+  <data name="AreUSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="AreUSureMsg" xml:space="preserve">
+    <value>Are you sure you want to delete</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="CannotBeUndone" xml:space="preserve">
+    <value>This action cannot be undone</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="CreateGuide" xml:space="preserve">
+    <value>Create guide</value>
+  </data>
+  <data name="CreateNew1" xml:space="preserve">
+    <value>Create New</value>
+  </data>
+  <data name="CreateStep" xml:space="preserve">
+    <value>Create step</value>
+  </data>
+  <data name="Delete1" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditGuide" xml:space="preserve">
+    <value>Edit guide</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>Guide</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="NoDelete" xml:space="preserve">
+    <value>No, I've changed my mind</value>
+  </data>
+  <data name="Save1" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Step" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="YesDelete" xml:space="preserve">
+    <value>Yes, delete that guide</value>
+  </data>
 </root>

@@ -28,14 +28,16 @@
                     @for (int i = 0; i < Model.GuideSteps.Count; i++)
                     {
                         <script>
-                            document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	                        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">@Localizer["Step"] ' + (visual_index + 1) + '</label>'
-	                        + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
-	                        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-	                        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
-	                        + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea"></textarea>'
-	                        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
-                                + '<span class="glyphicon glyphicon-remove"></span></button></div > ');
+                            document.getElementById("step_holder").insertAdjacentHTML(
+                                'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
+	                            + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">@Localizer["Step"] ' + (visual_index + 1) + '</label>'
+	                            + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
+	                            + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
+	                            + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+	                            + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea" rows="3"></textarea>'
+	                            + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+                                + '<span class="glyphicon glyphicon-remove"></span></button></div > '
+                            );
                             document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
                             document.getElementById('GuideSteps_' + index + '__Content').value = he.decode('@Model.GuideSteps[index].Content');
                             index++;

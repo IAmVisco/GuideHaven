@@ -2,14 +2,14 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = Localizer["Details"];
+    ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 
 <div>
     <h2>@Html.DisplayFor(model => model.GuideName)</h2>
     <hr />
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-8 steps-wrap">
             @{int i = 0;
             string step = "";}
             @foreach (var item in Model.GuideSteps)
@@ -17,7 +17,7 @@
                 i++;
                 step = "step" + i.ToString();
                 <h2 id="@step" class="step-header">@item.Header</h2>
-                <div>@item.Content</div>
+                <div class="step-content">@Html.Raw(item.Content)</div>
             }
         </div>
         <div class="col-xs-4 sidenav">
@@ -33,3 +33,4 @@
         </div>
     </div>
 </div>
+<script src="~/js/fixed-sidebar.js"></script>

@@ -64,21 +64,25 @@ th {
 }
 
 .btn-separator {
-    /*display: block;*/
-    /*float: left;*/
     background: #ADADAD;
     margin: 0 10px;
     height: 34px;
     width: 1px;
 }
+
 .btn-primary {
     background-color: #4b7ada;
 }
+
 label {
     font-weight: 500;
 }
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
+    body {
+        /*overflow-x: hidden;*/
+    }
+
     .switch-label {
         float: initial !important;
         margin-right: 0 !important;
@@ -88,6 +92,14 @@ label {
 
     .sidenav {
         max-width: initial !important;
+    }
+
+    .steps-wrap {
+        width: 100%;
+    }
+
+    .sidenav {
+        display: none;
     }
 }
 
@@ -136,14 +148,6 @@ label {
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
 }
 
-.switch-label .toggle--on {
-    display: none;
-}
-
-.switch-label .toggle--off {
-    display: inline-block;
-}
-
 .switch-input:checked + .switch-label:before {
     background-color: #A5D6A7;
 }
@@ -151,14 +155,6 @@ label {
 .switch-input:checked + .switch-label:after {
     background-color: #4CAF50;
     transform: translate(80%, -50%);
-}
-
-.switch-input:checked + .switch-label .toggle--on {
-    display: inline-block;
-}
-
-.switch-input:checked + .switch-label .toggle--off {
-    display: none;
 }
 
 .bs-textarea {
@@ -188,12 +184,14 @@ label {
     margin-top: 5px;
 }
 
-.row {
-    /*display: inline;*/
-}
-
 .sidenav {
+    margin: 0 auto;
+    max-width: 20%;
+    position: fixed;
+    right: 10%;
+    top: 150px;
     z-index: 10;
+    transition: all .3s cubic-bezier(0.65, 0.05, 0.36, 1);
 }
 
 .sidenav > ul {
@@ -208,17 +206,11 @@ label {
     margin: -60px 0 0; /* negative fixed header height */
 }
 
-.sidenav {
-    margin: 0 auto;
-    max-width: 20%;
-}
-
 .sidenav ol {
     counter-reset: li;
     list-style: none;
     *list-style: decimal;
     font-size: 15px;
-    font-family: 'Raleway', sans-serif;
     padding: 0;
     margin-bottom: 4em;
 }
@@ -226,7 +218,7 @@ label {
 .sidenav a {
     position: relative;
     display: block;
-    padding: .4em .4em .4em 2em;
+    padding: .4em .4em .4em 2.5em;
     *padding: .4em;
     margin: .5em 0;
     background: #5975D9;
@@ -238,4 +230,9 @@ label {
 
 .sidenav a:hover {
     box-shadow: inset 2em 0 black;
+}
+
+.step-content > img,
+.step-content > p > img {
+    max-width: 75%;
 }

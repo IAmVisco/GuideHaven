@@ -168,6 +168,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="ShortDescription" xml:space="preserve">
+    <value>Short description</value>
+  </data>
   <data name="Step" xml:space="preserve">
     <value>Step</value>
   </data>

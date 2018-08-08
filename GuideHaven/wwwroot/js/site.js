@@ -6,26 +6,8 @@
     var delta = 5;
     var navbarHeight = $('.navbar').outerHeight();
 
-    var sidenavTop = $('.sidenav').offset().top;
-
     $(window).scroll(function () {                  
         didScroll = true;
-        var currentScroll = $(window).scrollTop(); 
-
-        if (currentScroll >= sidenavTop) {           
-            $('.sidenav').css({                      
-                position: 'fixed',
-                top: '10px',
-                right: '13%'
-            });
-        } else {                                   
-            $('.sidenav').css({                      
-                position: 'static',
-                top: '0',
-                right: '0'
-            });
-        }
-
     });
 
     setInterval(function () {
