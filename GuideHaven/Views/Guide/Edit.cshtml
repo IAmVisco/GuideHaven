@@ -1,12 +1,11 @@
 ﻿@model GuideHaven.Models.Guide
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Localizer["Edit"];
 }
 
-<h2>Edit</h2>
-
-<h4>Guide</h4>
+<h2>@Localizer["EditGuide"]</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +19,7 @@
                 @{int index = 0; }
                 @foreach (var item in Model.GuideSteps)
                 {
-                    <label class="control-label" style="display: block">Step @(index + 1)</label>
+                    <label class="control-label" style="display: block">@Localizer["Step"] @(index + 1)</label>
                     <label asp-for="GuideSteps[index].Header" class="control-label"></label>
                     @Html.TextBoxFor(model => model.GuideSteps[index].Header, new { style = "display: block" })
                     <label asp-for="GuideSteps[index].Content" class="control-label"></label>
@@ -29,14 +28,14 @@
                 }
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
 </div>
 
 @section Scripts {

@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<GuideHaven.Models.Guide>
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Index"];
 }
 
-<h2>Index</h2>
+<h2>@Localizer["Index"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">@Localizer["CreateNew"]</a>
 </p>
 <table class="table">
     <thead>
@@ -19,17 +20,39 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GuideName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GuideId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GuideId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GuideId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuideName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.GuideId">@Localizer["Edit"]</a> |
+                    <a asp-action="Details" asp-route-id="@item.GuideId">@Localizer["Details"]</a> |
+                    <a href="#" data-toggle="modal" data-target="#@item.GuideId">@Localizer["Delete"]</a>
+
+                    <div id="@item.GuideId" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">@Localizer["AreUSure"]</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>@Localizer["AreUSureMsg"] @Html.DisplayFor(modelItem => item.GuideName)? @Localizer["CannotBeUndone"].</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["NoDelete"]</button>
+                                    <form asp-action="Delete" asp-route-id="@item.GuideId" method="post" style="display: inline-block;">
+                                        <input type="submit" class="btn btn-danger" value="@Localizer["YesDelete"]" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,13 +1,14 @@
 ﻿@model GuideHaven.Models.Guide
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Localizer["Details"];
 }
 
-<h2>Details</h2>
+<h2>@Localizer["Details"]</h2>
 
 <div>
-    <h4>Guide</h4>
+    <h4>@Html.DisplayNameFor(model => model.GuideName)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -25,6 +26,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.GuideId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.GuideId">@Localizer["Edit"]</a> |
+    <a asp-action="Index">@Localizer["BackToList"]</a>
 </div>
