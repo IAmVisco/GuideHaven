@@ -10,6 +10,8 @@ namespace GuideHaven.Models
         public int GuideId { get; set; }
         public string GuideName { get; set; }
         public string Owner { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
 
         public virtual List<Step> GuideSteps { get; set; }
         public virtual List<Comment> Comments { get; set; }
