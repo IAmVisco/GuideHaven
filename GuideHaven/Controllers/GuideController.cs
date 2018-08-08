@@ -62,6 +62,7 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
+                guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
                 _context.Add(guide);
                 await _context.SaveChangesAsync();
