@@ -1,43 +1,50 @@
 ﻿@model GuideHaven.Models.Guide
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Localizer["Create"];
 }
 
-<h2 style="display:inline-block">Create </h2>
-<h3 style="display:inline-block">Guide</h3>
+<script>
+    var index = 0;
+    var visual_index = 0;
+</script>
+
+<h2 style="display:inline-block">@Localizer["CreateGuide"]</h2>
+
 <hr />
 <div class="row">
     <div class="col-xs-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GuideName" class="control-label">Title</label>
-                <input asp-for="GuideName" class="form-control" />
+                <label asp-for="GuideName" class="control-label">@Localizer["Title"]</label>
+                <input asp-for="GuideName" class="form-control" required/>
                 <span asp-validation-for="GuideName" class="text-danger"></span>
             </div>
             <div id="step_holder" class="form-group">
                 <div style="position: relative">
                     <hr />
-                    <label class="control-label" style="display: block">Step 1</label>
-                    <label asp-for="GuideSteps[0].Header" class="control-label">Title</label>
-                    @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block", @class = "form-control" })
-                    <label asp-for="GuideSteps[0].Content" class="control-label"></label>
+                    <label class="control-label" style="display: block">@Localizer["Step"] 1</label>
+                    <label asp-for="GuideSteps[0].Header" class="control-label">@Localizer["Title"]</label>
+                    @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block", @class = "form-control", required = "" })
+                    <label asp-for="GuideSteps[0].Content" class="control-label">@Localizer["Content"]</label>
                     @Html.TextAreaFor(model => model.GuideSteps[0].Content, new { style = "display: block", @class = "bs-textarea mdhtmlform-md" })
-                    @*<button type="button" class="btn btn-danger delete-btn" value="Delete step">Delete step</button>*@
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
+            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
             <hr />
             <input type="submit" value="Create" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-default">Back to List</a>
+            <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
         </form>
     </div>
     <div class="col-xs-6 mdhtmlform-html"></div>
 </div>
 
 
+
 <script async src="~/js/step_functions.js"></script>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

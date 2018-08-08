@@ -67,6 +67,7 @@ namespace GuideHaven
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
             })
             .AddMicrosoftAccount(microsoftOptions =>
             {

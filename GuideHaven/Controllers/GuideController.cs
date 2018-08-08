@@ -13,20 +13,20 @@ namespace GuideHaven.Models
     [Authorize]
     public class GuideController : Controller
     {
-        private readonly GuideContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly GuideContext context;
+        private readonly UserManager<IdentityUser> userManager;
 
         public GuideController(GuideContext context, UserManager<IdentityUser> userManager)
         {
-            _context = context;
-            _userManager = userManager;
+            this.context = context;
+            this.userManager = userManager;
         }
 
         // GET: Guide
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Guide.ToListAsync());
+            return View(await context.Guide.ToListAsync());
         }
 
         // GET: Guide/Details/5
@@ -38,7 +38,7 @@ namespace GuideHaven.Models
                 return NotFound();
             }
 
-            var guide = _context.GetGuide(_context, id);
+            var guide = context.GetGuide(context, id);
             if (guide == null)
             {
                 return NotFound();
@@ -63,9 +63,9 @@ namespace GuideHaven.Models
             if (ModelState.IsValid)
             {
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
-                guide.Owner = await _userManager.GetUserIdAsync(await _userManager.GetUserAsync(User));
-                _context.Add(guide);
-                await _context.SaveChangesAsync();
+                guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
+                context.Add(guide);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(guide);
@@ -79,7 +79,7 @@ namespace GuideHaven.Models
                 return NotFound();
             }
 
-            var guide = _context.GetGuide(_context, id);
+            var guide = context.GetGuide(context, id);
             if (guide == null)
             {
                 return NotFound();
@@ -107,6 +107,7 @@ namespace GuideHaven.Models
                     _context.Steps.RemoveRange(_context.Steps.Where(x => x.GuideId == guide.GuideId));
                     _context.Update(guide);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,37 +125,20 @@ namespace GuideHaven.Models
             return View(guide);
         }
 
-        // GET: Guide/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var guide = _context.GetGuide(_context, id);
-            if (guide == null)
-            {
-                return NotFound();
-            }
-
-            return View(guide);
-        }
-
-        // POST: Guide/Delete/5
+        // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var guide = _context.GetGuide(_context, id);
-            _context.Guide.Remove(guide);
-            await _context.SaveChangesAsync();
+            var guide = context.GetGuide(context, id);
+            context.Guide.Remove(guide);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool GuideExists(int id)
         {
-            return _context.Guide.Any(e => e.GuideId == id);
+            return context.Guide.Any(e => e.GuideId == id);
         }
     }
 }

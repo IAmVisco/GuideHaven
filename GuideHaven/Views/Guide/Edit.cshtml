@@ -1,17 +1,18 @@
 ﻿@model GuideHaven.Models.Guide
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
     ViewData["Title"] = "Edit";
     int index = 0;
 }
 
+<h2>@Localizer["EditGuide"]</h2>
+
 <script src="~/js/step_functions.js"></script>
 <script src="~/js/he.js"></script>
 <script>var index = 0, visual_index = 0;</script>
 
-<h2>Edit</h2>
 
-<h4>Guide</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -22,12 +23,13 @@
                 <label asp-for="GuideName" class="control-label"></label>
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
+
                 <div id="step_holder" class="form-group">
                     @for (int i = 0; i < Model.GuideSteps.Count; i++)
                     {
                         <script>
                             document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	                        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
+	                        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">@Localizer["Step"] ' + (visual_index + 1) + '</label>'
 	                        + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
 	                        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
 	                        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
@@ -50,14 +52,15 @@
             <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
             <hr />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
-<div >
-    <a asp-action="Index">Back to List</a>
+<div>
+    <a asp-action="Index">@Localizer["BackToList"]</a>
+
 </div>
 
 @section Scripts {
