@@ -88,6 +88,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
                 var result = await signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Input.UserName), "Banned"))
                 {
