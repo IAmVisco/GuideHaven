@@ -4,7 +4,10 @@
     ViewData["Title"] = "Create";
 }
 
-<script>var index = 0;</script>
+<script>
+    var index = 0;
+    var visual_index = 0;
+</script>
 
 <h2 style="display:inline-block">Create </h2>
 <h3 style="display:inline-block">Guide</h3>
@@ -42,8 +45,9 @@
 <script> // TODO: move to .js file
     function createStep() {
         index++;
+        visual_index++;
         document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-        + '<hr/><label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
+        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
         + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
         + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
@@ -54,8 +58,18 @@
     };
 
     function deleteStep(id) {
-        document.getElementById("step" + id).remove();
-        index--;
+        let step = 2
+        document.getElementById('step_count_' + (id - 1)).remove();
+        document.getElementById('GuideSteps_' + (id - 1) + '__Header').value = "";
+        document.getElementById('GuideSteps_' + (id - 1) + '__Content').value = "";
+        document.getElementById("step" + id).style.display = "none";
+        for (var i = 1; i <= index; i++) {
+            let obj;
+            if ((obj = document.getElementById("step_count_" + i)) != null) {
+                obj.innerHTML = "Step " + step++;
+            }
+        }
+        visual_index--;
     }
 </script>
 
