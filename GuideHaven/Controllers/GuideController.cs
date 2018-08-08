@@ -103,9 +103,11 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
-                    context.Update(guide);
-                    await context.SaveChangesAsync();
+                    guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
+                    _context.Steps.RemoveRange(_context.Steps.Where(x => x.GuideId == guide.GuideId));
+                    _context.Update(guide);
+                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
