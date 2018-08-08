@@ -149,11 +149,11 @@ label {
 }
 
 .switch-input:checked + .switch-label:before {
-    background-color: #A5D6A7;
+    background-color: #80CBC4;
 }
 
 .switch-input:checked + .switch-label:after {
-    background-color: #4CAF50;
+    background-color: #009688;
     transform: translate(80%, -50%);
 }
 
