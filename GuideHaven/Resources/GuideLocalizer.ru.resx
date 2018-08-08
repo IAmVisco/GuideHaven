@@ -168,6 +168,9 @@
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="ShortDescription" xml:space="preserve">
+    <value>Краткое описание</value>
+  </data>
   <data name="Step" xml:space="preserve">
     <value>Шаг</value>
   </data>

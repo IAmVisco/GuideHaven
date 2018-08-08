@@ -3,15 +3,23 @@
 function createStep() {
 	index++;
 	visual_index++;
-	document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	+ '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
-	+ '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
-	+ '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-	+ '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
-	+ '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea"></textarea>'
-	+ '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
-	+ '<span class="glyphicon glyphicon-remove"></span></button></div > ');
-	// console.log(index.toString());
+    document.getElementById("step_holder").insertAdjacentHTML(
+        'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
+	    + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
+	    + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
+	    + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+
+        + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3"></textarea>'
+
+        + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
+        + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '"  style="display: none"></textarea>'
+
+        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+        + '<span class="glyphicon glyphicon-remove"></span></button></div >'
+    );
+    document.getElementById("step" + (index + 1)).scrollIntoView();
+    new MdHtmlForm(document.getElementById('DummyArea' + index));
 }
 
 function deleteStep(id) {
