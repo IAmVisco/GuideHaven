@@ -531,4 +531,64 @@
   <data name="YouShould" xml:space="preserve">
     <value>Вы должны</value>
   </data>
+  <data name="AreUSure" xml:space="preserve">
+    <value>Вы уверены?</value>
+  </data>
+  <data name="AreUSureMsg" xml:space="preserve">
+    <value>Вы уверены что хотите удалить</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Назад к списку</value>
+  </data>
+  <data name="CannotBeUndone" xml:space="preserve">
+    <value>Это действие необратимо</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Содержание</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="CreateGuide" xml:space="preserve">
+    <value>Создать инструкцию</value>
+  </data>
+  <data name="CreateNew1" xml:space="preserve">
+    <value>Создать </value>
+  </data>
+  <data name="CreateStep" xml:space="preserve">
+    <value>Создать шаг</value>
+  </data>
+  <data name="Delete1" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Подробнее</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="EditGuide" xml:space="preserve">
+    <value>Редактировать инструкцию</value>
+  </data>
+  <data name="Guide" xml:space="preserve">
+    <value>Инструкция</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Главная</value>
+  </data>
+  <data name="NoDelete" xml:space="preserve">
+    <value>Нет, я передумал</value>
+  </data>
+  <data name="Save1" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Step" xml:space="preserve">
+    <value>Шаг</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="YesDelete" xml:space="preserve">
+    <value>Да, удалить эту инструкцию</value>
+  </data>
 </root>

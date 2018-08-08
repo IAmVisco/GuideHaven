@@ -22,6 +22,8 @@ namespace GuideHaven.Models
             this.userManager = userManager;
         }
 
+        public string ReturnUrl { get; set; }
+
         // GET: Guide
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -104,9 +106,9 @@ namespace GuideHaven.Models
                 try
                 {
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
-                    _context.Steps.RemoveRange(_context.Steps.Where(x => x.GuideId == guide.GuideId));
-                    _context.Update(guide);
-                    await _context.SaveChangesAsync();
+                    context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
+                    context.Update(guide);
+                    await context.SaveChangesAsync();
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -128,12 +130,14 @@ namespace GuideHaven.Models
         // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
+        public async Task<IActionResult> DeleteConfirmed(int? id, string returnUrl = null)
         {
+            returnUrl = returnUrl ?? Url.Content("~/");
             var guide = context.GetGuide(context, id);
             context.Guide.Remove(guide);
             await context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return LocalRedirect(returnUrl);
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool GuideExists(int id)

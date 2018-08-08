@@ -8,7 +8,7 @@ namespace GuideHaven.Models
 {
     public class GuideContext : DbContext
     {
-        public GuideContext (DbContextOptions<GuideContext> options)
+        public GuideContext(DbContextOptions<GuideContext> options)
             : base(options)
         {
         }
@@ -26,14 +26,21 @@ namespace GuideHaven.Models
             modelBuilder.Entity<Comment>().ToTable("Comment");
             modelBuilder.Entity<Like>().ToTable("Like");
             modelBuilder.Entity<Rating>().ToTable("Rating");
-        }   
+        }
 
-        public Guide GetGuide(GuideContext context ,int? id)
+        public Guide GetGuide(GuideContext context, int? id)
         {
             var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
             var guide = guides.FirstOrDefault(m => m.GuideId == id);
             guide.Comments = context.Comments.Include(g => g.Likes).ToList();
             return guide;
+        }
+
+        public List<Guide> GetGuides(GuideContext context, string owner)
+        {
+            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
+            guides.RemoveAll(x => x.Owner != owner);
+            return guides;
         }
     }
 }
