@@ -6,7 +6,7 @@
     var delta = 5;
     var navbarHeight = $('.navbar').outerHeight();
 
-    $(window).scroll(function (event) {
+    $(window).scroll(function () {                  
         didScroll = true;
     });
 

@@ -1,30 +1,36 @@
 ﻿@model GuideHaven.Models.Guide
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>Guide</h4>
+    <h2>@Html.DisplayFor(model => model.GuideName)</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.GuideName)
-        </dt>
-        <dt>
-            @Html.DisplayNameFor(model => model.GuideSteps)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GuideName)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.GuideSteps.Count)
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-xs-8 steps-wrap">
+            @{int i = 0;
+            string step = "";}
+            @foreach (var item in Model.GuideSteps)
+            {
+                i++;
+                step = "step" + i.ToString();
+                <h2 id="@step" class="step-header">@item.Header</h2>
+                <div class="step-content">@Html.Raw(item.Content)</div>
+            }
+        </div>
+        <div class="col-xs-4 sidenav">
+            @{i = 0;}
+            <ol>
+                @foreach (var item in Model.GuideSteps)
+                {
+                    i++;
+                    step = "#step" + i.ToString();
+                    <li><a href="@step">@item.Header</a></li>
+                }
+            </ol>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.GuideId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<script src="~/js/fixed-sidebar.js"></script>

@@ -92,6 +92,12 @@ namespace GuideHaven.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [Route("Error/404")]
+        public IActionResult Error404()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> AddRole(string[] list, string role)
         {
             foreach (var item in list)
