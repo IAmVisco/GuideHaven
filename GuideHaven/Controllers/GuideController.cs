@@ -103,6 +103,7 @@ namespace GuideHaven.Models
             {
                 try
                 {
+                    guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     _context.Steps.RemoveRange(_context.Steps.Where(x => x.GuideId == guide.GuideId));
                     _context.Update(guide);
                     await _context.SaveChangesAsync();
