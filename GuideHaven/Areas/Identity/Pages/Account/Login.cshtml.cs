@@ -96,10 +96,10 @@ namespace GuideHaven.Areas.Identity.Pages.Account
                     await signInManager.SignOutAsync();
                     return Page();
                 }
-                if (!await userManager.IsEmailConfirmedAsync(userManager.Users.First(x => x.UserName == Input.UserName)))
+                if (userManager.Users.FirstOrDefault(x => x.UserName == Input.UserName)!= null && !await userManager.IsEmailConfirmedAsync(userManager.Users.FirstOrDefault(x => x.UserName == Input.UserName)))
                 {
                     ModelState.AddModelError(string.Empty, localizer["MustConfEmail"]);
-                    //await _signInManager.SignOutAsync();
+                    //await signInManager.SignOutAsync();
                     return Page();
                 }
                 if (result.Succeeded)
