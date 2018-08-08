@@ -1,13 +1,15 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<IdentityLocalizer> Localizer
 @model ExternalLoginsModel
 @{
-    ViewData["Title"] = "Manage your external logins";
+    ViewData["Title"] = Localizer["ManageExternalLogins"];
 }
 
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 @if (Model.CurrentLogins?.Count > 0)
 {
-    <h4>Registered Logins</h4>
+    <h4>@Localizer["RegisteredLogins"]</h4>
     <table class="table">
         <tbody>
             @foreach (var login in Model.CurrentLogins)
@@ -17,17 +19,17 @@
                     <td>
                         @if (Model.ShowRemoveButton)
                         {
-                        <form id="remove-login" asp-page-handler="RemoveLogin" method="post">
-                            <div>
-                                <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
-                                <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                <button type="submit" class="btn btn-default" title="Remove this @login.LoginProvider login from your account">Remove</button>
-                            </div>
-                        </form>
+                            <form id="remove-login" asp-page-handler="RemoveLogin" method="post">
+                                <div>
+                                    <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
+                                    <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
+                                    <button type="submit" class="btn btn-default" title="@Localizer["RemoveThis"] @login.LoginProvider @Localizer["LoginFromUrAcc"]">@Localizer["Remove"]</button>
+                                </div>
+                            </form>
                         }
                         else
                         {
-                        @: &nbsp;
+                            @: &nbsp;
                         }
                     </td>
                 </tr>

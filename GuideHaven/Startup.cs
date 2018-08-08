@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using GuideHaven.Areas.Identity.Services;
 using GuideHaven.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 
 namespace GuideHaven
 {
@@ -36,8 +40,28 @@ namespace GuideHaven
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddViewLocalization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    factory.Create(typeof(IdentityLocalizer));
+                });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                    new CultureInfo("ru"),
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
@@ -86,11 +110,16 @@ namespace GuideHaven
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            var locOptions = app
+                .ApplicationServices
+                .GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}"); // or Redirects
 
             app.UseMvc(routes =>
             {

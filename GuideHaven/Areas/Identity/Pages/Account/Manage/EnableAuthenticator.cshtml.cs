@@ -10,25 +10,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 
 namespace GuideHaven.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<EnableAuthenticatorModel> _logger;
-        private readonly UrlEncoder _urlEncoder;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<EnableAuthenticatorModel> logger;
+        private readonly UrlEncoder urlEncoder;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         public EnableAuthenticatorModel(
             UserManager<IdentityUser> userManager,
             ILogger<EnableAuthenticatorModel> logger,
-            UrlEncoder urlEncoder)
+            UrlEncoder urlEncoder,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _userManager = userManager;
-            _logger = logger;
-            _urlEncoder = urlEncoder;
+            this.userManager = userManager;
+            this.logger = logger;
+            this.urlEncoder = urlEncoder;
+            this.localizer = localizer;
         }
 
         public string SharedKey { get; set; }
@@ -47,18 +51,18 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(7, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Text)]
-            [Display(Name = "Verification Code")]
+            [Display(Name = "VerifCode")]
             public string Code { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
             await LoadSharedKeyAndQrCodeUriAsync(user);
@@ -68,10 +72,10 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -83,25 +87,25 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
             // Strip spaces and hypens
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            var is2faTokenValid = await userManager.VerifyTwoFactorTokenAsync(
+                user, userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError("Input.Code", "Verification code is invalid.");
+                ModelState.AddModelError("Input.Code", localizer["VerifCodeInvalid"]);
                 await LoadSharedKeyAndQrCodeUriAsync(user);
                 return Page();
             }
 
-            await _userManager.SetTwoFactorEnabledAsync(user, true);
-            var userId = await _userManager.GetUserIdAsync(user);
-            _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+            await userManager.SetTwoFactorEnabledAsync(user, true);
+            var userId = await userManager.GetUserIdAsync(user);
+            logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
 
-            StatusMessage = "Your authenticator app has been verified.";
+            StatusMessage = localizer["AuthVerified"];
 
-            if (await _userManager.CountRecoveryCodesAsync(user) == 0)
+            if (await userManager.CountRecoveryCodesAsync(user) == 0)
             {
-                var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var recoveryCodes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
                 RecoveryCodes = recoveryCodes.ToArray();
                 return RedirectToPage("./ShowRecoveryCodes");
             }
@@ -114,16 +118,16 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
         private async Task LoadSharedKeyAndQrCodeUriAsync(IdentityUser user)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            var unformattedKey = await userManager.GetAuthenticatorKeyAsync(user);
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                await _userManager.ResetAuthenticatorKeyAsync(user);
-                unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+                await userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await userManager.GetAuthenticatorKeyAsync(user);
             }
 
             SharedKey = FormatKey(unformattedKey);
 
-            var email = await _userManager.GetEmailAsync(user);
+            var email = await userManager.GetEmailAsync(user);
             AuthenticatorUri = GenerateQrCodeUri(email, unformattedKey);
         }
 
@@ -148,8 +152,8 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("GuideHaven"),
-                _urlEncoder.Encode(email),
+                urlEncoder.Encode("GuideHaven"),
+                urlEncoder.Encode(email),
                 unformattedKey);
         }
     }

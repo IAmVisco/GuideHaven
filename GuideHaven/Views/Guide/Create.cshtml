@@ -6,48 +6,57 @@
 
 <script>var index = 0;</script>
 
-<h2>Create</h2>
-
-<h4>Guide</h4>
+<h2 style="display:inline-block">Create </h2>
+<h3 style="display:inline-block">Guide</h3>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-xs-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GuideName" class="control-label"></label>
+                <label asp-for="GuideName" class="control-label">Title</label>
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
             </div>
             <div id="step_holder" class="form-group">
-                <label class="control-label" style="display: block">Step 1</label>
-                <label asp-for="GuideSteps[0].Header" class="control-label"></label>
-                @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block" })
-                <label asp-for="GuideSteps[0].Content" class="control-label"></label>
-                @Html.TextAreaFor(model => model.GuideSteps[0].Content, new { style = "display: block" })
+                <div style="position: relative">
+                    <hr />
+                    <label class="control-label" style="display: block">Step 1</label>
+                    <label asp-for="GuideSteps[0].Header" class="control-label">Title</label>
+                    @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { style = "display: block", @class = "form-control" })
+                    <label asp-for="GuideSteps[0].Content" class="control-label"></label>
+                    @Html.TextAreaFor(model => model.GuideSteps[0].Content, new { style = "display: block", @class = "bs-textarea mdhtmlform-md" })
+                    @*<button type="button" class="btn btn-danger delete-btn" value="Delete step">Delete step</button>*@
+                </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-primary" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
-            <div class="form-group">    
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
+            <hr />
+            <input type="submit" value="Create" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-default">Back to List</a>
         </form>
     </div>
+    <div class="col-xs-6 mdhtmlform-html"></div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-<script>
+<script> // TODO: move to .js file
     function createStep() {
         index++;
-        document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
+        document.getElementById("step_holder").insertAdjacentHTML('beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
+        + '<hr/><label class="control-label" style="display: block">Step ' + (index + 1) + '</label>'
         + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
-        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" style="display: block">'
+        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
         + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
-        +'<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" style="display: block"></textarea>');
-        console.log(index.toString());
+        + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea"></textarea>'
+        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+        + '<span class="glyphicon glyphicon-remove"></span></button></div > ');
+        // console.log(index.toString());
     };
+
+    function deleteStep(id) {
+        document.getElementById("step" + id).remove();
+        index--;
+    }
 </script>
 
 @section Scripts {

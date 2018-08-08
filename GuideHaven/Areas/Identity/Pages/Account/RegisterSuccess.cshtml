@@ -1,0 +1,12 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<IdentityLocalizer> Localizer
+@model LockoutModel
+@{
+    ViewData["Title"] = Localizer["RegisterSuccess"];
+}
+
+<header>
+    <h2>@ViewData["Title"]</h2>
+    <p>@Localizer["RegisterSuccessMsg"]</p>
+</header>

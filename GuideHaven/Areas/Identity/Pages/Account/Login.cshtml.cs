@@ -9,21 +9,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly ILogger<LoginModel> logger;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
+        public LoginModel(SignInManager<IdentityUser> signInManager, 
+            ILogger<LoginModel> logger, 
+            UserManager<IdentityUser> userManager,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _signInManager = signInManager;
-            _logger = logger;
-            _userManager = userManager;
+            this.signInManager = signInManager;
+            this.logger = logger;
+            this.userManager = userManager;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -43,13 +49,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             //public string Email { get; set; }
 
             [Required]
-            [StringLength(32, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(32, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
             public string UserName { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Password")]
             public string Password { get; set; }
 
             [Display(Name = "Remember me?")]
@@ -68,7 +75,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
         }
@@ -81,16 +88,22 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                if (!await _userManager.IsEmailConfirmedAsync(_userManager.Users.First(x => x.UserName == Input.UserName)))
+                var result = await signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                if (result.Succeeded && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Input.UserName), "Banned"))
                 {
-                    ModelState.AddModelError(string.Empty, "You must have a cofirmed email in order to procced.");
+                    ModelState.AddModelError(string.Empty, localizer["Banned"]);
+                    await signInManager.SignOutAsync();
+                    return Page();
+                }
+                if (!await userManager.IsEmailConfirmedAsync(userManager.Users.First(x => x.UserName == Input.UserName)))
+                {
+                    ModelState.AddModelError(string.Empty, localizer["MustConfEmail"]);
                     //await _signInManager.SignOutAsync();
                     return Page();
                 }
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -99,12 +112,12 @@ namespace GuideHaven.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, localizer["InvalidLogin"]);
                     return Page();
                 }
             }

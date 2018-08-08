@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
@@ -15,18 +16,21 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<ExternalLoginModel> logger;
+        private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IStringLocalizer<IdentityLocalizer> localizer)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+            this.logger = logger;
+            this.localizer = localizer;
         }
 
         [BindProperty]
@@ -44,6 +48,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Username")]
             public string Login { get; set; }
         }
 
@@ -56,7 +61,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
 
@@ -65,21 +70,27 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
-                ErrorMessage = $"Error from external provider: {remoteError}";
+                ErrorMessage = localizer["ProviderError"] + remoteError;
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information.";
+                ErrorMessage = localizer["ExternalLoginError"];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
+            {
+                await signInManager.SignOutAsync();
+                ErrorMessage = localizer["Banned"];
+                return RedirectToPage("./Login");
+            }
             if (result.Succeeded)
             {
-                _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+                logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
             if (result.IsLockedOut)
@@ -99,10 +110,10 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             // Get the information about the user from the external login provider
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                ErrorMessage = "Error loading external login information during confirmation.";
+                ErrorMessage = localizer["ExternalLoginConfError"];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
@@ -110,14 +121,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
                 user.EmailConfirmed = true;
-                var result = await _userManager.CreateAsync(user);
+                var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    result = await userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        await signInManager.SignInAsync(user, isPersistent: false);
+                        logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
                 }
