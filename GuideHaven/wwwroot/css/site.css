@@ -65,8 +65,6 @@ th {
 
 td.hover {
     cursor: pointer;
-    background: #e2e2e2;
-    transition: all .2s ease-in-out;
 }
 
 .btn-separator {
@@ -74,6 +72,10 @@ td.hover {
     margin: 0 10px;
     height: 34px;
     width: 1px;
+}
+
+.btn {
+    border: 0;
 }
 
 .btn-primary {
@@ -102,24 +104,33 @@ label {
 
     .steps-wrap {
         width: 100%;
+        margin-bottom: 15px;
     }
 
     .sidenav {
         display: none;
     }
 
-    .rating > label {
+    .rating {
         display: none;
     }
 
-    #rating-text {
-        background-color: rgba(0,0,0,0);
-        position: initial !important;
-        margin: 5px;
+    #rating-mobile {
+        display: inline-block !important;
+    }
+
+    .owner-label {
+        display: block !important;
+        margin-left: 0 !important;
     }
 
     .comments {
         width: 100%;
+    }
+
+    .mobile-nav {
+        display: block !important;
+        margin: 15px;
     }
 }
 
@@ -216,10 +227,14 @@ fieldset {
     float: right;
 }
 
-#rating-text {
+#rating-desktop {
     position: absolute;
     top: 60px;
     left: 3px;
+}
+
+#rating-mobile {
+    display: none;
 }
 
 .rating {
@@ -257,6 +272,10 @@ fieldset {
     color: #FFD700;
 }
 
+.mobile-nav {
+    display: none;
+}
+
 .sidenav {
     margin: 0 auto;
     max-width: 20%;
@@ -278,17 +297,6 @@ fieldset {
 .steps-wrap {
     min-height: 90px;
 }
-
-/*:target {
-    display: block;
-}*/
-
-/*:target::before {
-    content: "";
-    display: block;
-    height: 60px;
-    margin: -60px 0 0; /
-}*/
 
 .sidenav ol {
     counter-reset: li;
@@ -323,5 +331,5 @@ fieldset {
 
 .owner-label {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 1rem;
 }

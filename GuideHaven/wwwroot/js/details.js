@@ -1,4 +1,5 @@
 ﻿var sidenavTop = $('.sidenav').offset().top;
+var step = 0;
 
 function set_rating(rating) {
     $("#star" + rating).prop("checked", true);
@@ -10,7 +11,7 @@ function get_rating() {
         url: '/Guide/GetRating',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
-            $("#rating-text").text("Rating " + response.toFixed(2) + " stars");
+            $(".rating-text").text("Rating: " + response.toFixed(2) + " stars");
             set_rating(Math.round(response));
         }
     });
@@ -32,19 +33,34 @@ function addComments(comments) {
     document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comments);
 }
 
+function changeStep() {
+    $(".step").slideUp();
+    setTimeout(function () {
+        $("div:target").slideToggle();
+    }, 195);
+}
+
 $(document).ready(function () {
-    $("#desc").slideDown();
+    $("#step0").slideDown();
 
     get_rating();
-    setInterval(get_comments, 5000);
+    setInterval(get_comments, 3000);
 
-    $("li").on("click", function (e) {
-        $(".step").slideUp();
-        setTimeout(function () {
-            $("div:target").slideToggle();
-        }, 195);
-
+    $("#next-btn").on("click", function () {
+        if (step < $(".steps-wrap").children().length - 1) {
+            window.location.hash = 'step' + ++step;
+            changeStep();
+        }
     });
+
+    $("#prev-btn").on("click", function () {
+        if (step > 0) {
+            window.location.hash = 'step' + --step;
+            changeStep();
+        }
+    });
+
+    $("li").on("click", changeStep);
 
     $("#comment-field").keyup(function (e) {
         if ($("#comment-field").val().length > 0) {
@@ -86,5 +102,6 @@ $(document).ready(function () {
             guideId: $("#guideId").attr("value"),
             rating: $(this).attr("value")
         });
+        get_rating();
     });
 });

@@ -48,7 +48,9 @@
         trigger: "hover",
         placement: "auto top",
     });
+
     var checkBoxes = $('.check');
+
     $("#checkAll").click(function () {
         checkBoxes.not(this).prop('checked', this.checked);
     });
