@@ -15,10 +15,31 @@ function get_rating() {
     });
 }
 
+function get_comments() {
+    $.ajax({
+        type: "GET",
+        url: '/Guide/GetComments',
+        data: { guideId: $("#guideId").attr("value") },
+        success: function (response) {
+            addComments(response);
+        }
+    });
+}
+
+function addComments(comments) {
+    document.getElementById("posted-comments").innerHTML = "";
+    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comments);
+}
+
+function update() {
+    get_rating();
+    get_comments();
+}
+
 $(document).ready(function () {
     $("#desc").slideDown();
 
-    setInterval(get_rating, 5000);
+    setInterval(update, 5000);
 
     $("li").on("click", function (e) {
         $(".step").slideUp();
@@ -57,11 +78,11 @@ $(document).ready(function () {
     });
 
     $("#post-btn").on("click", function () {
-        //alert("Working");
         $.post("/Guide/PostComment", {
             guideId: $("#guideId").attr("value"),
             comment: $("#comment-field").val()
         });
+        $("#comment-field").val("");
     });
 
     $("input[name=rating]").on("click", function () {

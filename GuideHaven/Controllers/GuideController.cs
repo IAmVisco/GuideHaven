@@ -148,6 +148,27 @@ namespace GuideHaven.Models
             return context.GetGuide(context, guideId).GetRating();
         }
 
+        [HttpGet]
+        public ActionResult<string> GetComments(int guideId)
+        {
+            string output = "";
+            foreach (var item in context.GetGuide(context, guideId).Comments)
+            {
+                output +=
+                "<label class=\"commenter\">" + item.Owner + ":</label>"
+                + "<div class=\"comment-wrap\">"
+                    + "<div class=\"comment-block\">"
+                        + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
+                        + "<p>" + item.Content + "</p>"
+                        + "<div class=\"bottom-comment\">"
+                            + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
+                        + "</div>"
+                    + "</div>"
+                + "</div>";
+            }
+            return output;
+        }
+
         [HttpPost]
         public IActionResult PostRating(int guideId, int rating)
         {
