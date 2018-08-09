@@ -23,8 +23,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.GuideId" >@Html.DisplayFor(modelItem => item.GuideName)</a>
+                <td class="link">
+                    <a asp-action="Details" asp-route-id="@item.GuideId">@Html.DisplayFor(modelItem => item.GuideName)</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.GuideId">@Localizer["Edit"]</a> |

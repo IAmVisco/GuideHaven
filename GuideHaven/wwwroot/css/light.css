@@ -9,3 +9,7 @@
 .step-header {
     color: #888;
 }
+
+.td.hover {
+    background: #e2e2e2;
+}

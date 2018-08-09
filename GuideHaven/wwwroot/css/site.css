@@ -63,6 +63,12 @@ th {
     font-weight: 600;
 }
 
+td.hover {
+    cursor: pointer;
+    background: #e2e2e2;
+    transition: all .2s ease-in-out;
+}
+
 .btn-separator {
     background: #ADADAD;
     margin: 0 10px;
@@ -186,6 +192,10 @@ label {
     right: 0;
     margin-top: 20px;
     padding: 0;
+}
+
+.comment-btn {
+    display: none;
 }
 
 .control-label {

@@ -60,20 +60,23 @@
         </div>
     </div>
     <div class="comments">
-        @Localizer["Comments"]:<br />
+        @Localizer["Comments"]: <a href="#" onclick="$('#posted-comments').text('');">Clear</a><br />
+        <div id="posted-comments">
         @foreach (var item in Model.Comments)
         {
-            @item.Owner
+            <label class="commenter">@item.Owner:</label>
             <div class="comment-wrap">
                 <div class="comment-block">
+                    <input id="commentId" hidden value="@item.CommentId" />
                     <p>@item.Content</p>
                     <div class="bottom-comment">
-                        <div class="comment-date">@item.CreationTime.ToString()</div>
+                        <div class="comment-date">@item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy")</div>
                     </div>
                 </div>
             </div>
         }
-        <div class="comment-wrap">
+        </div>
+        <div class="comment-wrap" style="margin-top: 3rem;">
             <div class="comment-block comment-shadow">
                 <input id="guideId" hidden value="@Model.GuideId" />
                 <form action="post">
@@ -82,7 +85,6 @@
             </div>
         </div>
         <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
-
     </div>
     <script src="~/js/details.js"></script>
 </div>

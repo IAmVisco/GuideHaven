@@ -13,10 +13,14 @@ $(document).ready(function () {
     });
 
     $("#comment-field").keyup(function (e) {
-        if ($("#comment-field").val().length > 0)
+        if ($("#comment-field").val().length > 0) {
             $(".comment-btn").removeAttr("disabled");
-        else
+            $(".comment-btn").slideDown();
+        }
+        else { 
             $(".comment-btn").attr("disabled", true);
+            $(".comment-btn").slideUp();
+        }
         $("#comment-field").height(42);
         $("#comment-field").height($("#comment-field")[0].scrollHeight);
     });
