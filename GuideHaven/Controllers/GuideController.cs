@@ -74,6 +74,7 @@ namespace GuideHaven.Models
         }
 
         // GET: Guide/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,6 +126,21 @@ namespace GuideHaven.Models
                 return RedirectToAction(nameof(Index));
             }
             return View(guide);
+        }
+
+        [HttpPost]
+        public IActionResult PostComment(int guideId, string comment)
+        {
+            Comment newComment = new Comment()
+            {
+                Content = comment,
+                CreationTime = DateTime.Now,
+                Owner = User.Identity.Name
+            };
+            var guide = context.GetGuide(context, guideId);
+            guide.Comments.Add(newComment);
+            context.SaveChanges();
+            return Ok();
         }
 
         // POST

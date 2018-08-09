@@ -3,32 +3,53 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 <link rel="stylesheet" href="~/css/comment.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <div>
     <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
-    <p class="owner-label">By @owner.UserName</p>
+    <p class="owner-label">By @owner.UserName
+    @if (await UserManager.GetUserAsync(User) == owner || 
+        (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+    {   
+        <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
+    }
+    </p>
+    <fieldset class="rating">
+        <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome"></label>
+        <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4" title="Pretty good"></label>
+        <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Meh"></label>
+        <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Kinda bad"></label>
+        <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Awful"></label>
+    </fieldset>
     <hr />
-    @Html.DisplayFor(model => model.Description)
-    @Html.DisplayFor(model => model.Image)
+    <div id="desc" class="col-xs-8 step">
+        <h2 class="step-header">@Localizer["Description"]</h2>
+        @Html.DisplayFor(model => model.Description)
+        @Html.DisplayFor(model => model.Image)
+    </div>
     <div class="row">
-        <div class="col-xs-8 steps-wrap">
+        <div class="col-xs-8 steps-wrap" style="transition: height 0.3s ease-in-out">
             @{int i = 0;
                 string step = "";}
             @foreach (var item in Model.GuideSteps)
             {
                 i++;
                 step = "step" + i.ToString();
-                <h2 id="@step" class="step-header">@item.Header</h2>
-                <div class="step-content">@Html.Raw(item.Content)</div>
+                <div id="@step" class="step">
+                    <h2 class="step-header">@item.Header</h2>
+                    <div class="step-content">@Html.Raw(item.Content)</div>
+                </div>
             }
         </div>
         <div class="col-xs-4 sidenav">
             @{i = 0;}
             <ol>
+                <li><a href="#desc">Description</a></li>
                 @foreach (var item in Model.GuideSteps)
                 {
                     i++;
@@ -39,16 +60,29 @@
         </div>
     </div>
     <div class="comments">
-        <div class="comment-wrap">
-            <div class="photo">
-                <div class="avatar" style="background-image: url('https://s3.amazonaws.com/uifaces/faces/twitter/dancounsell/128.jpg')"></div>
+        @Localizer["Comments"]:<br />
+        @foreach (var item in Model.Comments)
+        {
+            @item.Owner
+            <div class="comment-wrap">
+                <div class="comment-block">
+                    <p>@item.Content</p>
+                    <div class="bottom-comment">
+                        <div class="comment-date">@item.CreationTime.ToString()</div>
+                    </div>
+                </div>
             </div>
-            <div class="comment-block">
-                <form action="">
-                    <textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
+        }
+        <div class="comment-wrap">
+            <div class="comment-block comment-shadow">
+                <input id="guideId" hidden value="@Model.GuideId" />
+                <form action="post">
+                    <textarea name="" id="comment-field" cols="30" rows="3" placeholder="Add comment..."></textarea>
                 </form>
             </div>
         </div>
+        <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
+
     </div>
-    <script src="~/js/fixed-sidebar.js"></script>
+    <script src="~/js/details.js"></script>
 </div>

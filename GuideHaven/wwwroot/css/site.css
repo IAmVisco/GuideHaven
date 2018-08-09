@@ -101,6 +101,14 @@ label {
     .sidenav {
         display: none;
     }
+
+    .rating {
+        display: none;
+    }
+
+    .comments {
+        width: 100%;
+    }
 }
 
 .switch-input {
@@ -184,6 +192,49 @@ label {
     margin-top: 5px;
 }
 
+fieldset {
+    margin: 0;
+    padding: 0;
+    padding-top: 10px;
+    display: inline-block;
+    float: right;
+}
+
+.rating {
+    border: none;
+    /*float: left;*/
+}
+
+.rating > input {
+    display: none;
+}
+
+.rating > label:before {
+    margin: 5px;
+    font-size: 2.75em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+    cursor: pointer;
+}
+
+.rating > .half:before {
+    content: "\f089";
+    position: absolute;
+}
+
+.rating > label {
+    color: #ddd;
+    float: right;
+}
+
+
+.rating > input:checked ~ label, 
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    color: #FFD700;
+}
+
 .sidenav {
     margin: 0 auto;
     max-width: 20%;
@@ -199,12 +250,23 @@ label {
     margin-left: 35px;
 }
 
-:target::before {
+.step {
+    display:none;
+}
+.steps-wrap {
+    min-height: 90px;
+}
+
+/*:target {
+    display: block;
+}*/
+
+/*:target::before {
     content: "";
     display: block;
-    height: 60px; /* fixed header height*/
-    margin: -60px 0 0; /* negative fixed header height */
-}
+    height: 60px;
+    margin: -60px 0 0; /
+}*/
 
 .sidenav ol {
     counter-reset: li;
