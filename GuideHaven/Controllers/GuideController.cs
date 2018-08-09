@@ -74,7 +74,6 @@ namespace GuideHaven.Models
         }
 
         // GET: Guide/Edit/5
-        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -139,6 +138,35 @@ namespace GuideHaven.Models
             };
             var guide = context.GetGuide(context, guideId);
             guide.Comments.Add(newComment);
+            context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpGet]
+        public ActionResult<double> GetRating(int guideId)
+        {
+            return context.GetGuide(context, guideId).GetRating();
+        }
+
+        [HttpPost]
+        public IActionResult PostRating(int guideId, int rating)
+        {
+            var guide = context.GetGuide(context, guideId);
+            Rating newRating = new Rating()
+            {
+                Owner = User.Identity.Name,
+                GuideId = guideId,
+                OwnerRating = rating,
+                Guide = guide
+            };
+            if (guide.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name) == null)
+            {
+                guide.Ratings.Add(newRating);
+            }
+            else
+            {
+                context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
+            }
             context.SaveChanges();
             return Ok();
         }

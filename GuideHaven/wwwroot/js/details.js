@@ -1,7 +1,24 @@
 ﻿var sidenavTop = $('.sidenav').offset().top;
 
+function set_rating(rating) {
+    $("#star" + rating).prop("checked", true);
+}
+
+function get_rating() {
+    $.ajax({
+        type: "GET",
+        url: '/Guide/GetRating',
+        data: { guideId: $("#guideId").attr("value") },
+        success: function (response) {
+            set_rating(response);
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#desc").slideDown();
+
+    setInterval(get_rating, 5000);
 
     $("li").on("click", function (e) {
         $(".step").slideUp();
@@ -40,6 +57,13 @@ $(document).ready(function () {
         $.post("/Guide/PostComment", {
             guideId: $("#guideId").attr("value"),
             comment: $("#comment-field").val()
+        });
+    });
+
+    $("input[name=rating]").on("click", function () {
+        $.post("/Guide/PostRating", {
+            guideId: $("#guideId").attr("value"),
+            rating: $(this).attr("value")
         });
     });
 });

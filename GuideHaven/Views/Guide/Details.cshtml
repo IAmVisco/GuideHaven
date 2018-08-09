@@ -9,6 +9,7 @@
 }
 <link rel="stylesheet" href="~/css/comment.min.css" asp-append-version="true" />
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+<script async src="~/js/details.js"></script>
 <div>
     <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
@@ -84,5 +85,7 @@
         <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
 
     </div>
-    <script src="~/js/details.js"></script>
+    <script>
+        set_rating(@Model.GetRating());
+    </script>
 </div>
