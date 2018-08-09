@@ -11,7 +11,7 @@ function get_rating() {
         url: '/Guide/GetRating',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
-            $(".rating-text").text("Rating: " + response.toFixed(2) + " stars");
+            $("#rating-text").text("Rating: " + response.toFixed(2) + " stars");
             set_rating(Math.round(response));
         }
     });
@@ -102,6 +102,6 @@ $(document).ready(function () {
             guideId: $("#guideId").attr("value"),
             rating: $(this).attr("value")
         });
-        get_rating();
+        setTimeout(get_rating, 500);
     });
 });

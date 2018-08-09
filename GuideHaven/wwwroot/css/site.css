@@ -111,12 +111,24 @@ label {
         display: none;
     }
 
-    .rating {
-        display: none;
+    fieldset {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        float: none !important;
     }
 
-    #rating-mobile {
-        display: inline-block !important;
+    .rating > label:before {
+        margin: 5px;
+        font-size: 1.25em !important;
+        font-family: FontAwesome;
+        display: inline-block;
+        content: "\f005";
+    }
+
+    #rating-text {
+        top: 35px !important;
     }
 
     .owner-label {
@@ -227,14 +239,10 @@ fieldset {
     float: right;
 }
 
-#rating-desktop {
+#rating-text {
     position: absolute;
     top: 60px;
     left: 3px;
-}
-
-#rating-mobile {
-    display: none;
 }
 
 .rating {
