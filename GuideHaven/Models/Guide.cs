@@ -25,7 +25,7 @@ namespace GuideHaven.Models
             {
                 temp += item.OwnerRating;
             }
-            return Math.Round(temp / Ratings.Count);
+            return temp / Ratings.Count;
         }
     }
 }

@@ -13,12 +13,13 @@
 <div>
     <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
-    <p class="owner-label">By @owner.UserName
-    @if (await UserManager.GetUserAsync(User) == owner || 
-        (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
-    {   
-        <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
-    }
+    <p class="owner-label">
+        By @owner.UserName
+        @if (await UserManager.GetUserAsync(User) == owner ||
+           (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
+        }
     </p>
     <fieldset class="rating">
         <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome"></label>
@@ -26,15 +27,16 @@
         <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Meh"></label>
         <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Kinda bad"></label>
         <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Awful"></label>
+        <p id="rating-text"></p>
     </fieldset>
     <hr />
-    <div id="desc" class="col-xs-8 step">
-        <h2 class="step-header">@Localizer["Description"]</h2>
-        @Html.DisplayFor(model => model.Description)
-        @Html.DisplayFor(model => model.Image)
-    </div>
     <div class="row">
-        <div class="col-xs-8 steps-wrap" style="transition: height 0.3s ease-in-out">
+        <div class="col-xs-8 steps-wrap">
+            <div id="desc" class="step">
+                <h2 class="step-header">@Localizer["Description"]</h2>
+                @Html.DisplayFor(model => model.Description)
+                @Html.DisplayFor(model => model.Image)
+            </div>
             @{int i = 0;
                 string step = "";}
             @foreach (var item in Model.GuideSteps)
@@ -61,21 +63,21 @@
         </div>
     </div>
     <div class="comments">
-        @Localizer["Comments"]: <a href="#" onclick="$('#posted-comments').text('');">Clear</a><br />
+        @Localizer["Comments"]:<br />
         <div id="posted-comments">
-        @foreach (var item in Model.Comments)
-        {
-            <label class="commenter">@item.Owner:</label>
-            <div class="comment-wrap">
-                <div class="comment-block">
-                    <input id="commentId" hidden value="@item.CommentId" />
-                    <p>@item.Content</p>
-                    <div class="bottom-comment">
-                        <div class="comment-date">@item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy")</div>
+            @foreach (var item in Model.Comments)
+            {
+                <label class="commenter">@item.Owner:</label>
+                <div class="comment-wrap">
+                    <div class="comment-block">
+                        <input id="commentId" hidden value="@item.CommentId" />
+                        <p>@item.Content</p>
+                        <div class="bottom-comment">
+                            <div class="comment-date">@item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy")</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
         </div>
         <div class="comment-wrap" style="margin-top: 3rem;">
             <div class="comment-block comment-shadow">

@@ -108,8 +108,14 @@ label {
         display: none;
     }
 
-    .rating {
+    .rating > label {
         display: none;
+    }
+
+    #rating-text {
+        background-color: rgba(0,0,0,0);
+        position: initial !important;
+        margin: 5px;
     }
 
     .comments {
@@ -203,11 +209,17 @@ label {
 }
 
 fieldset {
+    position: relative;
     margin: 0;
     padding: 0;
-    padding-top: 10px;
     display: inline-block;
     float: right;
+}
+
+#rating-text {
+    position: absolute;
+    top: 60px;
+    left: 3px;
 }
 
 .rating {
@@ -241,7 +253,7 @@ fieldset {
 
 .rating > input:checked ~ label, 
 .rating:not(:checked) > label:hover,
-.rating:not(:checked) > label:hover ~ label {
+.rating:not(:checked) > label:hover ~ label, {
     color: #FFD700;
 }
 
