@@ -34,6 +34,7 @@ function addComments(comments) {
 
 $(document).ready(function () {
     $("#desc").slideDown();
+
     get_rating();
     setInterval(get_comments, 5000);
 
