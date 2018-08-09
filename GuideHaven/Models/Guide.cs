@@ -17,5 +17,15 @@ namespace GuideHaven.Models
         public virtual List<Step> GuideSteps { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Rating> Ratings { get; set; }
+
+        public double GetRating()
+        {
+            float temp = 0;
+            foreach (var item in Ratings)
+            {
+                temp += item.OwnerRating;
+            }
+            return Math.Round(temp / Ratings.Count);
+        }
     }
 }
