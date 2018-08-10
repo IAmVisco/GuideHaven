@@ -18,9 +18,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GuideName" class="control-label">@Localizer["Title"]</label>
-                <input asp-for="GuideName" class="form-control" required />
-                <span asp-validation-for="GuideName" class="text-danger"></span>
+                <label asp-for="GuideName" class="control-label"></label>
+                <input asp-for="GuideName" class="form-control" />
+                <span asp-validation-for="GuideName" class="text-danger"></span><br />
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
@@ -43,7 +43,7 @@
             </div>
             <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
             <hr />
-            <input type="submit" value="Create" class="btn btn-primary" />
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
         </form>
     </div>

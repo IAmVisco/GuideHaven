@@ -6,11 +6,11 @@
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
-<link rel="stylesheet" href="~/css/comment.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/comment.css" />
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <script async src="~/js/details.js"></script>
 <div>
-    <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
+    <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
         By @if (owner != null)
