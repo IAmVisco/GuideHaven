@@ -3,6 +3,12 @@
     color: #fff;
 }
 
-td.hover {
-    background: #000;
+.comment-block {
+    background-color: #424242 !important;
+}
+
+input, textarea {
+    background: #424242;
+    /*color: #fff;*/
+    /*color: #555f77;*/
 }
