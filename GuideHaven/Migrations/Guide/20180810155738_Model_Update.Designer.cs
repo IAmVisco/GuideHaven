@@ -4,14 +4,16 @@ using GuideHaven.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GuideHaven.Migrations.Guide
 {
     [DbContext(typeof(GuideContext))]
-    partial class GuideContextModelSnapshot : ModelSnapshot
+    [Migration("20180810155738_Model_Update")]
+    partial class Model_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

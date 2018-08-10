@@ -6,24 +6,8 @@
     padding: 0;
     -webkit-font-smoothing: antialiased;
     font-family: "PT Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-    font-size: 1rem;
-    color: #555f77;
-}
-
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-    color: #ced2db;
-}
-
-input::-moz-placeholder, textarea::-moz-placeholder {
-    color: #ced2db;
-}
-
-input:-moz-placeholder, textarea:-moz-placeholder {
-    color: #ced2db;
-}
-
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-    color: #ced2db;
+    font-size: 1.2rem;
+    /*color: #555f77;*/
 }
 
 p {

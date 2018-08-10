@@ -12,6 +12,8 @@ namespace GuideHaven.Models
         public DateTime CreationTime { get; set; }
         public string Content { get; set; }
 
+        public int GuideId { get; set; }
+        public Guide Guide { get; set; }
         public List<Like> Likes { get; set; }
     }
 }

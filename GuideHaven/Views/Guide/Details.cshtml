@@ -3,7 +3,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @inject UserManager<IdentityUser> UserManager
-@inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
@@ -22,8 +21,8 @@
         {
             @Localizer["DeletedUser"]
         }
-        @if (await UserManager.GetUserAsync(User) == owner ||
-          (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
+          (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
         }
@@ -75,8 +74,7 @@
     </div>
     <div class="comments">  
         @Localizer["Comments"]:<br />
-        <div id="posted-comments">
-        </div>
+        <div id="posted-comments"></div>
         <div class="comment-wrap" style="margin-top: 3rem;">
             <div class="comment-block comment-shadow">
                 <input id="guideId" hidden value="@Model.GuideId" />
@@ -87,7 +85,4 @@
         </div>
         <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
     </div>
-    @*<script>
-            set_rating(@Model.GetRating());
-        </script>*@
 </div>

@@ -44,6 +44,8 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
         public string UserName { get; set; }
 
+        public string Email { get; set; }
+
         [TempData]
         public string ErrorMessage { get; set; }
 
@@ -87,14 +89,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
-            if (result.Succeeded && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
-            {
-                await signInManager.SignOutAsync();
-                ErrorMessage = localizer["Banned"];
-                return RedirectToPage("./Login");
-            }
             if (result.Succeeded)
             {
+                if (info.LoginProvider != "Vkontakte" && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
+                {
+                    await signInManager.SignOutAsync();
+                    ErrorMessage = localizer["Banned"];
+                    return RedirectToPage("./Login");
+                }
                 logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -146,6 +148,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             LoginProvider = info.LoginProvider;
             ReturnUrl = returnUrl;
+            IsEmailRequired = info.Principal.FindFirstValue(ClaimTypes.Email) == null;
             return Page();
         }
     }

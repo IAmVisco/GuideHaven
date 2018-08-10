@@ -30,9 +30,9 @@ namespace GuideHaven.Models
 
         public Guide GetGuide(GuideContext context, int? id)
         {
-            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
+            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Ratings).ToList();
             var guide = guides.FirstOrDefault(m => m.GuideId == id);
-            guide.Comments = context.Comments.Include(g => g.Likes).ToList();
+            guide.Comments = context.Comments.Where(g => g.GuideId == id).Include(g => g.Likes).ToList();
             return guide;
         }
 

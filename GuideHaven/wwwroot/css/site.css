@@ -8,7 +8,7 @@
 }
 
 .body-content {
-    padding: 10px;
+    padding: 15px;
 }
 
 .navbar-toggle .icon-bar {
@@ -111,6 +111,23 @@ label {
         display: none;
     }
 
+    .comments {
+        width: 100%;
+    }
+
+    .mobile-nav {
+        display: block !important;
+        margin: 15px;
+    }
+}
+
+@media screen and (max-width: 991px)
+{
+    .owner-label {
+        display: block !important;
+        margin-left: 0 !important;
+    }
+
     fieldset {
         position: relative;
         margin: 0;
@@ -120,29 +137,19 @@ label {
     }
 
     .rating > label:before {
-        margin: 5px;
         font-size: 1.25em !important;
-        font-family: FontAwesome;
-        display: inline-block;
-        content: "\f005";
     }
 
     #rating-text {
         top: 35px !important;
     }
 
-    .owner-label {
-        display: block !important;
-        margin-left: 0 !important;
+    .sidenav {
+        top: 240px !important;
     }
 
-    .comments {
-        width: 100%;
-    }
-
-    .mobile-nav {
-        display: block !important;
-        margin: 15px;
+    .create-fields {
+        width: 100% !important;
     }
 }
 
@@ -289,7 +296,7 @@ fieldset {
     max-width: 20%;
     position: fixed;
     right: 10%;
-    top: 150px;
+    top: 170px;
     z-index: 10;
     transition: all .3s cubic-bezier(0.65, 0.05, 0.36, 1);
 }
