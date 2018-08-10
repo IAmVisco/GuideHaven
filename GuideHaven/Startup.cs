@@ -78,7 +78,8 @@ namespace GuideHaven
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            }).AddVkontakte(vkOptions =>
+            })
+            .AddVkontakte(vkOptions =>
             {
                 vkOptions.ClientId = Configuration["Authentication:VK:ClientId"];
                 vkOptions.ClientSecret = Configuration["Authentication:VK:ClientSecret"];

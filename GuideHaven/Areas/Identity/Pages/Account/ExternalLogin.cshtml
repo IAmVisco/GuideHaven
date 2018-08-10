@@ -24,6 +24,14 @@
                 <input asp-for="Input.Login" class="form-control" />
                 <span asp-validation-for="Input.Login" class="text-danger"></span>
             </div>
+            @if(Model.IsEmailRequired)
+            {
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            }
             <button type="submit" class="btn btn-primary">@Localizer["Register"]</button>
         </form>
     </div>

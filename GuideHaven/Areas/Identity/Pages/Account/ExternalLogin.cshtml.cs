@@ -38,6 +38,8 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
         public string LoginProvider { get; set; }
 
+        public bool IsEmailRequired { get; set; }
+
         public string ReturnUrl { get; set; }
 
         public string UserName { get; set; }
@@ -50,6 +52,9 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Username")]
             public string Login { get; set; }
+
+            [EmailAddress]
+            public string Email { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -75,7 +80,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             }
             var info = await signInManager.GetExternalLoginInfoAsync();
             if (info == null)
-            {
+            {         
                 ErrorMessage = localizer["ExternalLoginError"];
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
@@ -102,6 +107,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 LoginProvider = info.LoginProvider;
+                IsEmailRequired = info.Principal.FindFirstValue(ClaimTypes.Email) == null;
                 return Page();
             }
         }
@@ -119,7 +125,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
+                var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) == null ? Input.Email : info.Principal.FindFirstValue(ClaimTypes.Email) };
                 user.EmailConfirmed = true;
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)

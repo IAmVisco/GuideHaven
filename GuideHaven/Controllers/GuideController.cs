@@ -150,6 +150,7 @@ namespace GuideHaven.Models
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<string> GetComments(int guideId)
         {
             string output = "";
