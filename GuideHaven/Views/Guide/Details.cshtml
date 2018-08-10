@@ -1,28 +1,69 @@
 ﻿@model GuideHaven.Models.Guide
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
-
+<link rel="stylesheet" href="~/css/comment.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+<script async src="~/js/details.js"></script>
 <div>
-    <h2>@Html.DisplayFor(model => model.GuideName)</h2>
+    <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
+    @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
+    <p class="owner-label">
+        By @if (owner != null)
+        {
+            @owner.UserName
+        }
+        else
+        {
+            @Localizer["DeletedUser"]
+        }
+        @if (await UserManager.GetUserAsync(User) == owner ||
+          (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
+        }
+    </p>
+    <fieldset class="rating">
+        <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome"></label>
+        <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4" title="Pretty good"></label>
+        <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Meh"></label>
+        <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Kinda bad"></label>
+        <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Awful"></label>
+        <p id="rating-text"></p>
+    </fieldset>
     <hr />
     <div class="row">
         <div class="col-xs-8 steps-wrap">
+            <div id="step0" class="step">
+                <h2 class="step-header">@Localizer["Description"]</h2>
+                @Html.DisplayFor(model => model.Description)
+                @Html.DisplayFor(model => model.Image)
+            </div>
             @{int i = 0;
-            string step = "";}
+                string step = "";}
             @foreach (var item in Model.GuideSteps)
             {
                 i++;
                 step = "step" + i.ToString();
-                <h2 id="@step" class="step-header">@item.Header</h2>
-                <div class="step-content">@Html.Raw(item.Content)</div>
+                <div id="@step" class="step">
+                    <h2 class="step-header">@item.Header</h2>
+                    <div class="step-content">@Html.Raw(item.Content)</div>
+                </div>
             }
+        </div>
+        <div class="mobile-nav">
+            <button class="btn btn-primary" id="prev-btn" style="float:left"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
+            <button class="btn btn-primary" id="next-btn" style="float:right">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
         <div class="col-xs-4 sidenav">
             @{i = 0;}
             <ol>
+                <li><a href="#step0">Description</a></li>
                 @foreach (var item in Model.GuideSteps)
                 {
                     i++;
@@ -32,5 +73,21 @@
             </ol>
         </div>
     </div>
+    <div class="comments">  
+        @Localizer["Comments"]:<br />
+        <div id="posted-comments">
+        </div>
+        <div class="comment-wrap" style="margin-top: 3rem;">
+            <div class="comment-block comment-shadow">
+                <input id="guideId" hidden value="@Model.GuideId" />
+                <form action="post">
+                    <textarea name="" id="comment-field" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                </form>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
+    </div>
+    @*<script>
+            set_rating(@Model.GetRating());
+        </script>*@
 </div>
-<script src="~/js/fixed-sidebar.js"></script>

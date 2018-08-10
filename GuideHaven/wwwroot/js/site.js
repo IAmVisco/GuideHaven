@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
 
-    // Hide Header on on scroll down
     var didScroll;
     var lastScrollTop = 0;
     var delta = 5;
@@ -49,7 +48,9 @@
         trigger: "hover",
         placement: "auto top",
     });
+
     var checkBoxes = $('.check');
+
     $("#checkAll").click(function () {
         checkBoxes.not(this).prop('checked', this.checked);
     });
@@ -61,5 +62,11 @@
 
     $("#themeChanger").click(function () {
         changeTheme();
+    });
+
+    $('td.link').click(function() {
+        window.location = $(this).find('a').attr('href');
+    }).hover(function() {
+        $(this).toggleClass('hover');
     });
 });

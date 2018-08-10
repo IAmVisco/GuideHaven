@@ -18,6 +18,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/comment.min.css",
+    "inputFiles": [
+      "wwwroot/css/comment.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
       "wwwroot/js/site.js"

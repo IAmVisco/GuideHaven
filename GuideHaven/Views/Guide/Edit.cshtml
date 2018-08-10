@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Localizer["Edit"];
     int index = 0;
 }
 
@@ -10,19 +10,25 @@
 
 <script src="~/js/step_functions.js"></script>
 <script src="~/js/he.js"></script>
+<script src="~/js/showdown.js"></script>
+<script src="~/js/to-markdown.js"></script>
+<script src="~/js/mdhtmlform.js"></script>
 <script>var index = 0, visual_index = 0;</script>
 
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit"  accept-charset="UTF-8 Cyrillic">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="GuideId" />
+            <input type="hidden" asp-for="Owner" />
             <div class="form-group">
-                <label asp-for="GuideName" class="control-label"></label>
+                <label asp-for="GuideName" class="control-label">@Localizer["Title"]</label>
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
+                <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
 
                 <div id="step_holder" class="form-group">
                     @for (int i = 0; i < Model.GuideSteps.Count; i++)
@@ -30,16 +36,20 @@
                         <script>
                             document.getElementById("step_holder").insertAdjacentHTML(
                                 'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	                            + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">@Localizer["Step"] ' + (visual_index + 1) + '</label>'
+	                            + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
 	                            + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
 	                            + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-	                            + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
-	                            + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" class="bs-textarea" rows="3"></textarea>'
-	                            + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
-                                + '<span class="glyphicon glyphicon-remove"></span></button></div > '
+                                + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+
+                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3">'
+                                + toMarkdown(he.decode("@Model.GuideSteps[index].Content")) + '</textarea>'
+                                + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
+                                + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
+
+                                + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+                                + '<span class="glyphicon glyphicon-remove"></span></button></div >'
                             );
                             document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
-                            document.getElementById('GuideSteps_' + index + '__Content').value = he.decode('@Model.GuideSteps[index].Content');
                             index++;
                             visual_index++;
                         </script>
@@ -62,7 +72,6 @@
 
 <div>
     <a asp-action="Index">@Localizer["BackToList"]</a>
-
 </div>
 
 @section Scripts {

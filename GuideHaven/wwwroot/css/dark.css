@@ -2,3 +2,7 @@
     background-color: #282828;
     color: #fff;
 }
+
+td.hover {
+    background: #000;
+}

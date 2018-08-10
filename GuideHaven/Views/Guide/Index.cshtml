@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GuideName)
+                @Localizer["Guide Name"]
             </th>
             <th></th>
         </tr>
@@ -23,12 +23,11 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.GuideName)
+                <td class="link">
+                    <a asp-action="Details" asp-route-id="@item.GuideId">@Html.DisplayFor(modelItem => item.GuideName)</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.GuideId">@Localizer["Edit"]</a> |
-                    <a asp-action="Details" asp-route-id="@item.GuideId">@Localizer["Details"]</a> |
                     <a href="#" data-toggle="modal" data-target="#@item.GuideId">@Localizer["Delete"]</a>
 
                     <div id="@item.GuideId" class="modal fade" role="dialog">

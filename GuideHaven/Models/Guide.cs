@@ -9,7 +9,6 @@ namespace GuideHaven.Models
     public class Guide
     {
         public int GuideId { get; set; }
-        [Display(Name = "Guide Name")]
         public string GuideName { get; set; }
         public string Owner { get; set; }
         public string Description { get; set; }
@@ -18,5 +17,15 @@ namespace GuideHaven.Models
         public virtual List<Step> GuideSteps { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Rating> Ratings { get; set; }
+
+        public double GetRating()
+        {
+            float temp = 0;
+            foreach (var item in Ratings)
+            {
+                temp += item.OwnerRating;
+            }
+            return temp / Ratings.Count;
+        }
     }
 }
