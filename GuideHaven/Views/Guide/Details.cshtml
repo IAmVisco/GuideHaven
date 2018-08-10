@@ -8,6 +8,7 @@
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 <link rel="stylesheet" href="~/css/comment.min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/like.css" asp-append-version="true" />
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <script async src="~/js/details.js"></script>
 <div>
@@ -78,7 +79,9 @@
                         <p>@item.Content</p>
                         <div class="bottom-comment">
                             <div class="comment-date">@item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy")</div>
-                        </div>
+                            <div id="like" class="like_button_icon"></div>
+                            <div class="like_button_count">15</div>
+                        </div>  
                     </div>
                 </div>
             }

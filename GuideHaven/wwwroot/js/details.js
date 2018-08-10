@@ -44,7 +44,16 @@ $(document).ready(function () {
     $("#step0").slideDown();
 
     get_rating();
-    setInterval(get_comments, 3000);
+    //setInterval(get_comments, 3000);
+
+    $(".like_button_icon").on("click", function () {
+        if ($(this).hasClass("like_button_icon_pressed")) {
+            $(this).removeClass("like_button_icon_pressed");
+        }
+        else {
+            $(this).addClass("like_button_icon_pressed");
+        }
+    });
 
     $("#next-btn").on("click", function () {
         if (step < $(".steps-wrap").children().length - 1) {

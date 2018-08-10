@@ -162,6 +162,9 @@ namespace GuideHaven.Models
                         + "<p>" + item.Content + "</p>"
                         + "<div class=\"bottom-comment\">"
                             + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
+                            + "<button class=\"like-btn like-review\">"
+                                + "<div class=\"like_button_icon\"></div>"
+                                + "<div class=\"like_button_count\">15</div>"
                         + "</div>"
                     + "</div>"
                 + "</div>";
