@@ -91,7 +91,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                if (info.LoginProvider != "Vkontakte" && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == (info.Principal.FindFirstValue(ClaimTypes.Email) ?? Input.Email)), "Banned"))
+                if (info.LoginProvider != "Vkontakte" && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
                 {
                     await signInManager.SignOutAsync();
                     ErrorMessage = localizer["Banned"];
@@ -127,7 +127,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) ?? Input.Email };
+                var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) == null ? Input.Email : info.Principal.FindFirstValue(ClaimTypes.Email) };
                 user.EmailConfirmed = true;
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
