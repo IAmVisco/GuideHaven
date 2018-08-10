@@ -154,6 +154,9 @@ namespace GuideHaven.Models
             string output = "";
             foreach (var item in context.GetGuide(context, guideId).Comments)
             {
+                string liked = "";
+                if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
+                    liked += " like_button_icon_pressed";
                 output +=
                 "<label class=\"commenter\">" + item.Owner + ":</label>"
                 + "<div class=\"comment-wrap\">"
@@ -162,9 +165,8 @@ namespace GuideHaven.Models
                         + "<p>" + item.Content + "</p>"
                         + "<div class=\"bottom-comment\">"
                             + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
-                            + "<button class=\"like-btn like-review\">"
-                                + "<div class=\"like_button_icon\"></div>"
-                                + "<div class=\"like_button_count\">15</div>"
+                            + "<div value=\""+item.CommentId+"\" class=\"like_button_icon" + liked + "\"></div>"
+                            + "<div class=\"like_button_count\">"+ item.Likes.Count +"</div>"
                         + "</div>"
                     + "</div>"
                 + "</div>";
@@ -190,6 +192,28 @@ namespace GuideHaven.Models
             else
             {
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
+            }
+            context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult PostLike(int guideId, int commentId)
+        {
+            var guide = context.GetGuide(context, guideId);
+            var comment = guide.Comments.FirstOrDefault(x => x.CommentId == commentId);
+            Like like = new Like()
+            {
+                Owner = User.Identity.Name,
+                Comment = comment
+            };
+            if (comment.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) == null)
+            {
+                guide.Comments.Find(x => x == comment).Likes.Add(like);
+            }
+            else
+            {
+                guide.Comments.Find(x => x == comment).Likes.RemoveAll(g => g.Owner == User.Identity.Name);
             }
             context.SaveChanges();
             return Ok();

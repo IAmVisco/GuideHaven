@@ -28,9 +28,27 @@ function get_comments() {
     });
 }
 
+function post_like(div) {
+    $.ajax({
+        type: "POST",
+        url: '/Guide/PostLike',
+        data: { guideId: $("#guideId").attr("value"), commentId: $(div).attr("value") }
+    });
+}
+
 function addComments(comments) {
     document.getElementById("posted-comments").innerHTML = "";
     document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comments);
+
+    $(".like_button_icon").on("click", function () {
+        if ($(this).hasClass("like_button_icon_pressed")) {
+            $(this).removeClass("like_button_icon_pressed");
+        }
+        else {
+            $(this).addClass("like_button_icon_pressed");
+        }
+        post_like($(this));
+    });
 }
 
 function changeStep() {
@@ -44,16 +62,8 @@ $(document).ready(function () {
     $("#step0").slideDown();
 
     get_rating();
-    //setInterval(get_comments, 3000);
-
-    $(".like_button_icon").on("click", function () {
-        if ($(this).hasClass("like_button_icon_pressed")) {
-            $(this).removeClass("like_button_icon_pressed");
-        }
-        else {
-            $(this).addClass("like_button_icon_pressed");
-        }
-    });
+    get_comments();
+    setInterval(get_comments, 3000);
 
     $("#next-btn").on("click", function () {
         if (step < $(".steps-wrap").children().length - 1) {
