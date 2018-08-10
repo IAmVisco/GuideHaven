@@ -143,6 +143,7 @@ namespace GuideHaven.Models
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<double> GetRating(int guideId)
         {
             return context.GetGuide(context, guideId).GetRating();
