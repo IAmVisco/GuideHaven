@@ -157,7 +157,7 @@ namespace GuideHaven.Models
             {
                 string liked = "";
                 if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
-                    liked += " like_button_icon_pressed";
+                    liked += " checked ";
                 output +=
                 "<label class=\"commenter\">" + item.Owner + ":</label>"
                 + "<div class=\"comment-wrap\">"
@@ -166,8 +166,11 @@ namespace GuideHaven.Models
                         + "<p>" + item.Content + "</p>"
                         + "<div class=\"bottom-comment\">"
                             + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
-                            + "<div value=\""+item.CommentId+"\" class=\"like_button_icon" + liked + "\"></div>"
-                            + "<div class=\"like_button_count\">"+ item.Likes.Count +"</div>"
+                              + "<div class=\"comment-actions\">"
+                                + "<input" + liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\"/>"
+                                + "<label for=\"like-"+item.CommentId+ "\" value=\"" + item.CommentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
+                                + "<span class=\"like-count\">" + item.Likes.Count + "</span>"
+                            + "</div>"
                         + "</div>"
                     + "</div>"
                 + "</div>";

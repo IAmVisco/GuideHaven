@@ -40,13 +40,13 @@ function addComments(comments) {
     document.getElementById("posted-comments").innerHTML = "";
     document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comments);
 
-    $(".like_button_icon").on("click", function () {
-        if ($(this).hasClass("like_button_icon_pressed")) {
-            $(this).removeClass("like_button_icon_pressed");
-        }
-        else {
-            $(this).addClass("like_button_icon_pressed");
-        }
+    $(".like-lbl").on("click", function () {
+        let likes = parseInt(this.nextSibling.innerHTML);
+        if (this.previousSibling.checked)
+            likes -= 1;
+        else
+            likes += 1;
+        this.nextSibling.innerHTML = likes;
         post_like($(this));
     });
 }
