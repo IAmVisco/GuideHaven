@@ -14,7 +14,14 @@
     <h2 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h2>
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
-        By @owner.UserName
+        By @if (owner != null)
+        {
+            @owner.UserName
+        }
+        else
+        {
+            @Localizer["DeletedUser"]
+        }
         @if (await UserManager.GetUserAsync(User) == owner ||
           (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
