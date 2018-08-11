@@ -241,10 +241,6 @@ label {
     padding: 0;
 }
 
-.comment-btn {
-    display: none;
-}
-
 .control-label {
     margin-top: 5px;
 }
@@ -331,7 +327,7 @@ fieldset {
 .sidenav a {
     position: relative;
     display: block;
-    padding: .3em .3em .3em 1.5em;
+    padding: .3em .5em .3em 1.5em;
     *padding: .4em;
     margin: .5em 0;
     background: #fff;

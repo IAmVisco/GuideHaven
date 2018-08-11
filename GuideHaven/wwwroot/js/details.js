@@ -72,6 +72,20 @@ $(document).ready(function () {
         }
     });
 
+    $(".rating").popover({
+        animation: true,
+        content: "Log in to vote",
+        placement: "auto bottom",
+        trigger: "manual"
+    });
+
+    function showPopover() {
+        $(".rating").popover("toggle");
+        setTimeout(function () {
+            $(".rating").popover("hide");
+        }, 2000);
+    }
+
     $("#prev-btn").on("click", function () {
         if (step > 0) {
             window.location.hash = 'step' + --step;
@@ -84,11 +98,9 @@ $(document).ready(function () {
     $("#comment-field").keyup(function (e) {
         if ($("#comment-field").val().length > 0) {
             $(".comment-btn").removeAttr("disabled");
-            $(".comment-btn").slideDown();
         }
         else { 
             $(".comment-btn").attr("disabled", true);
-            $(".comment-btn").slideUp();
         }
         $("#comment-field").height(42);
         $("#comment-field").height($("#comment-field")[0].scrollHeight);
@@ -120,7 +132,7 @@ $(document).ready(function () {
         $.post("/Guide/PostRating", {
             guideId: $("#guideId").attr("value"),
             rating: $(this).attr("value")
-        });
+        }).fail(showPopover);
         setTimeout(get_rating, 500);
     });
 });
