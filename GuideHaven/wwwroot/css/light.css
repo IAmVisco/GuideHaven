@@ -13,3 +13,14 @@
 .comment-block {
     background-color: #fff;
 }
+
+.nav > li > a:focus, 
+.nav > li > a:hover {
+    background-color: #ddd;
+}
+
+footer > a:hover,
+footer > a:focus {
+    color: #484b50;
+    text-decoration: none;
+}

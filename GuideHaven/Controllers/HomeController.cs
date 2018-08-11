@@ -33,7 +33,11 @@ namespace GuideHaven.Controllers
 
         public IActionResult Index()
         {
-            //ViewData["Title"] = localizer["Title"];
+            return View();
+        }
+
+        public IActionResult About()
+        {
             return View();
         }
 

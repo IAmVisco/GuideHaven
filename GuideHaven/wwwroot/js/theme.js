@@ -35,6 +35,10 @@ function changeTheme() {
 }
 
 if (getCookie("theme") == "dark") {
-    changeTheme();
-    document.getElementById('themeChanger').checked = true;
+    document.getElementById('theme').href = "/css/dark.css";
+    window.onload = function () {
+        changeTheme();
+        document.getElementById('themeChanger').checked = true;
+    }
 }
+document.body.style.transition = "all 0.2s ease-in-out";

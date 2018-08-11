@@ -13,15 +13,16 @@
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/light.css" id="theme" />
+    <script async src="~/js/theme.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
             asp-fallback-test="window.jQuery"
             crossorigin="anonymous"
             integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
     </script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/light.css" id="theme" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-fixed-top shadow" id="nav">
@@ -48,7 +49,6 @@
                 <partial name="_LoginPartial" />
                 <input type="checkbox" id="themeChanger" class="switch-input">
                 <label for="themeChanger" class="switch-label navbar-text">@Localizer["Theme"]</label>
-                <script async src="~/js/theme.js"></script>
             </div>
         </div>
     </nav>
@@ -60,6 +60,8 @@
         <hr />
         <footer>
             <p style="display:inline-block;">&copy; 2018 - Guide Haven</p>
+            <a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a>
+            <a asp-controller="Home" asp-action="About">@Localizer["About"]</a>
             @await Html.PartialAsync("_SelectLanguagePartial")
         </footer>
     </div>
