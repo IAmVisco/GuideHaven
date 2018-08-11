@@ -255,8 +255,8 @@ fieldset {
 
 #rating-text {
     position: absolute;
-    top: 60px;
-    left: 3px;
+    top: 55px;
+    left: 5px;
 }
 
 .rating {
@@ -270,7 +270,7 @@ fieldset {
 
 .rating > label:before {
     margin: 5px;
-    font-size: 2.75em;
+    font-size: 2.5em;
     font-family: FontAwesome;
     display: inline-block;
     content: "\f005";
@@ -286,7 +286,6 @@ fieldset {
     color: #ddd;
     float: right;
 }
-
 
 .rating > input:checked ~ label, 
 .rating:not(:checked) > label:hover,

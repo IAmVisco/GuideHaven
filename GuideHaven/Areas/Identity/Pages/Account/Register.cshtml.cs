@@ -45,7 +45,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         {
 
             [Required]
-            [StringLength(32, ErrorMessage = "LengthWarning", MinimumLength = 6)]
+            [StringLength(32, ErrorMessage = "LengthWarning", MinimumLength = 4)]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
             public string UserName { get; set; }

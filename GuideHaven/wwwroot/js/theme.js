@@ -42,3 +42,4 @@ if (getCookie("theme") == "dark") {
     }
 }
 document.body.style.transition = "all 0.2s ease-in-out";
+//console.log(document.body, document.getElementsByTagName("body")[0]);
