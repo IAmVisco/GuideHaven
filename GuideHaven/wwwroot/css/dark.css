@@ -12,3 +12,13 @@ input, textarea {
     /*color: #fff;*/
     /*color: #555f77;*/
 }
+
+.sidenav a {
+    background: #000;
+    color: #fff;
+    box-shadow: none;
+}
+
+.sidenav a:hover {
+    background: #424242;
+}

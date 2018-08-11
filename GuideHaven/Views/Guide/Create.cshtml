@@ -1,14 +1,20 @@
 ﻿@model GuideHaven.Models.Guide
 @using Microsoft.AspNetCore.Mvc.Localization
+@using System.Collections
+@using System.Globalization
+@using System.Resources
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
     ViewData["Title"] = Localizer["Create"];
-}
+    //ResourceManager rsc = new ResourceManager(typeof(CategoryLocalizer)); // doesnt work ffs
 
-<script>
-    var index = 0;
-    var visual_index = 0;
-</script>
+    //ResourceSet resourceSet = rsc.GetResourceSet(CultureInfo.CurrentUICulture, false, true);
+    //List<string> options = new List<string>();
+    //foreach (DictionaryEntry entry in resourceSet)
+    //{
+    //    options.Append(entry.Value);
+    //}
+}
 
 <h2>@Localizer["CreateGuide"]</h2>
 
@@ -24,7 +30,7 @@
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
-                @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
+                    @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
             </div>
             <div id="step_holder" class="form-group">
                 <div style="position: relative">

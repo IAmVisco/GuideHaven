@@ -21,13 +21,13 @@ function changeTheme() {
     date = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 365);
 
     if (!isDark) {
-        document.getElementById('theme').href = "/css/dark.min.css";
+        document.getElementById('theme').href = "/css/dark.css";
         document.getElementById('nav').classList.add("navbar-inverse");
         document.cookie = 'theme=dark;expires=' + date.toGMTString() + ';path=/';
         isDark = true;
     }
     else {
-        document.getElementById('theme').href = "/css/light.min.css";
+        document.getElementById('theme').href = "/css/light.css";
         document.getElementById('nav').classList.remove("navbar-inverse");
         document.cookie = 'theme=light;expires=' + date.toGMTString() + ';path=/';
         isDark = false;
