@@ -58,9 +58,22 @@ function changeStep() {
     }, 195);
 }
 
-$(document).ready(function () {
-    $("#step0").slideDown();
+function focusOption(el) {
+    $(".sidenav-option").css("margin-left", "0");
+    $(el).parent().css("margin-left", "-15px");
+}
 
+$(document).ready(function () {
+
+    function showPopover() {
+        $(".rating").popover("toggle");
+        setTimeout(function () {
+            $(".rating").popover("hide");
+        }, 2000);
+    }
+
+    $("#step0").slideDown();
+    $("#desc").click();
     get_rating();
     get_comments();
     setInterval(get_comments, 3000);
@@ -79,12 +92,6 @@ $(document).ready(function () {
         trigger: "manual"
     });
 
-    function showPopover() {
-        $(".rating").popover("toggle");
-        setTimeout(function () {
-            $(".rating").popover("hide");
-        }, 2000);
-    }
 
     $("#prev-btn").on("click", function () {
         if (step > 0) {
@@ -111,11 +118,11 @@ $(document).ready(function () {
 
         if (currentScroll + 10 >= sidenavTop) {
             $('.sidenav').css({
-                top: '60px',
+                top: '60px'
             });
         } else {
             $('.sidenav').css({
-                top: '150px',
+                top: '150px'
             });
         }
     });

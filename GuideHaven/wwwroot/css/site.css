@@ -318,17 +318,19 @@ fieldset {
 .sidenav ol {
     counter-reset: li;
     list-style: none;
-    *list-style: decimal;
     font-size: 15px;
     padding: 0;
     margin-bottom: 4em;
+}
+
+.sidenav-option {
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .sidenav a {
     position: relative;
     display: block;
     padding: .3em .5em .3em 1.5em;
-    *padding: .4em;
     margin: .5em 0;
     background: #fff;
     color: #000;

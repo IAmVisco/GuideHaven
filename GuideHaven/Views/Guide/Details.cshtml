@@ -62,12 +62,12 @@
         <div class="col-xs-4 sidenav">
             @{i = 0;}
             <ol>
-                <li><a href="#step0">Description</a></li>
+                <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this)">Description</a></li>
                 @foreach (var item in Model.GuideSteps)
                 {
                     i++;
                     step = "#step" + i.ToString();
-                    <li><a href="@step">@item.Header</a></li>
+                    <li class="sidenav-option"><a href="@step" onclick="focusOption(this)">@item.Header</a></li>
                 }
             </ol>
         </div>

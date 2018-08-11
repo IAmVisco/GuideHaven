@@ -36,6 +36,12 @@ namespace GuideHaven.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> Index()
+        //{
+        //    await CreateUserRoles();
+        //    return View();
+        //}
+
         public IActionResult About()
         {
             return View();
@@ -52,12 +58,6 @@ namespace GuideHaven.Controllers
 
             return LocalRedirect(returnUrl);
         }
-
-        //public async Task<IActionResult> Index()
-        //{
-        //    await CreateUserRoles();
-        //    return View();
-        //}
 
         private async Task CreateUserRoles()
         {

@@ -24,3 +24,7 @@ footer > a:focus {
     color: #484b50;
     text-decoration: none;
 }
+
+.btn-default:hover {
+    background-color: #fff;
+}
