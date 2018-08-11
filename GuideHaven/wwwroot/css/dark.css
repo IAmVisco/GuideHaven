@@ -14,13 +14,13 @@ input, textarea {
 }
 
 .sidenav a {
-    background: #000;
+    background: #424242;
     color: #fff;
     box-shadow: none;
 }
 
 .sidenav a:hover {
-    background: #424242;
+    background: #808080;
 }
 
 .nav > li > a:focus,
@@ -32,4 +32,12 @@ footer > a:hover,
 footer > a:focus {
     color: #eee;
     text-decoration: none;
+}
+
+.popover {
+    background-color: #424242;
+}
+
+.popover.bottom>.arrow:after {
+    border-bottom-color: #424242;
 }
