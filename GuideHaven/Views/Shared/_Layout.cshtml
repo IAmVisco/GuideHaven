@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/light.css" id="theme" />
     <script async src="~/js/theme.js"></script>
-    @*<link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">*@
     <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
@@ -50,6 +49,9 @@
                 <partial name="_LoginPartial" />
                 <input type="checkbox" id="themeChanger" class="switch-input">
                 <label for="themeChanger" class="switch-label navbar-text">@Localizer["Theme"]</label>
+                <form asp-controller="Guide" asp-action="Index" method="post">
+                    <input type="search" class="search-field" placeholder="@Localizer["Search"]" name="searchText">
+                </form>
             </div>
         </div>
     </nav>
@@ -62,7 +64,6 @@
         <footer>
             <p style="display:inline-block;">&copy; 2018 - Guide Haven</p>
             <a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a>
-            <a asp-controller="Home" asp-action="OwO">@Localizer["WhatsThis"]</a>
             <a asp-controller="Home" asp-action="About">@Localizer["About"]</a>
             @await Html.PartialAsync("_SelectLanguagePartial")
         </footer>

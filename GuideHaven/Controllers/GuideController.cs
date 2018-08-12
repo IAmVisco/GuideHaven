@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Korzh.EasyQuery.Linq;
 
 namespace GuideHaven.Models
 {
@@ -29,6 +30,18 @@ namespace GuideHaven.Models
         public async Task<IActionResult> Index()
         {
             return View(await context.Guide.ToListAsync());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchText)
+        {
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                return View(context.Guide.FullTextSearchQuery(searchText));
+            }
+            else
+                return View(await context.Guide.ToListAsync());
         }
 
         // GET: Guide/Details/5
