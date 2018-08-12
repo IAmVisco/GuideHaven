@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace GuideHaven.Controllers
 {
@@ -20,20 +21,25 @@ namespace GuideHaven.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IStringLocalizer<HomeController> localizer;
+        private readonly GuideContext context;
+
+        private List<Guide> Guides { get; set; }
 
         public HomeController(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider, 
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IStringLocalizer<HomeController> localizer)
+            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, 
+            IStringLocalizer<HomeController> localizer, GuideContext context)
         {
             this.userManager = userManager;
             this.serviceProvider = serviceProvider;
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.localizer = localizer;
+            this.context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).ToListAsync());
         }
 
         //public async Task<IActionResult> Index()

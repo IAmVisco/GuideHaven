@@ -41,3 +41,7 @@ footer > a:focus {
 .popover.bottom>.arrow:after {
     border-bottom-color: #424242;
 }
+
+.guide-entry {
+    background: #424242;
+}

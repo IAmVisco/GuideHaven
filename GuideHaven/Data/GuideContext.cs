@@ -36,10 +36,11 @@ namespace GuideHaven.Models
             return guide;
         }
 
-        public List<Guide> GetGuides(GuideContext context, string owner)
+        public List<Guide> GetGuides(GuideContext context, string owner = null)
         {
             var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
-            guides.RemoveAll(x => x.Owner != owner);
+            if (owner != null)
+                guides.RemoveAll(x => x.Owner != owner);
             return guides;
         }
     }

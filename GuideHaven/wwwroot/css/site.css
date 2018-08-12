@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Product Sans', sans-serif;
     font-weight: 500;
     background: #eee;
 }
@@ -453,6 +453,22 @@ footer > a {
     background-color: #fff;
     border-color: #66CC75;
     box-shadow: 0 0 5px rgba(109,207,246,.5);
+}
+
+.guide-entry {
+    width: 90%;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 1rem;
+    position: relative;
+    padding: 0px 10px;
+    transition: all .2s cubic-bezier(.25,.8,.25,1);
+}
+
+.guide-image {
+    display:inline-block;
+    float: left;
+    padding: 7px;
 }
 
 @media screen and (max-width: 991px) {
