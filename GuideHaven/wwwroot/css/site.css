@@ -1,13 +1,14 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 80px;
     padding-bottom: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Product Sans', sans-serif;
     font-weight: 500;
     background: #eee;
+    letter-spacing: 0.01rem;
 }
 
 .body-content {
-    padding: 15px;
+    /*padding: 15px;*/
 }
 
 .navbar-toggle .icon-bar {
@@ -16,6 +17,7 @@
 
 .navbar {
     transition: top 0.2s ease-in-out;
+    letter-spacing: 0.5px;
 }
 
 .navbar-hidden {
@@ -95,73 +97,6 @@ td.hover {
 
 label {
     font-weight: 500;
-}
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    body {
-        /*overflow-x: hidden;*/
-    }
-
-    .switch-label {
-        float: initial !important;
-        margin-right: 0 !important;
-        margin-top: 0 !important;
-        margin: 15px 0 !important;
-    }
-
-    .sidenav {
-        max-width: initial !important;
-    }
-
-    .steps-wrap {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-
-    .sidenav {
-        display: none;
-    }
-
-    .comments {
-        width: 100%;
-    }
-
-    .mobile-nav {
-        display: block !important;
-        margin: 15px;
-    }
-}
-
-@media screen and (max-width: 991px)
-{
-    .owner-label {
-        display: block !important;
-        margin-left: 0 !important;
-    }
-
-    fieldset {
-        position: relative;
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-        float: none !important;
-    }
-
-    .rating > label:before {
-        font-size: 1.25em !important;
-    }
-
-    #rating-text {
-        top: 35px !important;
-    }
-
-    .sidenav {
-        top: 240px !important;
-    }
-
-    .create-fields {
-        width: 100% !important;
-    }
 }
 
 .switch-input {
@@ -357,4 +292,121 @@ footer > a {
     color: #acb4c2;
     font-size: 10pt;
     margin-left: 5px;
+}
+
+.banner {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 15px;
+    border: 1px solid #66afe9;
+    border-radius: 10px;
+    height: 380px;
+    transition: all ease-in-out .2s;
+}
+
+.banner:hover {
+    border-color: #66afe9;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px 1px rgba(102,175,233,.6);
+}
+
+.banner-form {
+    width: 40%;
+    float: right;
+    margin: 10px;
+}
+
+.banner-inner {
+    display: inline-block;
+    margin: 10px;
+    max-width: 50%;
+}
+
+@media screen and (max-width: 991px) {
+    .row {
+        margin: 0;
+    }
+
+    .owner-label {
+        display: block !important;
+        margin-left: 0 !important;
+    }
+
+    fieldset {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        float: none !important;
+    }
+
+    .rating > label:before {
+        font-size: 1.25em !important;
+    }
+
+    #rating-text {
+        top: 35px !important;
+    }
+
+    .sidenav {
+        top: 240px !important;
+    }
+
+    .create-fields {
+        width: 100% !important;
+    }
+
+    .banner {
+        margin-left: 0 ;
+        margin-right: 0 ;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        /*overflow-x: hidden;*/
+    }
+
+    .banner {
+        margin-bottom: 15px;
+        height: 410px;
+    }
+
+    .banner-inner {
+        display: block;
+    }
+
+    .banner-form {
+        width: 100%;
+        float: initial;
+        padding-right: 25px;
+    }
+
+    .switch-label {
+        float: initial !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        margin: 15px 0 !important;
+    }
+
+    .sidenav {
+        max-width: initial !important;
+    }
+
+    .steps-wrap {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .sidenav {
+        display: none;
+    }
+
+    .comments {
+        width: 100%;
+    }
+
+    .mobile-nav {
+        display: block !important;
+        margin: 15px;
+    }
 }

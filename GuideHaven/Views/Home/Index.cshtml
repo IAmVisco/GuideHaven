@@ -1,12 +1,56 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@*@using Microsoft.AspNetCore.Http.Features*@
+@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<IdentityLocalizer> IdentityLoc
+@model GuideHaven.Areas.Identity.Pages.Account.RegisterModel
+@{
     ViewData["Title"] = Localizer["Title"];
 }
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
 
-@*@if (HttpContext.Request.Cookies["banner"] == "1")
+@if (!User.Identity.IsAuthenticated)
 {
+    <div class="banner">
+        <div class="banner-inner">
+            <h2>@IdentityLoc["CreateNew"]</h2>
+            <p>
+                A place where guides live. We have thousands, millions of them. Join the community today.
+                <br />
+                Already have an account? <a href="~/Identity/Account/Login">Log in here</a>
+            </p>
+        </div>
+        <form method="post" class="banner-form" action="~/Identity/Account/Register">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.UserName"></label>
+                <input asp-for="Input.UserName" class="form-control" />
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">@IdentityLoc["Register"]</button>
+        </form>
+    </div>
+    @*<script>
+            var date = new Date();
+            date = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 365);
+            document.cookie = 'banner=shown;expires=' + date.toGMTString() + ';path=/';
+        </script>*@
+}
 
-
-}*@
-@*<div style="background: #eb0c0c; height: 200px;"></div>*@
+<div class="row">
+    <div class="col-md-10" style="height: 800px; background: #000;"></div>
+    <div class="col-md-2" style="height: 800px; background: #424242"></div>
+</div>

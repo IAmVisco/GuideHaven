@@ -4,10 +4,8 @@
     display: block;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-    font-family: "PT Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-size: 1.2rem;
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: all 0.2s cubic-bezier(.25,.8,.25,1);
     /*color: #555f77;*/
 }
 
@@ -55,12 +53,6 @@ p {
 .like-count {
     padding-left: .5em;
     font-size: 1.5em;
-}
-
-@media screen and (max-width: 767px) {
-    .comments {
-        width: 100%;
-    }
 }
 
 .comment-wrap {
@@ -130,4 +122,10 @@ p {
 
 .comment-actions {
     float: right;
+}
+
+@media screen and (max-width: 767px) {
+    .comments {
+        width: 100%;
+    }
 }

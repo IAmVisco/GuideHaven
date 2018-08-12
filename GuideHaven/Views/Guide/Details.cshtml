@@ -37,7 +37,7 @@
     </fieldset>
     <hr />
     <div class="row">
-        <div class="col-xs-8 steps-wrap">
+        <div class="col-md-8 steps-wrap">
             <div id="step0" class="step">
                 <h2 class="step-header">@Localizer["Description"]</h2>
                 @Html.DisplayFor(model => model.Description)
@@ -59,7 +59,7 @@
             <button class="btn btn-primary" id="prev-btn" style="float:left"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
             <button class="btn btn-primary" id="next-btn" style="float:right">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
-        <div class="col-xs-4 sidenav">
+        <div class="col-md-4 sidenav">
             @{i = 0;}
             <ol>
                 <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this)">Description</a></li>

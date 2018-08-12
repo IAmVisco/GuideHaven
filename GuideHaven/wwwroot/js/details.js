@@ -122,7 +122,7 @@ $(document).ready(function () {
             });
         } else {
             $('.sidenav').css({
-                top: '150px'
+                top: '170px'
             });
         }
     });
