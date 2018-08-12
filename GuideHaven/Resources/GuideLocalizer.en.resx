@@ -123,8 +123,8 @@
   <data name="AreUSureMsg" xml:space="preserve">
     <value>Are you sure you want to delete</value>
   </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Back to List</value>
+  <data name="BackToGuide" xml:space="preserve">
+    <value>Back to the Guide</value>
   </data>
   <data name="CannotBeUndone" xml:space="preserve">
     <value>This action cannot be undone</value>

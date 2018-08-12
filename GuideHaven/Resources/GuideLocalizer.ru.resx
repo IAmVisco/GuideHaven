@@ -123,8 +123,8 @@
   <data name="AreUSureMsg" xml:space="preserve">
     <value>Вы уверены что хотите удалить</value>
   </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+  <data name="BackToGuide" xml:space="preserve">
+    <value>Назад к инструкции</value>
   </data>
   <data name="CannotBeUndone" xml:space="preserve">
     <value>Это действие необратимо</value>
