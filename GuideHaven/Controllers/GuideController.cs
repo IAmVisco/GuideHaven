@@ -135,7 +135,7 @@ namespace GuideHaven.Models
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id });
             }
             return View(guide);
         }
