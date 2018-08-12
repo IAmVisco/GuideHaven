@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/light.css" id="theme" />
     <script async src="~/js/theme.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
             asp-fallback-test="window.jQuery"
@@ -49,9 +49,6 @@
                 <partial name="_LoginPartial" />
                 <input type="checkbox" id="themeChanger" class="switch-input">
                 <label for="themeChanger" class="switch-label navbar-text">@Localizer["Theme"]</label>
-                <form asp-controller="Guide" asp-action="Index" method="post">
-                    <input type="search" placeholder="Search" name="searchText">
-                </form>
             </div>
         </div>
     </nav>
