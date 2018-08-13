@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using GuideHaven.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace GuideHaven.Controllers
 {
@@ -21,12 +24,13 @@ namespace GuideHaven.Controllers
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IStringLocalizer<HomeController> localizer;
+        private readonly IEmailSender emailSender;
         private readonly GuideContext context;
 
         private List<Guide> Guides { get; set; }
 
         public HomeController(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider, 
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, 
+            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
             IStringLocalizer<HomeController> localizer, GuideContext context)
         {
             this.userManager = userManager;
@@ -34,7 +38,33 @@ namespace GuideHaven.Controllers
             this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.localizer = localizer;
+            this.emailSender = emailSender;
             this.context = context;
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [StringLength(32, ErrorMessage = "LengthWarning", MinimumLength = 4)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Required]
+            [StringLength(100, ErrorMessage = "LengthWarning", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "ConfPass")]
+            [Compare("Password", ErrorMessage = "PassMismatch")]
+            public string ConfirmPassword { get; set; }
         }
 
         public async Task<IActionResult> Index()
@@ -151,6 +181,40 @@ namespace GuideHaven.Controllers
                 return RedirectToAction("Login", "Identity/Account");
             }
             return RedirectToAction("AdminPanel");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(InputModel Input)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
+                var result = await userManager.CreateAsync(user, Input.Password);
+                if (result.Succeeded)
+                {
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Identity/Account",
+                        values: new { userId = user.Id, code = code },
+                        protocol: Request.Scheme);
+
+                    //callbackUrl.Insert(callbackUrl.IndexOf('?'), "Identity/Account/ConfirmEmail");
+
+                    await emailSender.SendEmailAsync(Input.Email, localizer["ConfEmail"],
+                        localizer["PlsConfirm"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" + localizer["ClickingHere"] + "</a>.");
+
+                    // await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("RegisterSuccess","Identity/Account");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index");
         }
     }
 }

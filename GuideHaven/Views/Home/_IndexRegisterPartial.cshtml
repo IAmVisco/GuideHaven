@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<IdentityLocalizer> Localizer
-@model GuideHaven.Areas.Identity.Pages.Account.RegisterModel
+@model GuideHaven.Controllers.HomeController.InputModel
 
 @if (!User.Identity.IsAuthenticated)
 {
@@ -13,27 +13,27 @@
                 Already have an account? <a href="~/Identity/Account/Login">Log in here</a>
             </p>
         </div>
-        <form method="post" class="banner-form" action="~/Identity/Account/Register">
+        <form method="post" class="banner-form" asp-controller="Home" asp-action="Index">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.UserName"></label>
-                <input asp-for="Input.UserName" class="form-control" />
-                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">@Localizer["Register"]</button>
         </form>
