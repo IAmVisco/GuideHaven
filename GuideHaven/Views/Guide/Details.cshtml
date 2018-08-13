@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="~/css/comment.css" />
 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <script async src="~/js/details.js"></script>
+<link href="~/css/tags-input-beautifier.css" rel="stylesheet">
+<script src="~/js/tags-input-beautifier.js"></script>
+
 <div>
     <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
     <input id="guideId" hidden value="@Model.GuideId" />
@@ -23,7 +26,7 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-         (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
         }
