@@ -356,6 +356,8 @@ footer > a {
 }
 
 .guide-image {
+    max-width: 200px;
+    max-height: 150px;
     display:inline-block;
     float: left;
     padding: 7px;

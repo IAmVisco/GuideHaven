@@ -31,6 +31,9 @@
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                     @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
+                <a href="#" id="upload_widget_opener">Upload image</a>
+                <input id="image-url" asp-for="Image" hidden />
+                <label id="url"></label>
             </div>
             <div id="step_holder" class="form-group">
                 <div style="position: relative">
@@ -63,6 +66,7 @@
 <script src="/js/step_functions.js"></script>
 <script src="~/js/showdown.js"></script>
 <script src="~/js/mdhtmlform.js"></script>
+<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
 
 @section Scripts {
