@@ -11,6 +11,7 @@
 <script async src="~/js/details.js"></script>
 <div>
     <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
+    <input id="guideId" hidden value="@Model.GuideId" />
     @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
         By @if (owner != null)
@@ -22,7 +23,7 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-          (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+         (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
         }
@@ -61,28 +62,30 @@
         </div>
         <div class="col-md-4 sidenav">
             @{i = 0;}
-            <ol>
-                <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this)">Description</a></li>
+            <ol id="side-menu">
+                <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this, @i)">Description</a></li>
                 @foreach (var item in Model.GuideSteps)
                 {
                     i++;
                     step = "#step" + i.ToString();
-                    <li class="sidenav-option"><a href="@step" onclick="focusOption(this)">@item.Header</a></li>
+                    <li class="sidenav-option"><a href="@step" onclick="focusOption(this, @i)">@item.Header</a></li>
                 }
             </ol>
         </div>
     </div>
-    <div class="comments">  
+    <div class="comments">
         @Localizer["Comments"]:<br />
         <div id="posted-comments"></div>
-        <div class="comment-wrap" style="margin-top: 3rem;">
-            <div class="comment-block comment-shadow">
-                <input id="guideId" hidden value="@Model.GuideId" />
-                <form action="post">
-                    <textarea name="" id="comment-field" cols="30" rows="3" placeholder="Add comment..."></textarea>
-                </form>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="comment-wrap">
+                <div class="comment-block comment-shadow">
+                    <form action="post">
+                        <textarea name="" id="comment-field" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                    </form>
+                </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
+            <button type="submit" class="btn btn-info comment-btn" id="post-btn" disabled value="Send">@Localizer["Send"]</button>
+        }
     </div>
 </div>

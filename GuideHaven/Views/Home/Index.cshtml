@@ -10,7 +10,7 @@
 <div class="row">
     <div class="col-md-10">
         <div class="guides-wrap">
-            <h2>Latest guides</h2>
+            <h2>Latest Guides</h2>
             @foreach (var item in Model)
             {
                 <a href="~/Guide/Details/@item.GuideId" style="color: inherit">
@@ -23,7 +23,7 @@
                                 @if (item.Ratings != null)
                                 { 
                                     @item.GetRating()
-                                }
+                                } stars
                             </p>
                         </div>
                     </div>

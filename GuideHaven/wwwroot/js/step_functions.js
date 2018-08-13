@@ -10,7 +10,7 @@ function createStep() {
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
         + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
 
-        + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3"></textarea>'
+        + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
 
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
         + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'

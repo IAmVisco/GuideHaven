@@ -1,7 +1,4 @@
-﻿body {
-}
-
-.shadow {
+﻿.shadow {
     background-color: #fff;
     box-shadow: 0px 4px 6px rgba(0,0,0,0.16), 0px 4px 9px rgba(0,0,0,0.23);
 }
@@ -36,4 +33,8 @@ footer > a:focus {
 
 .guide-entry:hover {
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+blockquote {
+    border-left: 5px solid #000;
 }

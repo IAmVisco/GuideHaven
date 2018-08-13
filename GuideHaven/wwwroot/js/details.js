@@ -58,12 +58,19 @@ function changeStep() {
     }, 195);
 }
 
-function focusOption(el) {
+function focusOption(el, stepId) {
+    step = stepId;
     $(".sidenav-option").css("margin-left", "0");
     $(el).parent().css("margin-left", "-15px");
 }
 
 $(document).ready(function () {
+
+    $("#step0").slideDown();
+    $("#desc").click();
+    get_rating();
+    get_comments();
+    setInterval(get_comments, 3000);
 
     function showPopover() {
         $(".rating").popover("toggle");
@@ -72,19 +79,6 @@ $(document).ready(function () {
         }, 2000);
     }
 
-    $("#step0").slideDown();
-    $("#desc").click();
-    get_rating();
-    get_comments();
-    setInterval(get_comments, 3000);
-
-    $("#next-btn").on("click", function () {
-        if (step < $(".steps-wrap").children().length - 1) {
-            window.location.hash = 'step' + ++step;
-            changeStep();
-        }
-    });
-
     $(".rating").popover({
         animation: true,
         content: "Log in to vote",
@@ -92,6 +86,13 @@ $(document).ready(function () {
         trigger: "manual"
     });
 
+
+    $("#next-btn").on("click", function () {
+        if (step < $(".steps-wrap").children().length - 1) {
+            window.location.hash = 'step' + ++step;
+            changeStep();
+        }
+    });
 
     $("#prev-btn").on("click", function () {
         if (step > 0) {
@@ -128,11 +129,14 @@ $(document).ready(function () {
     });
 
     $("#post-btn").on("click", function () {
-        $.post("/Guide/PostComment", {
-            guideId: $("#guideId").attr("value"),
-            comment: $("#comment-field").val()
-        });
-        $("#comment-field").val("");
+        if ($("#comment-field").val().length > 0) {
+            $.post("/Guide/PostComment", {
+                guideId: $("#guideId").attr("value"),
+                comment: $("#comment-field").val()
+            });
+            $("#comment-field").val("");
+            $(".comment-btn").attr("disabled", true);
+        }
     });
 
     $("input[name=rating]").on("click", function () {
@@ -142,4 +146,17 @@ $(document).ready(function () {
         }).fail(showPopover);
         setTimeout(get_rating, 500);
     });
+});
+
+$(document).keydown(function (e) {
+    if (e.which == 37) { //left
+        $("#prev-btn").click();
+        $(".sidenav-option").css("margin-left", "0");
+        $($("#side-menu").children()[step]).css("margin-left", "-15px"); 
+    }
+    if (e.which == 39) { //right
+        $("#next-btn").click();
+        $(".sidenav-option").css("margin-left", "0");
+        $($("#side-menu").children()[step]).css("margin-left", "-15px"); 
+    }
 });

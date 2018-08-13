@@ -28,7 +28,7 @@
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
 
                 <div id="step_holder" class="form-group">
                     @for (int i = 0; i < Model.GuideSteps.Count; i++)
@@ -41,7 +41,7 @@
 	                            + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
                                 + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
 
-                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3">'
+                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5">'
                                 + toMarkdown(he.decode("@Model.GuideSteps[index].Content")) + '</textarea>'
                                 + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
                                 + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'

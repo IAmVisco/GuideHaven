@@ -45,6 +45,11 @@
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>
                     }
+                    <li>
+                        <form asp-controller="Guide" asp-action="Index" method="post">
+                            <input type="search" placeholder="Search..." name="searchText" class="search-field">
+                        </form>
+                    </li>
                 </ul>
                 <partial name="_LoginPartial" />
                 <input type="checkbox" id="themeChanger" class="switch-input">

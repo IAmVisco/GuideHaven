@@ -28,7 +28,7 @@
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span><br />
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                     @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
             </div>
@@ -39,7 +39,7 @@
                     <label asp-for="GuideSteps[0].Header" class="control-label">@Localizer["Title"]</label>
                     @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { @class = "form-control", required = "" })
                     <label asp-for="GuideSteps[0].Content" class="control-label">@Localizer["Content"]</label>
-                    <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="3"></textarea>
+                    <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="5"></textarea>
                     @Html.TextAreaFor(model => model.GuideSteps[0].Content, new {
                         @class = " mdhtmlform-html",
                         data_mdhtmlform_group = "0",
@@ -53,7 +53,9 @@
             <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
         </form>
     </div>
-    <div class="col-md-4" data-mdhtmlform-group="0"></div>
+    <div class="col-md-4">
+        <partial name="_MarkdownHelpPartial" />
+    </div>
 </div>
 
 
