@@ -49,7 +49,6 @@ function decodeHtml(html) {
     return txt.value;
 }
 
-
 document.getElementById("upload_widget_opener").addEventListener("click", function() {
     cloudinary.openUploadWidget({ cloud_name: 'dzg8mz4pm', upload_preset: 'qsebzf0m', folder: 'guide_thumbnails' },
         function (error, result) {
@@ -60,5 +59,6 @@ document.getElementById("upload_widget_opener").addEventListener("click", functi
 $(document).on('cloudinarywidgetsuccess', function (e, data) {
     console.log("Global success", e, data);
     $("#image-url").val(data[0].url);
+    $(".glyphicon-ok").fadeIn();
     //$("#url").text(data[0].url);
 });

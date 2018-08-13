@@ -25,15 +25,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="GuideName" class="control-label"></label>
-                <input asp-for="GuideName" class="form-control" />
+                <input asp-for="GuideName" class="form-control" autocomplete="off"/>
                 <span asp-validation-for="GuideName" class="text-danger"></span><br />
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                     @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
                 <a href="#" id="upload_widget_opener">Upload image</a>
+                <span class="glyphicon glyphicon-ok" style="display: none"></span>
                 <input id="image-url" asp-for="Image" hidden />
-                <label id="url"></label>
+                @*<label id="url"></label>*@
             </div>
             <div id="step_holder" class="form-group">
                 <div style="position: relative">
@@ -50,7 +51,8 @@
                     })
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
+            <button type="button" id="create_step" class="btn btn-success" 
+                    value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
             <hr />
             <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>

@@ -1,10 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Identity
 @inject IViewLocalizer Localizer
+@inject UserManager<IdentityUser> userManager
 @model IEnumerable<GuideHaven.Models.Guide>
 @{
     ViewData["Title"] = Localizer["Title"];
 }
-<script async src="~/js/" type="text/javascript"></script>
 
 @await Html.PartialAsync("_IndexRegisterPartial", new GuideHaven.Controllers.HomeController.InputModel())
 
@@ -13,33 +14,61 @@
     <div class="col-md-10">
         <div class="guides-wrap">
             <h2>Latest Guides</h2>
+            @{ int i = 0; }
             @foreach (var item in Model)
             {
+                i++;
                 <a href="~/Guide/Details/@item.GuideId" style="color: inherit">
                     <div class="guide-entry">
-                        @if (item.Image == null)
-                        {
-                            <img src="https://dummyimage.com/200x150/000/fff" class="guide-image" />
-                        }
-                        else
-                        {
-                            <img id="@item.GuideId" src="@item.Image" class="guide-image" />
-                            <script>
-                                var image = document.getElementById("@item.GuideId");
-                                image.style.width = "200px";
-                                image.style.height = "150px";
-                            </script>
-                        }
-                        <div style="display: inline">
+                        <div class="guide-img-div">
+                            @if (item.Image == null)
+                            {
+                                <img src="https://dummyimage.com/200x150/000/fff" class="guide-img" />
+                            }
+                            else
+                            {
+                                <img id="@item.GuideId" src="@item.Image" class="guide-img" />
+                            }
+                        </div>
+
+                        <div class="guide-inner">
                             <h4>@item.GuideName</h4>
-                            <p>@item.Description</p>
-                            <p>
-                                Rating:
-                                @if (item.Ratings != null)
+                            <span>By 
+                                @{IdentityUser owner = await userManager.FindByIdAsync(item.Owner);}
+                                @if (owner != null)
                                 {
-                                    @item.GetRating()
-                                } stars
-                            </p>
+                                    @owner.UserName
+                                }
+                                else
+                                {
+                                    @Localizer["DeletedUser"]
+                                }
+                            </span>
+                            @if (item.Ratings != null)
+                            {
+                                <span>@Localizer["Rating"]: </span>
+                                <fieldset class="rating-index">
+                                    <input type="radio" id="star5-@i" name="rating-@i" value="5" disabled /><label class="full" for="star5-@i"></label>
+                                    <input type="radio" id="star4-@i" name="rating-@i" value="4" disabled /><label class="full" for="star4-@i"></label>
+                                    <input type="radio" id="star3-@i" name="rating-@i" value="3" disabled /><label class="full" for="star3-@i"></label>
+                                    <input type="radio" id="star2-@i" name="rating-@i" value="2" disabled /><label class="full" for="star2-@i"></label>
+                                    <input type="radio" id="star1-@i" name="rating-@i" value="1" disabled /><label class="full" for="star1-@i"></label>
+                                </fieldset>
+                                <script>
+                                    setTimeout(function () { 
+                                    var x = "#star" + Math.round(@item.GetRating()) + "-@i";
+                                    console.log(x);
+                                    
+                                        $(x).prop("checked", true);
+                                    }, 500); 
+
+                                </script>                            
+                            }
+                            else
+                            {
+                                <span>@Localizer["NoRatingsYet"]</span>
+                            }
+                            <p>@item.Description</p>
                         </div>
                     </div>
                 </a>

@@ -7,7 +7,6 @@
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 <link rel="stylesheet" href="~/css/comment.css" />
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <script async src="~/js/details.js"></script>
 <div>
     <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
@@ -23,7 +22,7 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-         (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
         }
@@ -38,7 +37,11 @@
     </fieldset>
     <hr />
     <div class="row">
-        <div class="col-md-8 steps-wrap">
+        <div class="col-xs-8 steps-wrap">
+            @*<div class="alert alert-info alert-dismissible arrows-alert" style="display: none;">
+                <a href="#" class="close" id="close-arrow-alert" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong><i class="icon-lightbulb"></i> Tip!</strong> You can use left and right arrows on your keyboard to navigate through steps.
+            </div>*@
             <div id="step0" class="step">
                 <h2 class="step-header">@Localizer["Description"]</h2>
                 @Html.DisplayFor(model => model.Description)
@@ -60,7 +63,7 @@
             <button class="btn btn-primary" id="prev-btn" style="float:left"><span class="glyphicon glyphicon-chevron-left"></span> Back</button>
             <button class="btn btn-primary" id="next-btn" style="float:right">Next <span class="glyphicon glyphicon-chevron-right"></span></button>
         </div>
-        <div class="col-md-4 sidenav">
+        <div class="col-xs-4 sidenav">
             @{i = 0;}
             <ol id="side-menu">
                 <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this, @i)">Description</a></li>
