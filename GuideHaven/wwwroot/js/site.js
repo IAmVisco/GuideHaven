@@ -64,9 +64,13 @@
         changeTheme();
     });
 
-    $('td.link').click(function() {
+    $('td.link').click(function () {
         window.location = $(this).find('a').attr('href');
-    }).hover(function() {
-        $(this).toggleClass('hover');
+    }); // .hover(function() {$(this).toggleClass('hover');});
+
+    $("#md-btn").click(function () {
+        $(".md-help").slideToggle();
+        $("#md-btn").toggleClass("glyphicon-plus");
+        $("#md-btn").toggleClass("glyphicon-minus");
     });
 });

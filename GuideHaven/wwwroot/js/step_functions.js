@@ -15,7 +15,7 @@ function createStep() {
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
         + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
-        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+        + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
         + '<span class="glyphicon glyphicon-remove"></span></button></div >'
     );
     document.getElementById("step" + (index + 1)).scrollIntoView();

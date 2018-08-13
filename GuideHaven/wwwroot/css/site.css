@@ -194,7 +194,6 @@ fieldset {
 
 .rating {
     border: none;
-    /*float: left;*/
 }
 
 .rating > input {
@@ -366,14 +365,27 @@ footer > a {
     white-space: pre-line;
 }
 
+.md-help {
+    display: none;
+}
+
+#md-btn {
+    float: right;
+    cursor: pointer;
+}
+
+.md-header {
+    display: inline;
+}
+
 @media screen and (max-width: 991px) {
     .row {
         margin: 0;
     }
 
     .owner-label {
-        display: block !important;
-        margin-left: 0 !important;
+        display: block;
+        margin-left: 0;
     }
 
     fieldset {
@@ -381,28 +393,33 @@ footer > a {
         margin: 0;
         padding: 0;
         display: inline-block;
-        float: none !important;
+        float: none;
     }
 
     .rating > label:before {
-        font-size: 1.25em !important;
+        font-size: 1.25em;
     }
 
     #rating-text {
-        top: 35px !important;
+        top: 35px;
     }
 
     .sidenav {
-        top: 240px !important;
+        top: 240px;
     }
 
     .create-fields {
-        width: 100% !important;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     .banner {
         margin-left: 0 ;
         margin-right: 0 ;
+    }
+
+    .steps-wrap {
+        width: 70%;
     }
 }
 
@@ -425,14 +442,14 @@ footer > a {
     }
 
     .switch-label {
-        float: initial !important;
-        margin-right: 0 !important;
-        margin-top: 0 !important;
-        margin: 15px 0 !important;
+        float: initial;
+        margin-right: 0;
+        margin-top: 0;
+        margin: 15px 0;
     }
 
     .sidenav {
-        max-width: initial !important;
+        max-width: initial;
     }
 
     .steps-wrap {
@@ -449,7 +466,7 @@ footer > a {
     }
 
     .mobile-nav {
-        display: block !important;
+        display: block;
         margin: 15px;
     }
 }
