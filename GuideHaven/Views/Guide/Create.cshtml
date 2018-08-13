@@ -17,6 +17,8 @@
 }
 
 <h2>@Localizer["CreateGuide"]</h2>
+<link href="~/css/tags-input-beautifier.css" rel="stylesheet">
+<script src="~/js/tags-input-beautifier.js"></script>
 
 <hr />
 <div class="row">
@@ -30,9 +32,13 @@
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
                 @*<label asp-for="Image" class="control-label">@Localizer["Image"]</label>
-                    @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
+        @Html.TextBoxFor(model => model.Image, new { @class = "form-control"})*@
                 <a href="#" id="upload_widget_opener">Upload image</a>
                 <span class="glyphicon glyphicon-ok" style="display: none"></span>
+                <input asp-for="Tags" name="tags" type="text">
+                <script>
+                    var tags = new TIB(document.querySelector('input[name="tags"]'));
+                </script>
                 <input id="image-url" asp-for="Image" hidden />
                 @*<label id="url"></label>*@
             </div>
