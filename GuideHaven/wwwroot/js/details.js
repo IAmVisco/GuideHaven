@@ -123,7 +123,7 @@ $(document).ready(function () {
             });
         } else {
             $('.sidenav').css({
-                top: '170px'
+                top: sidenavTop + 'px'
             });
         }
     });

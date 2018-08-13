@@ -18,7 +18,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="GuideId" />
@@ -67,6 +67,9 @@
                 <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
         </form>
+    </div>
+    <div class="col-md-5">
+        <partial name="_MarkdownHelpPartial" />
     </div>
 </div>
 

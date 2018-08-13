@@ -1,5 +1,6 @@
-﻿<div class="md-help">
-    <h3>Markdown help</h3>
+﻿<span class="glyphicon glyphicon-plus" id="md-btn" title="Open/hide"></span>
+<h3 class="md-header">Markdown help</h3>
+<div class="md-help">
     <h4>Headers</h4>
     <p>Markdown supports 2 styles of headers</p>
     <ul>
@@ -16,6 +17,20 @@
             ###### This is an H6
         </li>
     </ul>
+
+    <h4>Emphasis</h4>
+    <p>Markdown treats asterisks (*) and underscores (_) as indicators of emphasis</p>
+    <ul>
+        <li>*italic*
+
+            _italic_
+        </li>
+        <li>**bold**
+
+            __bold__
+        </li>
+    </ul>
+
     <h4>Lists</h4>
     <p>Markdown supports ordered (numbered) and unordered (bulleted) lists.</p>
     <p>Unordered lists use asterisks, pluses, and hyphens — interchangably — as list markers:</p>
@@ -38,16 +53,39 @@
             3.  Parish
         </li>
     </ul>
+
     <h4>Quotes</h4>
-    <ul>
-        <li>&gt; This is a blockquote with some text.</li>
-    </ul>
     <p>Can be nested or contain other markdown elements</p>
     <ul>
+        <li>&gt; This is a blockquote with some text.</li>
         <li>&gt; ## This is a header.
             &gt;
             &gt; 1.   This is the first list item.
             &gt; 2.   This is the second list item.
         </li>
+    </ul>
+
+    <h4>Code blocks</h4>
+    <p>To produce a code block in Markdown, simply indent every line of the block by at least 4 spaces or surround it with ```</p>
+    <p>You can also make inline code lines by surrounding them with `</p>
+    <ul>
+        <li>This is a normal paragraph
+
+            &nbsp;&nbsp;&nbsp;&nbsp;This is a code block.
+        </li>
+        <li>```
+            public static void main(String[] args) { 
+            &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Hello world!"); 
+            }
+            ``` 
+        </li>
+        <li>`git commit -m "Commit message"`</li>
+    </ul>
+
+    <h4>Links and images</h4>
+    <p>You can insert links and images in your markdown text with ease.</p>
+    <ul>
+        <li><strong>Link: </strong>Click [here](https://google.com/) to visit Google.</li>
+        <li><strong>Image: </strong>![alt text](link/to/image.png)</li>
     </ul>
 </div>
