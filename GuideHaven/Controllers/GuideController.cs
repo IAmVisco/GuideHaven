@@ -73,10 +73,13 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuideId, GuideName, GuideSteps, Description, Image, Tags")] Guide guide)
+        public async Task<IActionResult> Create([Bind("GuideId, GuideName, GuideSteps, Description, Image, Tags")] Guide guide, string tags = null)
         {
             if (ModelState.IsValid)
             {
+                var tagsList = TagListCreator(tags);
+                CreateGuideTagsConnection(guide, tagsList);
+                context.SaveTags(context, tagsList);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
                 context.Add(guide);
@@ -253,6 +256,31 @@ namespace GuideHaven.Models
         private bool GuideExists(int id)
         {
             return context.Guide.Any(e => e.GuideId == id);
+        }
+
+        private List<Tag> TagListCreator(string tags)
+        {
+            var tagsArray = tags.Split(',');
+            List<Tag> tagsList = new List<Tag>();
+            foreach (var item in tagsArray.Select(s => s.Trim().ToLower()))
+            {
+                Tag tag = new Tag() { TagId = item };
+                tagsList.Add(tag);
+            }
+            return tagsList;
+        }
+
+        private void CreateGuideTagsConnection(Guide guide, List<Tag> tags)
+        {
+            List<GuideTag> list = new List<GuideTag>();
+            foreach (var item in tags)
+            {
+                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item };
+                list.Add(guideTag);
+                item.GuideTags = new List<GuideTag>();
+                item.GuideTags.Add(guideTag);
+            }
+            guide.GuideTags = list;
         }
     }
 }

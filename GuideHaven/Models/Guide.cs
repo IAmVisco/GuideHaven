@@ -16,8 +16,8 @@ namespace GuideHaven.Models
         public string Owner { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-        public string Tags { get; set; }
 
+        public virtual List<GuideTag> GuideTags { get; set; }
         public virtual List<Step> GuideSteps { get; set; }
         public virtual List<Comment> Comments { get; set; }
         public virtual List<Rating> Ratings { get; set; }
