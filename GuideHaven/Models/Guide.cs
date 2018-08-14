@@ -17,6 +17,7 @@ namespace GuideHaven.Models
         public string Description { get; set; }
         public string Image { get; set; }
         public int Views { get; set; }
+        public DateTime CreationDate { get; set; }
 
         public virtual List<GuideTag> GuideTags { get; set; }
         public virtual List<Step> GuideSteps { get; set; }

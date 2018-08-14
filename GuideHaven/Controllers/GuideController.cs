@@ -83,6 +83,7 @@ namespace GuideHaven.Models
                 context.SaveTags(context, tagsList);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
+                guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
