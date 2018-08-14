@@ -1,19 +1,21 @@
 ﻿@model GuideHaven.Models.Guide
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
 @using System.Collections
 @using System.Globalization
+@using System.IO
+@using System.Reflection
 @using System.Resources
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
+@inject IStringLocalizer<CategoryLocalizer> CategoryResource
 @{
     ViewData["Title"] = Localizer["Create"];
-    //ResourceManager rsc = new ResourceManager(typeof(CategoryLocalizer)); // doesnt work ffs
 
-    //ResourceSet resourceSet = rsc.GetResourceSet(CultureInfo.CurrentUICulture, false, true);
-    //List<string> options = new List<string>();
-    //foreach (DictionaryEntry entry in resourceSet)
-    //{
-    //    options.Append(entry.Value);
-    //}
+    List<string> options = new List<string>();
+    foreach (var entry in CategoryResource.GetAllStrings())
+    {
+        options.Append(entry.Value);
+    }
 }
 
 <h2>@Localizer["CreateGuide"]</h2>
@@ -57,26 +59,28 @@
                     })
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success" 
-                    value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
-            <hr />
-            <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
-        </form>
+            <button type="button" id="create_step" class="btn btn-success"
+                    value="Create step" style="margin-bottom: 10px" onclick="createStep()">
+                @Localizer["CreateStep"]
+                </button>
+                <hr />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <partial name="_MarkdownHelpPartial" />
+        </div>
     </div>
-    <div class="col-md-5">
-        <partial name="_MarkdownHelpPartial" />
-    </div>
-</div>
-<script>
-    var tags = new TIB(document.querySelector('input[name="tags"]'), config = {alert: false});
-</script>
-<script src="/js/step_functions.js"></script>
-<script src="~/js/showdown.js"></script>
-<script src="~/js/mdhtmlform.js"></script>
-<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script>
+        var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
+    </script>
+    <script src="/js/step_functions.js"></script>
+    <script src="~/js/showdown.js"></script>
+    <script src="~/js/mdhtmlform.js"></script>
+    <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
