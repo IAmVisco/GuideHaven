@@ -57,3 +57,7 @@ blockquote {
 .tab .nav-tabs li a {
     color: #eee;
 }
+
+.tab .tab-content {
+    border-top: 1px solid #424242;
+}

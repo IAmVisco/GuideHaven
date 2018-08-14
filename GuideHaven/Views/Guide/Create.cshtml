@@ -1,21 +1,17 @@
 ﻿@model GuideHaven.Models.Guide
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Localization
-@using System.Collections
-@using System.Globalization
-@using System.IO
-@using System.Reflection
-@using System.Resources
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @inject IStringLocalizer<CategoryLocalizer> CategoryResource
 @{
     ViewData["Title"] = Localizer["Create"];
 
-    List<string> options = new List<string>();
+    List<SelectListItem> options = new List<SelectListItem>();
     foreach (var entry in CategoryResource.GetAllStrings())
     {
-        options.Append(entry.Value);
+        options.Add(new SelectListItem { Value = entry.Name, Text = entry.Value });
     }
+    options = options.OrderBy(x => x.Value).ToList();
 }
 
 <h2>@Localizer["CreateGuide"]</h2>
@@ -40,8 +36,13 @@
                 <a href="#" id="upload_widget_opener">Upload image</a>
                 <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
 
-                <label asp-for="GuideTags" class="control-label">@Localizer["Tags"]</label>
+                <label class="control-label">@Localizer["Tags"]</label>
                 <input name="tags" type="text" placeholder="Tags...">
+
+                <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
+                <select name="category" asp-for="Category" asp-items="options" class="form-control">
+                    <option selected>---</option>
+                </select>
 
             </div>
             <div id="step_holder" class="form-group">

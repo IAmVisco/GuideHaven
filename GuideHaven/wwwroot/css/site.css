@@ -227,6 +227,9 @@ fieldset {
 
 .rating-index {
     border: none;
+    position: absolute;
+    top: 0;
+    right: 5px;
 }
 
 .rating-index > input {
@@ -260,6 +263,24 @@ fieldset {
 
 fieldset.rating-index {
     float: none;
+}
+
+.details-views {
+    position: absolute;
+    top: 85px;
+    right: 0;
+}
+
+.details-date {
+    position: absolute;
+    top: 85px;
+    right: 55px;
+}
+
+.details-category {
+    position: absolute;
+    top: 85px;
+    right: 200px;
 }
 
 .mobile-nav {
@@ -408,6 +429,32 @@ footer > a {
 .guide-inner {
     display: inline;
 }
+
+.guide-inner p {
+    margin: 0 0 25px;
+}
+
+.guide-inner i {
+    margin-right: 3px;
+}
+
+.guide-views {
+    position: absolute;
+    right: 10px;
+    bottom: 1px;
+}
+
+.guide-date {
+    position: absolute;
+    bottom: 1px;
+    right: 55px;
+}
+
+.guide-header {
+    margin-bottom: 0;
+    max-width: 80%;
+}
+
 .md-help li {
     font-family: Consolas;
     white-space: pre-line;
@@ -501,9 +548,9 @@ footer > a {
     padding: 20px;
     margin-top: -5px;
     border-radius: 0 0 5px 5px;
-    border-top: 1px solid #d7d6d6;
+    border-top: 1px solid #ccc;
     font-size: 15px;
-    line-height: 30px;
+    /*line-height: 30px;*/
     text-align: initial;
 }
 
@@ -556,7 +603,7 @@ footer > a {
     }
 
     .sidenav {
-        top: 240px;
+        top: 330px;
     }
 
     .create-fields {
@@ -571,6 +618,12 @@ footer > a {
 
     .steps-wrap {
         width: 70%;
+    }
+
+    .details-info {
+        position: initial;
+        display: block;
+        margin: 5px;
     }
 }
 
@@ -615,5 +668,15 @@ footer > a {
     .mobile-nav {
         display: block;
         margin: 15px;
+    }
+
+    .rating-index {
+        display: none;
+    }
+
+    .guide-img-div {
+        width: auto;
+        float: initial;
+        display: flex;
     }
 }

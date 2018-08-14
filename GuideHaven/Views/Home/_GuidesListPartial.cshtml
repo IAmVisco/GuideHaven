@@ -21,7 +21,7 @@
             </div>
 
             <div class="guide-inner">
-                <h4>@item.GuideName</h4>
+                <h4 class="guide-header">@item.GuideName</h4>
                 <span>
                     By
                     @{IdentityUser owner = await userManager.FindByIdAsync(item.Owner);}
@@ -36,7 +36,6 @@
                 </span>
                 @if (item.Ratings != null)
                 {
-                    <span>@Localizer["Rating"]: </span>
                     <fieldset class="rating-index">
                         <input type="radio" id="star5-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="5" disabled />
                         <label class="full" for="star5-@i-@ViewData["mode"]"></label>
@@ -60,8 +59,8 @@
                 {
                     <span>@Localizer["NoRatingsYet"]</span>
                 }
-                <span>@item.Views views</span>
-                <span>@item.CreationDate.ToString("HH:mm dd.MM.yyyy")</span>
+                <span class="guide-views"><i class="icon-eye-open"></i>  @item.Views</span>
+                <span class="guide-date"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
                 <p>@item.Description</p>
             </div>
         </div>
