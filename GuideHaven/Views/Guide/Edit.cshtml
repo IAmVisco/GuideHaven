@@ -70,15 +70,14 @@
             <div class="form-group">
                 <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
+            <div>
+                <a asp-action="Details" asp-route-id="@Model.GuideId">@Localizer["BackToGuide"]</a>
+            </div>
         </form>
     </div>
     <div class="col-md-5">
         <partial name="_MarkdownHelpPartial" />
     </div>
-</div>
-
-<div>
-    <a asp-action="Details" asp-route-id="@Model.GuideId">@Localizer["BackToGuide"]</a>
 </div>
 
 @section Scripts {

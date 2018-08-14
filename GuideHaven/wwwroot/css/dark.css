@@ -20,7 +20,7 @@ input, textarea {
 }
 
 .sidenav a:hover {
-    background: #808080;
+    background: #656565;
 }
 
 .nav > li > a:focus,
@@ -44,6 +44,10 @@ footer > a:focus {
 
 .guide-entry {
     background: #424242;
+}
+
+.guide-entry:hover {
+    background: #656565;
 }
 
 blockquote {

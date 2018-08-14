@@ -39,14 +39,14 @@
         animation: true,
         content: "This user has admin privileges.",
         trigger: "hover",
-        placement: "auto top",
+        placement: "auto top"
     });
 
     $(".not-admin-user").popover({
         animation: true,
         content: "This user does not have admin privileges.",
         trigger: "hover",
-        placement: "auto top",
+        placement: "auto top"
     });
 
     var checkBoxes = $('.check');
@@ -56,8 +56,8 @@
     });
 
     $(".check").click(function () {
-        $("#checkAll").prop('checked', false, checkBoxes.filter(':checked').length < checkBoxes.length)
-        $("#checkAll").prop('checked', checkBoxes.filter(':checked').length === checkBoxes.length)
+        $("#checkAll").prop('checked', false, checkBoxes.filter(':checked').length < checkBoxes.length);
+        $("#checkAll").prop('checked', checkBoxes.filter(':checked').length === checkBoxes.length);
     });
 
     $("#themeChanger").click(function () {

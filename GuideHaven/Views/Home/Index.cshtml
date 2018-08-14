@@ -9,71 +9,35 @@
 
 @await Html.PartialAsync("_IndexRegisterPartial", new GuideHaven.Controllers.HomeController.InputModel())
 
-
 <div class="row">
     <div class="col-md-10">
-        <div class="guides-wrap">
-            <h2>Latest Guides</h2>
-            @{ int i = 0; }
-            @foreach (var item in Model)
-            {
-                i++;
-                <a href="~/Guide/Details/@item.GuideId" style="color: inherit">
-                    <div class="guide-entry">
-                        <div class="guide-img-div">
-                            @if (item.Image == null)
-                            {
-                                <img src="https://dummyimage.com/200x150/000/fff" class="guide-img" />
-                            }
-                            else
-                            {
-                                <img id="@item.GuideId" src="@item.Image" class="guide-img" />
-                            }
-                        </div>
-
-                        <div class="guide-inner">
-                            <h4>@item.GuideName</h4>
-                            <span>By 
-                                @{IdentityUser owner = await userManager.FindByIdAsync(item.Owner);}
-                                @if (owner != null)
-                                {
-                                    @owner.UserName
-                                }
-                                else
-                                {
-                                    @Localizer["DeletedUser"]
-                                }
-                            </span>
-                            @if (item.Ratings != null)
-                            {
-                                <span>@Localizer["Rating"]: </span>
-                                <fieldset class="rating-index">
-                                    <input type="radio" id="star5-@i" name="rating-@i" value="5" disabled /><label class="full" for="star5-@i"></label>
-                                    <input type="radio" id="star4-@i" name="rating-@i" value="4" disabled /><label class="full" for="star4-@i"></label>
-                                    <input type="radio" id="star3-@i" name="rating-@i" value="3" disabled /><label class="full" for="star3-@i"></label>
-                                    <input type="radio" id="star2-@i" name="rating-@i" value="2" disabled /><label class="full" for="star2-@i"></label>
-                                    <input type="radio" id="star1-@i" name="rating-@i" value="1" disabled /><label class="full" for="star1-@i"></label>
-                                </fieldset>
-                                <script>
-                                    setTimeout(function () { 
-                                    var x = "#star" + Math.round(@item.GetRating()) + "-@i";
-                                    console.log(x);
-                                    
-                                        $(x).prop("checked", true);
-                                    }, 500); 
-
-                                </script>                            
-                            }
-                            else
-                            {
-                                <span>@Localizer["NoRatingsYet"]</span>
-                            }
-                            <p>@item.Description</p>
-                        </div>
-                    </div>
-                </a>
-            }
+        <div class="tab" role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">Latest guides</a></li>
+                <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">Popular guides</a></li>
+                <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">Most rated guides</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tabs">
+                <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
+                    @await  Html.PartialAsync("_GuidesListPartial", new ViewDataDictionary(this.ViewData) { { "mode", "l"} })
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="popular">
+                    @await Html.PartialAsync("_GuidesListPartial", 
+                        Model.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count), 
+                        new ViewDataDictionary(this.ViewData) { { "mode", "p" } }
+                   )
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="rated">
+                    @await Html.PartialAsync("_GuidesListPartial", 
+                        Model.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count), 
+                        new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
+                   )
+                </div>
+            </div>
         </div>
+
     </div>
     <div class="col-md-2" style="height: 800px; background: #424242"></div>
 </div>

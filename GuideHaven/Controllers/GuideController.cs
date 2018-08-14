@@ -58,7 +58,8 @@ namespace GuideHaven.Models
             {
                 return NotFound();
             }
-
+            context.Guide.FirstOrDefault(x => x.GuideId == id).Views++;
+            await context.SaveChangesAsync();
             return View(guide);
         }
 

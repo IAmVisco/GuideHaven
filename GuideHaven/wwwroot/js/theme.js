@@ -19,7 +19,7 @@ function getCookie(cname) {
 function changeTheme() {
     var date = new Date();
     date = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 365);
-
+    document.body.style.transition = "all .3s ease-in-out";
     if (!isDark) {
         document.getElementById('theme').href = "/css/dark.css";
         document.getElementById('nav').classList.add("navbar-inverse");
@@ -37,8 +37,8 @@ function changeTheme() {
 if (getCookie("theme") == "dark") {
     document.getElementById('theme').href = "/css/dark.css";
     window.onload = function () {
-        document.body.style.transition = "all .3s ease-in-out";
         changeTheme();
         document.getElementById('themeChanger').checked = true;
     }
 }
+document.body.style.transition = "all .3s ease-in-out";
