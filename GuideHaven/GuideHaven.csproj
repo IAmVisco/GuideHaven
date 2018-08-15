@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\longtest.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Vkontakte" Version="2.0.0" />
     <PackageReference Include="buildbundlerminifier" Version="2.8.391" />
     <PackageReference Include="Korzh.EasyQuery.Linq" Version="4.3.1" />
