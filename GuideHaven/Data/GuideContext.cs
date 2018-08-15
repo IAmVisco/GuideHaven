@@ -52,7 +52,7 @@ namespace GuideHaven.Models
 
         public List<Guide> GetGuides(GuideContext context, string owner = null)
         {
-            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).ToList();
+            var guides = context.Guide.Include(g => g.GuideSteps).Include(g => g.Comments).Include(g => g.Ratings).Include(g => g.GuideTags).ToList();
             if (owner != null)
                 guides.RemoveAll(x => x.Owner != owner);
             return guides;

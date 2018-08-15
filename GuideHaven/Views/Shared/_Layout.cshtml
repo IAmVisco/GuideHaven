@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
+@using GuideHaven.Areas.Identity.Data;
 @inject IViewLocalizer Localizer
-@inject SignInManager<IdentityUser> signInManager
-@inject UserManager<IdentityUser> userManager
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
 
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,7 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>
                     }
                     <li>
-                        <form asp-controller="Guide" asp-action="Index" method="post">
+                        <form asp-controller="Guide" asp-action="Search" method="post">
                             <input type="search" placeholder="Search..." name="searchText" class="search-field">
                         </form>
                     </li>

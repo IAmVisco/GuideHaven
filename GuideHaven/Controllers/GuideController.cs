@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Korzh.EasyQuery.Linq;
+using GuideHaven.Areas.Identity.Data;
 
 namespace GuideHaven.Models
 {
@@ -15,9 +16,9 @@ namespace GuideHaven.Models
     public class GuideController : Controller
     {
         private readonly GuideContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public GuideController(GuideContext context, UserManager<IdentityUser> userManager)
+        public GuideController(GuideContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.userManager = userManager;
@@ -34,14 +35,27 @@ namespace GuideHaven.Models
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Index(string searchText)
+        public async Task<IActionResult> Search(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                return View(context.Guide.FullTextSearchQuery(searchText));
+                return View("Index", context.Guide.Include(g => g.GuideTags).FullTextSearchQuery(searchText, new FullTextSearchOptions() { }));
             }
             else
-                return View(await context.Guide.ToListAsync());
+                return View("Index", await context.Guide.ToListAsync());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SearchTags(string searchText)
+        {
+            var guides = context.GetGuides(context);
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                return View("Index", guides.Where(x => x.GuideTags.Any(t => t.TagId == searchText)).ToList());
+            }
+            else
+                return View("Index");
         }
 
         // GET: Guide/Details/5

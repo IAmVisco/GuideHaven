@@ -14,14 +14,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using GuideHaven.Areas.Identity.Data;
 
 namespace GuideHaven.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IServiceProvider serviceProvider;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IStringLocalizer<HomeController> localizer;
         private readonly IEmailSender emailSender;
@@ -29,8 +30,8 @@ namespace GuideHaven.Controllers
 
         private List<Guide> Guides { get; set; }
 
-        public HomeController(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider, 
-            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
+        public HomeController(UserManager<ApplicationUser> userManager, IServiceProvider serviceProvider, 
+            SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IEmailSender emailSender,
             IStringLocalizer<HomeController> localizer, GuideContext context)
         {
             this.userManager = userManager;
@@ -188,7 +189,7 @@ namespace GuideHaven.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

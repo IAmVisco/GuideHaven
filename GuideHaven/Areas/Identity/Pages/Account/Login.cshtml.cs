@@ -10,20 +10,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
+using GuideHaven.Areas.Identity.Data;
 
 namespace GuideHaven.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginModel> logger;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        public LoginModel(SignInManager<ApplicationUser> signInManager, 
             ILogger<LoginModel> logger, 
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             IStringLocalizer<IdentityLocalizer> localizer)
         {
             this.signInManager = signInManager;
