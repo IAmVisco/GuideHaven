@@ -96,7 +96,7 @@ namespace GuideHaven.Models
                 {
                     var tagsList = TagListCreator(tags);
                     CreateGuideTagsConnection(guide, tagsList);
-                    context.SaveTags(context, tagsList);
+                    context.SaveTags(context, tagsList, null);
                 }
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
@@ -145,11 +145,15 @@ namespace GuideHaven.Models
                     {
                         var tagsList = TagListCreator(tags);
                         CreateGuideTagsConnection(guide, tagsList);
-                        context.SaveTags(context, tagsList);
+                        context.SaveTags(context, tagsList, id);
                     }
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
+                    if (tags == null)
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
+                    else
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
                     await context.SaveChangesAsync();
 
                 }
@@ -301,12 +305,12 @@ namespace GuideHaven.Models
             List<GuideTag> list = new List<GuideTag>();
             foreach (var item in tags)
             {
-                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item };
+                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item, GuideId = guide.GuideId };
                 list.Add(guideTag);
                 item.GuideTags = new List<GuideTag>();
                 item.GuideTags.Add(guideTag);
             }
-            guide.GuideTags = list;
+            //guide.GuideTags = list;
         }
     }
 }
