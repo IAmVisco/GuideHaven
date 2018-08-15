@@ -58,13 +58,16 @@ namespace GuideHaven.Models
             return guides;
         }
 
-        public void SaveTags(GuideContext context, List<Tag> tags)
+        public void SaveTags(GuideContext context, List<Tag> tags, int? id)
         {
             foreach (var item in tags)
             {
                 if (context.Tags.Contains(item))
                 {
-                    context.Tags.FirstOrDefault(x => x.TagId == item.TagId).GuideTags.AddRange(item.GuideTags);
+                    if (id != null)
+                        context.Tags.Include(x => x.GuideTags).FirstOrDefault(x => x.TagId == item.TagId).GuideTags.RemoveAll(x => x.GuideId == id);
+
+                    context.Tags.Include(x => x.GuideTags).FirstOrDefault(x => x.TagId == item.TagId).GuideTags.AddRange(item.GuideTags);
                 }
                 else
                     context.Tags.Add(item);
