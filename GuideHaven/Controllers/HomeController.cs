@@ -79,7 +79,7 @@ namespace GuideHaven.Controllers
         //    return View();
         //}
 
-        public IActionResult About()
+        public IActionResult Authors()
         {
             return View();
         }

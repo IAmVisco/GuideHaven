@@ -591,4 +591,13 @@
   <data name="YesDelete" xml:space="preserve">
     <value>Yes, delete that guide</value>
   </data>
+  <data name="AlreadyHaveAcc" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+  <data name="JoinToday" xml:space="preserve">
+    <value>This is the place where guides live. We have thousands, tens of thousands of them. Join the community today.</value>
+  </data>
+  <data name="LogInHere" xml:space="preserve">
+    <value>Log in here.</value>
+  </data>
 </root>
