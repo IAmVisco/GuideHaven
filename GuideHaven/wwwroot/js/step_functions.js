@@ -60,5 +60,7 @@ $(document).on('cloudinarywidgetsuccess', function (e, data) {
     console.log("Global success", e, data);
     $("#image-url").val(data[0].url);
     $(".glyphicon-ok").fadeIn();
+    $("#desc-img").addClass("desc-img");
+    $("#desc-img").attr("src", data[0].url);
     //$("#url").text(data[0].url);
 });

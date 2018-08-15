@@ -40,5 +40,10 @@
         </div>
 
     </div>
-    <div class="col-md-2" style="height: 800px; background: #424242"></div>
+    <div class="col-md-2 index-side">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
+        }
+    </div>
 </div>

@@ -165,6 +165,13 @@ label {
     transition: border-color ease-in-out .3s, box-shadow ease-in-out .3s;
 }
 
+.desc-img {
+    box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
 .delete-btn {
     position: absolute;
     top: 0;
@@ -459,6 +466,17 @@ footer > a {
     max-width: 80%;
 }
 
+.create-btn {
+    /*margin: auto 10px;*/
+    font-size: 14pt;
+}
+
+.index-side {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+}
+
 .md-help li {
     font-family: Consolas;
     white-space: pre-line;
@@ -628,6 +646,12 @@ footer > a {
         position: initial;
         display: block;
         margin: 5px;
+    }
+
+    .index-side {
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
     }
 }
 

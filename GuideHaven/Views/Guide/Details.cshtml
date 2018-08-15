@@ -63,7 +63,7 @@
             <div id="step0" class="step">
                 <h2 class="step-header">@Localizer["Description"]</h2>
                 @Html.DisplayFor(model => model.Description)
-                @Html.DisplayFor(model => model.Image)
+                <img src="@Html.DisplayFor(model => model.Image)" class="desc-img" />
             </div>
             @{int i = 0;
                 string step = "";}

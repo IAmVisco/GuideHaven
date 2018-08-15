@@ -92,9 +92,12 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
-                var tagsList = TagListCreator(tags);
-                CreateGuideTagsConnection(guide, tagsList);
-                context.SaveTags(context, tagsList);
+                if (tags != null)
+                {
+                    var tagsList = TagListCreator(tags);
+                    CreateGuideTagsConnection(guide, tagsList);
+                    context.SaveTags(context, tagsList);
+                }
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
                 guide.CreationDate = DateTime.Now;
@@ -127,7 +130,7 @@ namespace GuideHaven.Models
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
-            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide)
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
         {
             if (id != guide.GuideId)
             {
@@ -138,6 +141,12 @@ namespace GuideHaven.Models
             {
                 try
                 {
+                    if (tags != null)
+                    {
+                        var tagsList = TagListCreator(tags);
+                        CreateGuideTagsConnection(guide, tagsList);
+                        context.SaveTags(context, tagsList);
+                    }
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
