@@ -1,8 +1,11 @@
-﻿<span class="glyphicon glyphicon-plus" id="md-btn" title="Open/hide"></span>
-<h3 class="md-header">Markdown help</h3>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<span class="glyphicon glyphicon-plus" id="md-btn" title="@Localizer["OpenHide"]"></span>
+<h3 class="md-header">@Localizer["MarkdownHelp"]</h3>
 <div class="md-help">
-    <h4>Headers</h4>
-    <p>Markdown supports 2 styles of headers</p>
+    <h4>@Localizer["Headers"]</h4>
+    <p>@Localizer["HeadersDesc"]</p>
     <ul>
         <li>This is an H1
             =============
@@ -18,8 +21,8 @@
         </li>
     </ul>
 
-    <h4>Emphasis</h4>
-    <p>Markdown treats asterisks (*) and underscores (_) as indicators of emphasis</p>
+    <h4>@Localizer["Emphasis"]</h4>
+    <p>@Localizer["EmpDesc"]</p>
     <ul>
         <li>*italic*
 
@@ -31,10 +34,8 @@
         </li>
     </ul>
 
-    <h4>Lists</h4>
-    <p>Markdown supports ordered (numbered) and unordered (bulleted) lists.</p>
-    <p>Unordered lists use asterisks, pluses, and hyphens — interchangably — as list markers:</p>
-    <p>Ordered lists use numbers followed by periods:</p>
+    <h4>@Localizer["Lists"]</h4>
+    <p>@Localizer["ListsDesc"]</p>
     <ul>
         <li>*   Red
             *   Green
@@ -54,8 +55,8 @@
         </li>
     </ul>
 
-    <h4>Quotes</h4>
-    <p>Can be nested or contain other markdown elements</p>
+    <h4>@Localizer["Quotes"]</h4>
+    <p>@Localizer["QuotesDesc"]</p>
     <ul>
         <li>&gt; This is a blockquote with some text.</li>
         <li>&gt; ## This is a header.
@@ -65,9 +66,8 @@
         </li>
     </ul>
 
-    <h4>Code blocks</h4>
-    <p>To produce a code block in Markdown, simply indent every line of the block by at least 4 spaces or surround it with ```</p>
-    <p>You can also make inline code lines by surrounding them with `</p>
+    <h4>@Localizer["CodeBlocks"]</h4>
+    <p>@Localizer["CodeDesc"]</p>
     <ul>
         <li>This is a normal paragraph
 
@@ -82,8 +82,8 @@
         <li>`git commit -m "Commit message"`</li>
     </ul>
 
-    <h4>Links and images</h4>
-    <p>You can insert links and images in your markdown text with ease.</p>
+    <h4>@Localizer["LinksImgs"]</h4>
+    <p>@Localizer["LinksDesc"]</p>
     <ul>
         <li><strong>Link: </strong>Click [here](https://google.com/) to visit Google.</li>
         <li><strong>Image: </strong>![alt text](link/to/image.png)</li>
