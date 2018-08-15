@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuideHaven.Migrations.Guide
 {
     [DbContext(typeof(GuideContext))]
-    [Migration("20180804143528_up1")]
-    partial class up1
+    [Migration("20180814080833_TagsManyToMany")]
+    partial class TagsManyToMany
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace GuideHaven.Migrations.Guide
 
                     b.Property<DateTime>("CreationTime");
 
-                    b.Property<int?>("GuideId");
+                    b.Property<int>("GuideId");
 
                     b.Property<string>("Owner");
 
@@ -48,13 +48,32 @@ namespace GuideHaven.Migrations.Guide
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("GuideName");
+                    b.Property<string>("Description");
+
+                    b.Property<string>("GuideName")
+                        .IsRequired()
+                        .HasMaxLength(60);
+
+                    b.Property<string>("Image");
 
                     b.Property<string>("Owner");
 
                     b.HasKey("GuideId");
 
                     b.ToTable("Guide");
+                });
+
+            modelBuilder.Entity("GuideHaven.Models.GuideTag", b =>
+                {
+                    b.Property<int>("GuideId");
+
+                    b.Property<string>("TagId");
+
+                    b.HasKey("GuideId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("GuideTag");
                 });
 
             modelBuilder.Entity("GuideHaven.Models.Like", b =>
@@ -112,11 +131,35 @@ namespace GuideHaven.Migrations.Guide
                     b.ToTable("Step");
                 });
 
+            modelBuilder.Entity("GuideHaven.Models.Tag", b =>
+                {
+                    b.Property<string>("TagId")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("TagId");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("GuideHaven.Models.Comment", b =>
                 {
-                    b.HasOne("GuideHaven.Models.Guide")
+                    b.HasOne("GuideHaven.Models.Guide", "Guide")
                         .WithMany("Comments")
-                        .HasForeignKey("GuideId");
+                        .HasForeignKey("GuideId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GuideHaven.Models.GuideTag", b =>
+                {
+                    b.HasOne("GuideHaven.Models.Guide", "Guide")
+                        .WithMany("GuideTags")
+                        .HasForeignKey("GuideId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GuideHaven.Models.Tag", "Tag")
+                        .WithMany("GuideTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GuideHaven.Models.Like", b =>

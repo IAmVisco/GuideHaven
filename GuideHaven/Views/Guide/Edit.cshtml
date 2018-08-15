@@ -1,9 +1,23 @@
 ﻿@model GuideHaven.Models.Guide
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
+@inject IStringLocalizer<CategoryLocalizer> CategoryResource
 @{
     ViewData["Title"] = Localizer["Edit"];
     int index = 0;
+
+    ViewData["Title"] = Localizer["Create"];
+
+    List<SelectListItem> options = new List<SelectListItem>();
+    foreach (var entry in CategoryResource.GetAllStrings())
+    {
+        if (entry.Value != Model.Category)
+        {
+            options.Add(new SelectListItem { Value = entry.Name, Text = entry.Value });
+        }
+    }
+    options = options.OrderBy(x => x.Value).ToList();
 }
 
 <h2>@Localizer["EditGuide"]</h2>
@@ -18,17 +32,28 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-7">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="GuideId" />
             <input type="hidden" asp-for="Owner" />
+            <input type="hidden" asp-for="Views" />
+            <input type="hidden" asp-for="CreationDate" />
             <div class="form-group">
                 <label asp-for="GuideName" class="control-label">@Localizer["Title"]</label>
                 <input asp-for="GuideName" class="form-control" />
                 <span asp-validation-for="GuideName" class="text-danger"></span>
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "3" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
+                @*<input asp-for="Tags" name="tags" type="text">*@
+                <script>
+                    var tags = new TIB(document.querySelector('input[name="tags"]'));
+                </script>
+
+                <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
+                <select name="category" asp-for="Category" asp-items="options" class="form-control">
+                    <option selected>@Model.Category</option>
+                </select>
 
                 <div id="step_holder" class="form-group">
                     @for (int i = 0; i < Model.GuideSteps.Count; i++)
@@ -41,12 +66,12 @@
 	                            + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
                                 + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
 
-                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3">'
+                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5">'
                                 + toMarkdown(he.decode("@Model.GuideSteps[index].Content")) + '</textarea>'
                                 + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
                                 + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
-                                + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+                                + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
                                 + '<span class="glyphicon glyphicon-remove"></span></button></div >'
                             );
                             document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
@@ -66,12 +91,14 @@
             <div class="form-group">
                 <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
             </div>
+            <div>
+                <a asp-action="Details" asp-route-id="@Model.GuideId">@Localizer["BackToGuide"]</a>
+            </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">@Localizer["BackToList"]</a>
+    <div class="col-md-5">
+        <partial name="_MarkdownHelpPartial" />
+    </div>
 </div>
 
 @section Scripts {

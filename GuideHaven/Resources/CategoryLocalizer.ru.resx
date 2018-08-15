@@ -117,67 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AreUSure" xml:space="preserve">
-    <value>Are you sure?</value>
+  <data name="Architecture" xml:space="preserve">
+    <value>Архитектура</value>
   </data>
-  <data name="AreUSureMsg" xml:space="preserve">
-    <value>Are you sure you want to delete</value>
+  <data name="Art" xml:space="preserve">
+    <value>Искусство</value>
   </data>
-  <data name="BackToGuide" xml:space="preserve">
-    <value>Back to the Guide</value>
+  <data name="Beauty" xml:space="preserve">
+    <value>Красота</value>
   </data>
-  <data name="CannotBeUndone" xml:space="preserve">
-    <value>This action cannot be undone</value>
+  <data name="Business" xml:space="preserve">
+    <value>Бизнес</value>
   </data>
-  <data name="Content" xml:space="preserve">
-    <value>Content</value>
+  <data name="Cars" xml:space="preserve">
+    <value>Автомобили</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
+  <data name="Culture" xml:space="preserve">
+    <value>Культура</value>
   </data>
-  <data name="CreateGuide" xml:space="preserve">
-    <value>Create guide</value>
+  <data name="Design" xml:space="preserve">
+    <value>Дизайн</value>
   </data>
-  <data name="CreateNew" xml:space="preserve">
-    <value>Create New</value>
+  <data name="DIY" xml:space="preserve">
+    <value>Сделай сам</value>
   </data>
-  <data name="CreateStep" xml:space="preserve">
-    <value>Create step</value>
+  <data name="Education" xml:space="preserve">
+    <value>Образование</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Family" xml:space="preserve">
+    <value>Семья</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
+  <data name="Fashion" xml:space="preserve">
+    <value>Мода</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+  <data name="FinancialServices" xml:space="preserve">
+    <value>Финансовые услуги</value>
   </data>
-  <data name="EditGuide" xml:space="preserve">
-    <value>Edit guide</value>
+  <data name="Food" xml:space="preserve">
+    <value>Еда</value>
   </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Guide</value>
+  <data name="Gardening" xml:space="preserve">
+    <value>Садоводство</value>
   </data>
-  <data name="Index" xml:space="preserve">
-    <value>Index</value>
+  <data name="Geek" xml:space="preserve">
+    <value>Для гиков</value>
   </data>
-  <data name="NoDelete" xml:space="preserve">
-    <value>No, I've changed my mind</value>
+  <data name="Health" xml:space="preserve">
+    <value>Здоровье</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="History" xml:space="preserve">
+    <value>История</value>
   </data>
-  <data name="ShortDescription" xml:space="preserve">
-    <value>Short description</value>
+  <data name="Holidays" xml:space="preserve">
+    <value>Праздники и события</value>
   </data>
-  <data name="Step" xml:space="preserve">
-    <value>Step</value>
+  <data name="Home" xml:space="preserve">
+    <value>Сад и Дом</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Title</value>
+  <data name="Kids" xml:space="preserve">
+    <value>Дети</value>
   </data>
-  <data name="YesDelete" xml:space="preserve">
-    <value>Yes, delete that guide</value>
+  <data name="Money" xml:space="preserve">
+    <value>Деньги</value>
+  </data>
+  <data name="Nature" xml:space="preserve">
+    <value>Природа</value>
+  </data>
+  <data name="Nightlife" xml:space="preserve">
+    <value>Ночная жизнь</value>
+  </data>
+  <data name="Pets" xml:space="preserve">
+    <value>Домашние питомцы</value>
+  </data>
+  <data name="Photography" xml:space="preserve">
+    <value>Фотография</value>
+  </data>
+  <data name="RealEstate" xml:space="preserve">
+    <value>Недвижимость</value>
+  </data>
+  <data name="Science" xml:space="preserve">
+    <value>Наука</value>
+  </data>
+  <data name="Shopping" xml:space="preserve">
+    <value>Шопинг</value>
+  </data>
+  <data name="Sport" xml:space="preserve">
+    <value>Спорт</value>
+  </data>
+  <data name="Tattoos" xml:space="preserve">
+    <value>Татуировки</value>
+  </data>
+  <data name="Technology" xml:space="preserve">
+    <value>Технологии</value>
+  </data>
+  <data name="Traveling" xml:space="preserve">
+    <value>Путешествия</value>
   </data>
 </root>

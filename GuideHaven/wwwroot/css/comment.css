@@ -1,13 +1,17 @@
-﻿input, textarea {
+﻿textarea {
     outline: none;
     border: none;
     display: block;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-    font-family: "PT Sans", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     font-size: 1.2rem;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+    height: 42px;
     /*color: #555f77;*/
+}
+
+html {
+    overflow-y: scroll;
 }
 
 p {
@@ -19,7 +23,7 @@ p {
     margin-bottom: 5em;
     max-width: 60.75rem;
     padding: 0 1.25rem;
-    width: 66%;
+    width: 70%;
 }
 
 .like-lbl:before {
@@ -52,12 +56,6 @@ p {
     font-size: 1.5em;
 }
 
-@media screen and (max-width: 767px) {
-    .comments {
-        width: 100%;
-    }
-}
-
 .comment-wrap {
     margin-bottom: 1.25rem;
     display: table;
@@ -85,7 +83,7 @@ p {
     vertical-align: top;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
 }
 
 .comment-shadow:hover {
@@ -116,7 +114,6 @@ p {
 
 .comment-btn {
     float: right;
-    border-radius: 0;
     border: 0;
 }
 
@@ -126,4 +123,10 @@ p {
 
 .comment-actions {
     float: right;
+}
+
+@media screen and (max-width: 767px) {
+    .comments {
+        width: 100%;
+    }
 }

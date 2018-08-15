@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Identity
+@inject IViewLocalizer Localizer
+@inject UserManager<IdentityUser> userManager
+
+@{ int i = 0; }
+@foreach (var item in Model)
+{
+    i++;
+    <a href="~/Guide/Details/@item.GuideId" style="color: inherit">
+        <div class="guide-entry">
+            <div class="guide-img-div">
+                @if (item.Image == null)
+                {
+                    <img src="https://dummyimage.com/200x150/000/fff" class="guide-img" />
+                }
+                else
+                {
+                    <img id="@item.GuideId" src="@item.Image" class="guide-img" />
+                }
+            </div>
+
+            <div class="guide-inner">
+                <h4 class="guide-header">@item.GuideName</h4>
+                <span>
+                    By
+                    @{IdentityUser owner = await userManager.FindByIdAsync(item.Owner);}
+                    @if (owner != null)
+                    {
+                        @owner.UserName
+                    }
+                    else
+                    {
+                        @Localizer["DeletedUser"]
+                    }
+                </span>
+                @if (item.Ratings != null)
+                {
+                    <fieldset class="rating-index">
+                        <input type="radio" id="star5-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="5" disabled />
+                        <label class="full" for="star5-@i-@ViewData["mode"]"></label>
+                        <input type="radio" id="star4-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="4" disabled />
+                        <label class="full" for="star4-@i-@ViewData["mode"]"></label>
+                        <input type="radio" id="star3-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="3" disabled />
+                        <label class="full" for="star3-@i-@ViewData["mode"]"></label>
+                        <input type="radio" id="star2-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="2" disabled />
+                        <label class="full" for="star2-@i-@ViewData["mode"]"></label>
+                        <input type="radio" id="star1-@i-@ViewData["mode"]" name="rating-@i-@ViewData["mode"]" value="1" disabled />
+                        <label class="full" for="star1-@i-@ViewData["mode"]"></label>
+                    </fieldset>
+                    <script>
+                        setTimeout(function () {
+                            var x = "#star" + Math.round(@item.GetRating()) + "-@i-@ViewData["mode"]";
+                            $(x).prop("checked", true);
+                        }, 500);
+                    </script>
+                }
+                else
+                {
+                    <span>@Localizer["NoRatingsYet"]</span>
+                }
+                <span class="guide-views"><i class="icon-eye-open"></i>  @item.Views</span>
+                <span class="guide-date"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
+                <p>@item.Description</p>
+            </div>
+        </div>
+    </a>
+}

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
@@ -19,17 +21,20 @@ namespace GuideHaven.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
+        private readonly IEmailSender emailSender;
         private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public ExternalLoginModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             ILogger<ExternalLoginModel> logger,
+            IEmailSender emailSender,
             IStringLocalizer<IdentityLocalizer> localizer)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.logger = logger;
+            this.emailSender = emailSender;
             this.localizer = localizer;
         }
 
@@ -91,7 +96,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                if (info.LoginProvider != "Vkontakte" && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
+                if (info.LoginProvider != "Twitter" && info.LoginProvider != "Vkontakte" && await userManager.IsInRoleAsync(userManager.Users.First(x => x.Email == info.Principal.FindFirstValue(ClaimTypes.Email)), "Banned"))
                 {
                     await signInManager.SignOutAsync();
                     ErrorMessage = localizer["Banned"];
@@ -127,17 +132,41 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) == null ? Input.Email : info.Principal.FindFirstValue(ClaimTypes.Email) };
-                user.EmailConfirmed = true;
+                IdentityUser user = null;
+                if (info.Principal.FindFirstValue(ClaimTypes.Email) is null)
+                {
+                    user = new IdentityUser { UserName = Input.Login, Email =  Input.Email };
+                }
+                else
+                {
+                    user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
+                    user.EmailConfirmed = true;
+                }
                 var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await signInManager.SignInAsync(user, isPersistent: false);
-                        logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return LocalRedirect(returnUrl);
+                        if (user.EmailConfirmed)
+                        {
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                            logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { userId = user.Id, code = code },
+                                protocol: Request.Scheme);
+                            await emailSender.SendEmailAsync(Input.Email, localizer["ConfEmail"],
+                            localizer["PlsConfirm"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" + localizer["ClickingHere"] + "</a>.");
+
+                            return RedirectToPage("./RegisterSuccess");
+                        }
                     }
                 }
                 foreach (var error in result.Errors)

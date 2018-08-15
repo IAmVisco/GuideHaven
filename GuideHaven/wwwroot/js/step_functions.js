@@ -10,12 +10,12 @@ function createStep() {
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
         + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
 
-        + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="3"></textarea>'
+        + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
 
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
         + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
-        + '<button type="button" class="btn btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
+        + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
         + '<span class="glyphicon glyphicon-remove"></span></button></div >'
     );
     document.getElementById("step" + (index + 1)).scrollIntoView();
@@ -48,3 +48,17 @@ function decodeHtml(html) {
     txt.innerHTML = html;
     return txt.value;
 }
+
+document.getElementById("upload_widget_opener").addEventListener("click", function() {
+    cloudinary.openUploadWidget({ cloud_name: 'dzg8mz4pm', upload_preset: 'qsebzf0m', folder: 'guide_thumbnails' },
+        function (error, result) {
+            console.log(error, result);           
+        });
+}, false);
+
+$(document).on('cloudinarywidgetsuccess', function (e, data) {
+    console.log("Global success", e, data);
+    $("#image-url").val(data[0].url);
+    $(".glyphicon-ok").fadeIn();
+    //$("#url").text(data[0].url);
+});

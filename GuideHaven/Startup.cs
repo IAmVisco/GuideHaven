@@ -83,6 +83,11 @@ namespace GuideHaven
             {
                 vkOptions.ClientId = Configuration["Authentication:VK:ClientId"];
                 vkOptions.ClientSecret = Configuration["Authentication:VK:ClientSecret"];
+            })
+            .AddTwitter(twitterOptions =>
+            {
+                twitterOptions.ConsumerKey = Configuration["Authentication:Twitter:ConsumerKey"];
+                twitterOptions.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
             });
 
             services.Configure<IdentityOptions>(options =>

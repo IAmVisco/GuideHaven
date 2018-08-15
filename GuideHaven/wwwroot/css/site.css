@@ -1,8 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    transition: all 0.2s ease-in-out;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Product Sans', sans-serif;
     font-weight: 500;
     background: #eee;
 }
@@ -63,7 +62,7 @@ th {
     font-weight: 600;
 }
 
-td.hover {
+.hover {
     cursor: pointer;
 }
 
@@ -76,81 +75,26 @@ td.hover {
 
 .btn {
     border: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 20px;
+}
+
+.btn:hover {
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25), 0 6px 10px rgba(0,0,0,0.22);
 }
 
 .btn-primary {
     background-color: #4b7ada;
 }
 
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #4b7ada;
+}
+
 label {
     font-weight: 500;
-}
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    body {
-        /*overflow-x: hidden;*/
-    }
-
-    .switch-label {
-        float: initial !important;
-        margin-right: 0 !important;
-        margin-top: 0 !important;
-        margin: 15px 0 !important;
-    }
-
-    .sidenav {
-        max-width: initial !important;
-    }
-
-    .steps-wrap {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-
-    .sidenav {
-        display: none;
-    }
-
-    .comments {
-        width: 100%;
-    }
-
-    .mobile-nav {
-        display: block !important;
-        margin: 15px;
-    }
-}
-
-@media screen and (max-width: 991px)
-{
-    .owner-label {
-        display: block !important;
-        margin-left: 0 !important;
-    }
-
-    fieldset {
-        position: relative;
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-        float: none !important;
-    }
-
-    .rating > label:before {
-        font-size: 1.25em !important;
-    }
-
-    #rating-text {
-        top: 35px !important;
-    }
-
-    .sidenav {
-        top: 240px !important;
-    }
-
-    .create-fields {
-        width: 100% !important;
-    }
 }
 
 .switch-input {
@@ -219,7 +163,7 @@ label {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .3s, box-shadow ease-in-out .3s;
 }
 
 .delete-btn {
@@ -228,10 +172,6 @@ label {
     right: 0;
     margin-top: 20px;
     padding: 0;
-}
-
-.comment-btn {
-    display: none;
 }
 
 .control-label {
@@ -248,13 +188,12 @@ fieldset {
 
 #rating-text {
     position: absolute;
-    top: 60px;
-    left: 3px;
+    top: 55px;
+    left: 5px;
 }
 
 .rating {
     border: none;
-    /*float: left;*/
 }
 
 .rating > input {
@@ -263,7 +202,7 @@ fieldset {
 
 .rating > label:before {
     margin: 5px;
-    font-size: 2.75em;
+    font-size: 2.5em;
     font-family: FontAwesome;
     display: inline-block;
     content: "\f005";
@@ -280,11 +219,68 @@ fieldset {
     float: right;
 }
 
-
 .rating > input:checked ~ label, 
 .rating:not(:checked) > label:hover,
 .rating:not(:checked) > label:hover ~ label {
     color: #FFD700;
+}
+
+.rating-index {
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 5px;
+}
+
+.rating-index > input {
+    display: none;
+}
+
+.rating-index > label:before {
+    margin: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+    cursor: pointer;
+}
+
+.rating-index > .half:before {
+    content: "\f089";
+    position: absolute;
+}
+
+.rating-index > label {
+    color: #ddd;
+    margin-bottom: -15px;
+    margin-left: -5px;
+    float: right;
+}
+
+.rating-index > input:checked ~ label {
+    color: #FFD700;
+}
+
+fieldset.rating-index {
+    float: none;
+}
+
+.details-views {
+    position: absolute;
+    top: 85px;
+    right: 0;
+}
+
+.details-date {
+    position: absolute;
+    top: 85px;
+    right: 55px;
+}
+
+.details-category {
+    position: absolute;
+    top: 85px;
+    right: 200px;
 }
 
 .mobile-nav {
@@ -296,14 +292,9 @@ fieldset {
     max-width: 20%;
     position: fixed;
     right: 10%;
-    top: 170px;
+    top: 195px;
     z-index: 10;
     transition: all .3s cubic-bezier(0.65, 0.05, 0.36, 1);
-}
-
-.sidenav > ul {
-    margin-top: 25px;
-    margin-left: 35px;
 }
 
 .step {
@@ -316,27 +307,30 @@ fieldset {
 .sidenav ol {
     counter-reset: li;
     list-style: none;
-    *list-style: decimal;
     font-size: 15px;
     padding: 0;
     margin-bottom: 4em;
 }
 
+.sidenav-option {
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+}
+
 .sidenav a {
     position: relative;
     display: block;
-    padding: .4em .4em .4em 2.5em;
-    *padding: .4em;
+    padding: .3em .5em .3em 1.5em;
     margin: .5em 0;
-    background: #5975D9;
-    color: white;
+    background: #fff;
+    color: #000;
     text-decoration: none;
-    box-shadow: inset 0.5em 0 black;
-    transition: box-shadow .2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+    border-radius: 50px;
 }
 
 .sidenav a:hover {
-    box-shadow: inset 2em 0 black;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25), 0 6px 10px rgba(0,0,0,0.22);
 }
 
 .step-content > img,
@@ -347,4 +341,342 @@ fieldset {
 .owner-label {
     display: inline-block;
     margin-left: 1rem;
+}
+
+footer > a {
+    color: #acb4c2;
+    font-size: 10pt;
+    margin-left: 5px;
+}
+
+.banner {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 15px;
+    border: 1px solid #66afe9;
+    border-radius: 10px;
+    height: 380px;
+    transition: all ease-in-out .3s;
+}
+
+.banner:hover {
+    border-color: #66afe9;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px 1px rgba(102,175,233,.6);
+}
+
+.banner-form {
+    width: 40%;
+    float: right;
+    margin: 10px;
+}
+
+.banner-inner {
+    display: inline-block;
+    margin: 10px;
+    max-width: 50%;
+}
+
+.search-field {
+    outline: none;
+}
+
+.search-field {
+    font-family: inherit;
+    font-size: 100%;
+}
+
+.search-field {
+    border: solid 1px #ccc;
+    padding: 7px 10px 7px 15px;
+    width: 95px;
+    margin: 7px 5px;
+    border-radius: 10em;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+}
+
+.search-field:focus {
+    width: 190px;
+    border-color: #4b7ada;
+    box-shadow: 0 0 4px rgba(109,207,246,.5);
+}
+
+.guide-entry {
+    width: 90%;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 1rem;
+    position: relative;
+    padding: 0 10px;
+    transition: all .3s cubic-bezier(.25,.8,.25,1);
+}
+
+.guide-img {
+    max-width: 200px;
+    max-height: 150px;
+    padding: 7px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.guide-img-div {
+    width: 200px;
+    margin: 0;
+    float: left;
+    display: table-cell;
+    text-align: center;
+}
+
+.guide-inner {
+    display: inline;
+}
+
+.guide-inner p {
+    margin: 0 0 25px;
+}
+
+.guide-inner i {
+    margin-right: 3px;
+}
+
+.guide-views {
+    position: absolute;
+    right: 10px;
+    bottom: 1px;
+}
+
+.guide-date {
+    position: absolute;
+    bottom: 1px;
+    right: 55px;
+}
+
+.guide-header {
+    margin-bottom: 0;
+    max-width: 80%;
+}
+
+.md-help li {
+    font-family: Consolas;
+    white-space: pre-line;
+}
+
+.md-help {
+    display: none;
+}
+
+#md-btn {
+    float: right;
+    cursor: pointer;
+}
+
+.md-header {
+    display: inline;
+}
+
+.nav-tabs a:hover,
+.nav-tabs a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+.tab {
+    text-align: center;
+}
+
+.tab .nav-tabs {
+    display: inline-block;
+    border-bottom: none;
+    position: relative;
+}
+
+.tab .nav-tabs li {
+    margin-bottom: 0;
+}
+
+.tab .nav-tabs li a {
+    display: block;
+    padding: 20px;
+    border: none;
+    border-radius: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #444;
+    margin-right: 0;
+    text-align: center;
+    z-index: 1;
+    transition: all 0.3s ease 0s;
+}
+
+.tab .nav-tabs li a i {
+    display: block;
+    font-size: 40px;
+    color: #00a6ff;
+    margin-bottom: 15px;
+}
+
+.tab .nav-tabs li.active a,
+.tab .nav-tabs li a:hover {
+    border: none;
+    background: transparent;
+    color: inherit;
+}
+
+.tab .nav-tabs li a:before,
+.tab .nav-tabs li a:after {
+    content: "";
+    width: 0;
+    border-top: 3px solid #00a6ff;
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    transition: all 0.3s ease 0s;
+}
+
+.tab .nav-tabs li a:after {
+    left: auto;
+    right: 0;
+}
+
+.tab .nav-tabs li.active a:before,
+.tab .nav-tabs li a:hover:before,
+.tab .nav-tabs li.active a:after,
+.tab .nav-tabs li a:hover:after {
+    width: 50%;
+}
+
+.tab .tab-content {
+    padding: 20px;
+    margin-top: -5px;
+    border-radius: 0 0 5px 5px;
+    border-top: 1px solid #ccc;
+    font-size: 15px;
+    /*line-height: 30px;*/
+    text-align: initial;
+}
+
+.tab .tab-content h3 {
+    font-size: 24px;
+    margin-top: 0;
+}
+
+@media only screen and (max-width: 545px) {
+	.tab .nav-tabs li {
+		width: 100%;
+		text-align: center;
+		margin-bottom: 5px;
+	}
+
+	.tab .nav-tabs li a,
+	.tab .nav-tabs li a:hover {
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.tab .tab-content {
+		border-top: none;
+	}
+}
+
+@media screen and (max-width: 991px) {
+    .row {
+        margin: 0;
+    }
+
+    .owner-label {
+        display: block;
+        margin-left: 0;
+    }
+
+    fieldset {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        float: none;
+    }
+
+    .rating > label:before {
+        font-size: 1.25em;
+    }
+
+    #rating-text {
+        top: 35px;
+    }
+
+    .sidenav {
+        top: 330px;
+    }
+
+    .create-fields {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .banner {
+        margin-left: 0 ;
+        margin-right: 0 ;
+    }
+
+    .steps-wrap {
+        width: 70%;
+    }
+
+    .details-info {
+        position: initial;
+        display: block;
+        margin: 5px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    /*body {
+        overflow-x: hidden;
+    }*/
+
+    .banner {
+        margin-bottom: 15px;
+        height: 410px;
+    }
+
+    .banner-inner {
+        display: block;
+    }
+
+    .banner-form {
+        display: none;
+    }
+
+    .switch-label {
+        float: initial;
+        margin-right: 0;
+        margin-top: 0;
+        margin: 15px 0;
+    }
+
+    .sidenav {
+        max-width: initial;
+    }
+
+    .steps-wrap {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .sidenav {
+        display: none;
+    }
+
+    .mobile-nav {
+        display: block;
+        margin: 15px;
+    }
+
+    .rating-index {
+        display: none;
+    }
+
+    .guide-img-div {
+        width: auto;
+        float: initial;
+        display: flex;
+    }
 }

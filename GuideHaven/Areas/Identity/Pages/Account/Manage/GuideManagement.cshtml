@@ -23,7 +23,6 @@
                 </td>
                 <td>
                     <a asp-controller="Guide" asp-action="Edit" asp-route-id="@item.GuideId">@Localizer["Edit"]</a> |
-                    <a asp-controller="Guide" asp-action="Details" asp-route-id="@item.GuideId">@Localizer["Details"]</a> |
                     <a href="#" data-toggle="modal" data-target="#@item.GuideId">@Localizer["Delete"]</a>
 
                     <div id="@item.GuideId" class="modal fade" role="dialog">
@@ -38,7 +37,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["NoDelete"]</button>
-                                    <form asp-controller="Guide" asp-action="Delete" asp-route-id="@item.GuideId" asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" method="post" style="display: inline-block;">
+                                    <form asp-controller="Guide" asp-action="Delete" asp-route-id="@item.GuideId"
+                                          asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" method="post" style="display: inline-block;">
                                         <input type="submit" class="btn btn-danger" value="@Localizer["YesDelete"]" />
                                     </form>
                                 </div>

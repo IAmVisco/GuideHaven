@@ -1,13 +1,43 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Identity
+@inject IViewLocalizer Localizer
+@inject UserManager<IdentityUser> userManager
+@model IEnumerable<GuideHaven.Models.Guide>
+@{
     ViewData["Title"] = Localizer["Title"];
 }
-@using Microsoft.AspNetCore.Mvc.Localization
-@using Microsoft.AspNetCore.Http.Features
-@inject IViewLocalizer Localizer
 
-@*@if (HttpContext.Request.Cookies["banner"] == "1")
-{
+@await Html.PartialAsync("_IndexRegisterPartial", new GuideHaven.Controllers.HomeController.InputModel())
 
+<div class="row">
+    <div class="col-md-10">
+        <div class="tab" role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">Latest guides</a></li>
+                <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">Popular guides</a></li>
+                <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">Most rated guides</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tabs">
+                <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
+                    @await  Html.PartialAsync("_GuidesListPartial", new ViewDataDictionary(this.ViewData) { { "mode", "l"} })
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="popular">
+                    @await Html.PartialAsync("_GuidesListPartial", 
+                        Model.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count), 
+                        new ViewDataDictionary(this.ViewData) { { "mode", "p" } }
+                   )
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="rated">
+                    @await Html.PartialAsync("_GuidesListPartial", 
+                        Model.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count), 
+                        new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
+                   )
+                </div>
+            </div>
+        </div>
 
-}*@
-@*<div style="background: #eb0c0c; height: 200px;"></div>*@
+    </div>
+    <div class="col-md-2" style="height: 800px; background: #424242"></div>
+</div>

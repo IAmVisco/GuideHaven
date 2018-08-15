@@ -58,12 +58,37 @@ function changeStep() {
     }, 195);
 }
 
-$(document).ready(function () {
-    $("#step0").slideDown();
+function focusOption(el, stepId) {
+    step = stepId;
+    $(".sidenav-option").css("margin-left", "0");
+    $(el).parent().css("margin-left", "-15px");
+}
 
+$(document).ready(function () {
+
+    $("#step0").slideDown();
+    $("#desc").click();
     get_rating();
     get_comments();
     setInterval(get_comments, 3000);
+
+    function showPopover() {
+        $(".rating").popover("toggle");
+        setTimeout(function () {
+            $(".rating").popover("hide");
+        }, 2000);
+    }
+
+    $(".rating").popover({
+        animation: true,
+        content: "Log in to vote",
+        placement: "auto bottom",
+        trigger: "manual"
+    });
+
+    if (getCookie("ArrowAlert") !== "seen") {
+        $(".arrows-alert").slideDown();
+    }
 
     $("#next-btn").on("click", function () {
         if (step < $(".steps-wrap").children().length - 1) {
@@ -79,16 +104,14 @@ $(document).ready(function () {
         }
     });
 
-    $("li").on("click", changeStep);
+    $(".sidenav li").on("click", changeStep);
 
     $("#comment-field").keyup(function (e) {
         if ($("#comment-field").val().length > 0) {
             $(".comment-btn").removeAttr("disabled");
-            $(".comment-btn").slideDown();
         }
         else { 
             $(".comment-btn").attr("disabled", true);
-            $(".comment-btn").slideUp();
         }
         $("#comment-field").height(42);
         $("#comment-field").height($("#comment-field")[0].scrollHeight);
@@ -99,28 +122,44 @@ $(document).ready(function () {
 
         if (currentScroll + 10 >= sidenavTop) {
             $('.sidenav').css({
-                top: '60px',
+                top: '60px'
             });
         } else {
             $('.sidenav').css({
-                top: '150px',
+                top: sidenavTop + 'px'
             });
         }
     });
 
     $("#post-btn").on("click", function () {
-        $.post("/Guide/PostComment", {
-            guideId: $("#guideId").attr("value"),
-            comment: $("#comment-field").val()
-        });
-        $("#comment-field").val("");
+        if ($("#comment-field").val().length > 0) {
+            $.post("/Guide/PostComment", {
+                guideId: $("#guideId").attr("value"),
+                comment: $("#comment-field").val()
+            });
+            $("#comment-field").val("");
+            $(".comment-btn").attr("disabled", true);
+        }
     });
 
     $("input[name=rating]").on("click", function () {
         $.post("/Guide/PostRating", {
             guideId: $("#guideId").attr("value"),
             rating: $(this).attr("value")
-        });
+        }).fail(showPopover);
         setTimeout(get_rating, 500);
     });
+});
+
+$(document).keydown(function (e) {
+    if (e.which === 37) { //left
+        $("#prev-btn").click();
+        $(".sidenav-option").css("margin-left", "0");
+        $($("#side-menu").children()[step]).css("margin-left", "-15px"); 
+    }
+    if (e.which === 39) { //right
+        $("#next-btn").click();
+        $(".sidenav-option").css("margin-left", "0");
+        $($("#side-menu").children()[step]).css("margin-left", "-15px"); 
+    }
 });

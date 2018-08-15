@@ -2,12 +2,12 @@
 
 namespace GuideHaven.Migrations.Guide
 {
-    public partial class up1 : Migration
+    public partial class AddCategory : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "GuideName",
+                name: "Category",
                 table: "Guide",
                 nullable: true);
         }
@@ -15,7 +15,7 @@ namespace GuideHaven.Migrations.Guide
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "GuideName",
+                name: "Category",
                 table: "Guide");
         }
     }

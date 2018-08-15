@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Korzh.EasyQuery.Linq;
 
 namespace GuideHaven.Models
 {
@@ -31,6 +32,18 @@ namespace GuideHaven.Models
             return View(await context.Guide.ToListAsync());
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Index(string searchText)
+        {
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                return View(context.Guide.FullTextSearchQuery(searchText));
+            }
+            else
+                return View(await context.Guide.ToListAsync());
+        }
+
         // GET: Guide/Details/5
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
@@ -45,7 +58,8 @@ namespace GuideHaven.Models
             {
                 return NotFound();
             }
-
+            context.Guide.FirstOrDefault(x => x.GuideId == id).Views++;
+            await context.SaveChangesAsync();
             return View(guide);
         }
 
@@ -60,12 +74,16 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GuideId, GuideName, GuideSteps, Description, Image")] Guide guide)
+        public async Task<IActionResult> Create([Bind("GuideId, GuideName, GuideSteps, Description, Image, Tags, Category")] Guide guide, string tags = null)
         {
             if (ModelState.IsValid)
             {
+                var tagsList = TagListCreator(tags);
+                CreateGuideTagsConnection(guide, tagsList);
+                context.SaveTags(context, tagsList);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
+                guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,7 +112,8 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image")] Guide guide)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide)
         {
             if (id != guide.GuideId)
             {
@@ -122,7 +141,7 @@ namespace GuideHaven.Models
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id });
             }
             return View(guide);
         }
@@ -240,6 +259,31 @@ namespace GuideHaven.Models
         private bool GuideExists(int id)
         {
             return context.Guide.Any(e => e.GuideId == id);
+        }
+
+        private List<Tag> TagListCreator(string tags)
+        {
+            var tagsArray = tags.Split(',');
+            List<Tag> tagsList = new List<Tag>();
+            foreach (var item in tagsArray.Select(s => s.Trim().ToLower()))
+            {
+                Tag tag = new Tag() { TagId = item };
+                tagsList.Add(tag);
+            }
+            return tagsList;
+        }
+
+        private void CreateGuideTagsConnection(Guide guide, List<Tag> tags)
+        {
+            List<GuideTag> list = new List<GuideTag>();
+            foreach (var item in tags)
+            {
+                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item };
+                list.Add(guideTag);
+                item.GuideTags = new List<GuideTag>();
+                item.GuideTags.Add(guideTag);
+            }
+            guide.GuideTags = list;
         }
     }
 }
