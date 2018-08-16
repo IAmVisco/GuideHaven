@@ -117,28 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdminPanel" xml:space="preserve">
-    <value>Админка</value>
+  <data name="CodeBlocks" xml:space="preserve">
+    <value>Code blocks</value>
   </data>
-  <data name="Authors" xml:space="preserve">
-    <value>Авторы</value>
+  <data name="CodeDesc" xml:space="preserve">
+    <value>To produce a code block in Markdown, simply indent every line of the block by at least 4 spaces or surround it with ```
+You can also make inline code lines by surrounding them with `</value>
   </data>
-  <data name="Guides" xml:space="preserve">
-    <value>Инструкции</value>
+  <data name="EmpDesc" xml:space="preserve">
+    <value>Markdown treats asterisks (*) and underscores (_) as indicators of emphasis</value>
   </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>Главная страница</value>
+  <data name="Emphasis" xml:space="preserve">
+    <value>Emphasis</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Поиск</value>
+  <data name="Headers" xml:space="preserve">
+    <value>Headers</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Тема</value>
+  <data name="HeadersDesc" xml:space="preserve">
+    <value>Markdown supports 2 styles of headers</value>
   </data>
-  <data name="ToggleNav" xml:space="preserve">
-    <value>Показать меню</value>
+  <data name="LinksDesc" xml:space="preserve">
+    <value>You can insert links and images in your markdown text with ease.</value>
   </data>
-  <data name="WhatsThis" xml:space="preserve">
-    <value>Что это?</value>
+  <data name="LinksImgs" xml:space="preserve">
+    <value>Links and images</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="ListsDesc" xml:space="preserve">
+    <value>Markdown supports ordered (numbered) and unordered (bulleted) lists.Unordered lists use asterisks, pluses, and hyphens — interchangably — as list markers.
+Ordered lists use numbers followed by periods:</value>
+  </data>
+  <data name="MarkdownHelp" xml:space="preserve">
+    <value>Markdown help</value>
+  </data>
+  <data name="OpenHide" xml:space="preserve">
+    <value>Open/Hide</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>Quotes</value>
+  </data>
+  <data name="QuotesDesc" xml:space="preserve">
+    <value>Can be nested or contain other markdown elements</value>
   </data>
 </root>

@@ -1,7 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Identity
+@using GuideHaven.Areas.Identity.Data;
 @inject IViewLocalizer Localizer
-@inject UserManager<IdentityUser> userManager
+@inject UserManager<ApplicationUser> userManager
 @model IEnumerable<GuideHaven.Models.Guide>
 @{
     ViewData["Title"] = Localizer["Title"];
@@ -14,9 +15,9 @@
         <div class="tab" role="tabpanel">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">Latest guides</a></li>
-                <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">Popular guides</a></li>
-                <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">Most rated guides</a></li>
+                <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">@Localizer["LatestGuides"]</a></li>
+                <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">@Localizer["PopularGuides"]</a></li>
+                <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">@Localizer["MostRatedGuides"]</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content tabs">
@@ -39,5 +40,10 @@
         </div>
 
     </div>
-    <div class="col-md-2" style="height: 800px; background: #424242"></div>
+    <div class="col-md-2 index-side">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
+        }
+    </div>
 </div>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using GuideHaven.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,15 +19,15 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<ExternalLoginModel> logger;
         private readonly IEmailSender emailSender;
         private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
             IStringLocalizer<IdentityLocalizer> localizer)
@@ -132,14 +133,14 @@ namespace GuideHaven.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                IdentityUser user = null;
+                ApplicationUser user = null;
                 if (info.Principal.FindFirstValue(ClaimTypes.Email) is null)
                 {
-                    user = new IdentityUser { UserName = Input.Login, Email =  Input.Email };
+                    user = new ApplicationUser { UserName = Input.Login, Email =  Input.Email };
                 }
                 else
                 {
-                    user = new IdentityUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
+                    user = new ApplicationUser { UserName = Input.Login, Email = info.Principal.FindFirstValue(ClaimTypes.Email) };
                     user.EmailConfirmed = true;
                 }
                 var result = await userManager.CreateAsync(user);

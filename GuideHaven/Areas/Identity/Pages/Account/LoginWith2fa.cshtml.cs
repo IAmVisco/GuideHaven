@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using GuideHaven.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,11 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<LoginWith2faModel> logger;
         private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
-        public LoginWith2faModel(SignInManager<IdentityUser> signInManager, 
+        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, 
             ILogger<LoginWith2faModel> logger,
             IStringLocalizer<IdentityLocalizer> localizer)
         {

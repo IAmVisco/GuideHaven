@@ -1,8 +1,10 @@
 ﻿@model GuideHaven.Models.Guide
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
+@using GuideHaven.Areas.Identity.Data;
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
-@inject UserManager<IdentityUser> UserManager
+@inject IHtmlLocalizer<CategoryLocalizer> CategoryLocalizer
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
@@ -14,7 +16,7 @@
 <div style="position: relative">
     <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
     <input id="guideId" hidden value="@Model.GuideId" />
-    @{IdentityUser owner = await UserManager.FindByIdAsync(Model.Owner);}
+    @{ApplicationUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
         By @if (owner != null)
         {
@@ -25,7 +27,7 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-  (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+ (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
         }
@@ -40,14 +42,17 @@
         <p id="rating-text"></p>
     </fieldset><br />
     <span class="details-date details-info"><i class="icon-calendar"></i>  @Model.CreationDate.ToString("HH:mm dd.MM.yyyy")</span>
-    <span class="details-category details-info"><i class="icon-list"></i>  @Model.Category</span>
+    <span class="details-category details-info"><i class="icon-list"></i> @CategoryLocalizer[Model.Category]</span>
     <span class="details-views details-info"><i class="icon-eye-open"></i>  @Model.Views </span>
-    <span class="tags details-tags">
-        @foreach (var tag in Model.GuideTags)
-        {
-            <a href="../../Tags/@tag.TagId"><span class="tag">@tag.TagId</span></a>
-        }
-    </span>
+    <form asp-action="SearchTags">
+        <span class="tags details-tags">
+            @foreach (var tag in Model.GuideTags)
+            {
+                <input asp-action="SearchTags" asp-route-searchText="@tag.TagId" type="submit" id="@tag.TagId" name="searchText" value="@tag.TagId" hidden />
+                <label for="@tag.TagId" class="tag">@tag.TagId</label>
+            }
+        </span>
+    </form>
     <hr />
     <div class="row">
         <div class="col-xs-8 steps-wrap">
@@ -58,7 +63,7 @@
             <div id="step0" class="step">
                 <h2 class="step-header">@Localizer["Description"]</h2>
                 @Html.DisplayFor(model => model.Description)
-                @Html.DisplayFor(model => model.Image)
+                <img src="@Html.DisplayFor(model => model.Image)" class="desc-img" />
             </div>
             @{int i = 0;
                 string step = "";}

@@ -35,13 +35,14 @@
                 <input id="image-url" asp-for="Image" hidden />
                 <a href="#" id="upload_widget_opener">Upload image</a>
                 <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
+                <img src="" id="desc-img" />
 
                 <label class="control-label">@Localizer["Tags"]</label>
                 <input name="tags" type="text" placeholder="Tags...">
 
                 <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
-                <select name="category" asp-for="Category" asp-items="options" class="form-control">
-                    <option selected>---</option>
+                <select name="category" asp-for="Category" asp-items="options" class="form-control" required>
+                    <option disabled selected>---</option>
                 </select>
 
             </div>

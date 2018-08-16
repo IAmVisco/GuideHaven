@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Korzh.EasyQuery.Linq;
+using GuideHaven.Areas.Identity.Data;
 
 namespace GuideHaven.Models
 {
@@ -15,9 +16,9 @@ namespace GuideHaven.Models
     public class GuideController : Controller
     {
         private readonly GuideContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public GuideController(GuideContext context, UserManager<IdentityUser> userManager)
+        public GuideController(GuideContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
             this.userManager = userManager;
@@ -34,14 +35,27 @@ namespace GuideHaven.Models
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Index(string searchText)
+        public async Task<IActionResult> Search(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                return View(context.Guide.FullTextSearchQuery(searchText));
+                return View("Index", context.Guide.Include(g => g.GuideTags).FullTextSearchQuery(searchText, new FullTextSearchOptions() { }));
             }
             else
-                return View(await context.Guide.ToListAsync());
+                return View("Index", await context.Guide.ToListAsync());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> SearchTags(string searchText)
+        {
+            var guides = context.GetGuides(context);
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                return View("Index", guides.Where(x => x.GuideTags.Any(t => t.TagId == searchText)).ToList());
+            }
+            else
+                return View("Index");
         }
 
         // GET: Guide/Details/5
@@ -78,9 +92,12 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
-                var tagsList = TagListCreator(tags);
-                CreateGuideTagsConnection(guide, tagsList);
-                context.SaveTags(context, tagsList);
+                if (tags != null)
+                {
+                    var tagsList = TagListCreator(tags);
+                    CreateGuideTagsConnection(guide, tagsList);
+                    context.SaveTags(context, tagsList, null);
+                }
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
                 guide.CreationDate = DateTime.Now;
@@ -113,7 +130,7 @@ namespace GuideHaven.Models
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
-            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide)
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
         {
             if (id != guide.GuideId)
             {
@@ -124,9 +141,19 @@ namespace GuideHaven.Models
             {
                 try
                 {
+                    if (tags != null)
+                    {
+                        var tagsList = TagListCreator(tags);
+                        CreateGuideTagsConnection(guide, tagsList);
+                        context.SaveTags(context, tagsList, id);
+                    }
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
+                    if (tags == null)
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
+                    else
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
                     await context.SaveChangesAsync();
 
                 }
@@ -278,12 +305,12 @@ namespace GuideHaven.Models
             List<GuideTag> list = new List<GuideTag>();
             foreach (var item in tags)
             {
-                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item };
+                GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item, GuideId = guide.GuideId };
                 list.Add(guideTag);
                 item.GuideTags = new List<GuideTag>();
                 item.GuideTags.Add(guideTag);
             }
-            guide.GuideTags = list;
+            //guide.GuideTags = list;
         }
     }
 }

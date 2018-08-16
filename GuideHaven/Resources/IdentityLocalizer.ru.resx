@@ -205,7 +205,7 @@
     <value>Подтверждений успешно</value>
   </data>
   <data name="CreateNew" xml:space="preserve">
-    <value>Создать новый аккаунт.</value>
+    <value>Создать новый аккаунт</value>
   </data>
   <data name="CurrPass" xml:space="preserve">
     <value>Текущий пароль</value>
@@ -590,5 +590,14 @@
   </data>
   <data name="YesDelete" xml:space="preserve">
     <value>Да, удалить эту инструкцию</value>
+  </data>
+  <data name="AlreadyHaveAcc" xml:space="preserve">
+    <value>Уже есть аккаунт?</value>
+  </data>
+  <data name="JoinToday" xml:space="preserve">
+    <value>Это то самое место, где обитают инструкции. У нас их тысячи, десятки тысяч. Присоединяйтесь сегодня.</value>
+  </data>
+  <data name="LogInHere" xml:space="preserve">
+    <value>Войдите здесь.</value>
   </data>
 </root>

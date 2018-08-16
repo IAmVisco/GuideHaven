@@ -117,28 +117,48 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdminPanel" xml:space="preserve">
-    <value>Админка</value>
+  <data name="CodeBlocks" xml:space="preserve">
+    <value>Блоки кода</value>
   </data>
-  <data name="Authors" xml:space="preserve">
-    <value>Авторы</value>
+  <data name="CodeDesc" xml:space="preserve">
+    <value>Чтобы создать блок кода в Markdown, поставьте 4 пробела перед каждой строкой или окружите весь код с помощью ```
+Вы также можете создавать внутристрочные блоки кода, окружив их символом `</value>
   </data>
-  <data name="Guides" xml:space="preserve">
-    <value>Инструкции</value>
+  <data name="EmpDesc" xml:space="preserve">
+    <value>Markdown расценивает звездочки (*) и символы нижнего подчеркивания (_) как индикаторы акцентного шрифта</value>
   </data>
-  <data name="HomePage" xml:space="preserve">
-    <value>Главная страница</value>
+  <data name="Emphasis" xml:space="preserve">
+    <value>Акцент</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Поиск</value>
+  <data name="Headers" xml:space="preserve">
+    <value>Заголовки</value>
   </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Тема</value>
+  <data name="HeadersDesc" xml:space="preserve">
+    <value>Markdown поддерживает 2 стиля заголовков</value>
   </data>
-  <data name="ToggleNav" xml:space="preserve">
-    <value>Показать меню</value>
+  <data name="LinksDesc" xml:space="preserve">
+    <value>Вы можете вставлять ссылки и изображения в свой текст следующим образом</value>
   </data>
-  <data name="WhatsThis" xml:space="preserve">
-    <value>Что это?</value>
+  <data name="LinksImgs" xml:space="preserve">
+    <value>Ссылки и изображения</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>Списки</value>
+  </data>
+  <data name="ListsDesc" xml:space="preserve">
+    <value>Markdown поддерживает упорядоченные и неупорядоченные списки. Неупорядоченные списки использют звездочки, плюсы и тире для обозначения списка.
+Упорядоченные списки использует цифры с последующей точкой:</value>
+  </data>
+  <data name="MarkdownHelp" xml:space="preserve">
+    <value>Помощь с разметкой (Markdown)</value>
+  </data>
+  <data name="OpenHide" xml:space="preserve">
+    <value>Показать/Скрыть</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>Цитаты</value>
+  </data>
+  <data name="QuotesDesc" xml:space="preserve">
+    <value>Цитаты могут быть вложены или иметь другие элементы разметки</value>
   </data>
 </root>

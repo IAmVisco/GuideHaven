@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using GuideHaven.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -15,12 +16,12 @@ namespace GuideHaven.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly IEmailSender emailSender;
         private readonly IStringLocalizer<IdentityLocalizer> localizer;
 
         public ForgotPasswordModel(
-            UserManager<IdentityUser> userManager, 
+            UserManager<ApplicationUser> userManager, 
             IEmailSender emailSender,
             IStringLocalizer<IdentityLocalizer> localizer)
         {

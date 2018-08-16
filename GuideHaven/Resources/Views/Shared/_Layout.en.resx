@@ -120,13 +120,25 @@
   <data name="AdminPanel" xml:space="preserve">
     <value>Manage</value>
   </data>
+  <data name="Authors" xml:space="preserve">
+    <value>Authors</value>
+  </data>
   <data name="Guides" xml:space="preserve">
     <value>Guides</value>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home Page</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
   <data name="ToggleNav" xml:space="preserve">
     <value>Toggle navigation</value>
+  </data>
+  <data name="WhatsThis" xml:space="preserve">
+    <value>What's this?</value>
   </data>
 </root>

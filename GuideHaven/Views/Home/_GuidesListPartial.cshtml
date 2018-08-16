@@ -1,18 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Identity
+@using GuideHaven.Areas.Identity.Data;
 @inject IViewLocalizer Localizer
-@inject UserManager<IdentityUser> userManager
+@inject UserManager<ApplicationUser> userManager
 
 @{ int i = 0; }
 @foreach (var item in Model)
 {
     i++;
-    <a href="~/Guide/Details/@item.GuideId" style="color: inherit">
+    <a href="~/Guide/Details/@item.GuideId" style="color: inherit; text-decoration: none;">
         <div class="guide-entry">
             <div class="guide-img-div">
                 @if (item.Image == null)
                 {
-                    <img src="https://dummyimage.com/200x150/000/fff" class="guide-img" />
+                    <img src="~/images/no-image.jpg" class="guide-img" />
                 }
                 else
                 {
@@ -21,10 +22,9 @@
             </div>
 
             <div class="guide-inner">
-                <h4 class="guide-header">@item.GuideName</h4>
-                <span>
-                    By
-                    @{IdentityUser owner = await userManager.FindByIdAsync(item.Owner);}
+                <h4 class="guide-header"><strong>@item.GuideName</strong></h4>
+                <span class="guide-author"><strong>by&nbsp;
+                    @{ApplicationUser owner = await userManager.FindByIdAsync(item.Owner);}
                     @if (owner != null)
                     {
                         @owner.UserName
@@ -33,7 +33,7 @@
                     {
                         @Localizer["DeletedUser"]
                     }
-                </span>
+                </strong></span>
                 @if (item.Ratings != null)
                 {
                     <fieldset class="rating-index">
@@ -59,8 +59,8 @@
                 {
                     <span>@Localizer["NoRatingsYet"]</span>
                 }
-                <span class="guide-views"><i class="icon-eye-open"></i>  @item.Views</span>
-                <span class="guide-date"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
+                <span class="guide-views guide-info"><i class="icon-eye-open"></i>  @item.Views</span>
+                <span class="guide-date guide-info"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
                 <p>@item.Description</p>
             </div>
         </div>

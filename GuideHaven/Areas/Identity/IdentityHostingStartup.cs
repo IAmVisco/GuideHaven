@@ -1,4 +1,5 @@
 ﻿using System;
+using GuideHaven.Areas.Identity.Data;
 using GuideHaven.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ namespace GuideHaven.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(config =>
+                services.AddDefaultIdentity<ApplicationUser>(config =>
                 {
                     config.SignIn.RequireConfirmedEmail = true;
                 })
