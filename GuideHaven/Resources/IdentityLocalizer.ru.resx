@@ -205,7 +205,7 @@
     <value>Подтверждений успешно</value>
   </data>
   <data name="CreateNew" xml:space="preserve">
-    <value>Создать новый аккаунт.</value>
+    <value>Создать новый аккаунт</value>
   </data>
   <data name="CurrPass" xml:space="preserve">
     <value>Текущий пароль</value>

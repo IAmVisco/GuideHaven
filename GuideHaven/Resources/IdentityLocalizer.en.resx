@@ -205,7 +205,7 @@
     <value>Confirmation successful</value>
   </data>
   <data name="CreateNew" xml:space="preserve">
-    <value>Create a new account.</value>
+    <value>Create a new account</value>
   </data>
   <data name="CurrPass" xml:space="preserve">
     <value>Current password</value>
