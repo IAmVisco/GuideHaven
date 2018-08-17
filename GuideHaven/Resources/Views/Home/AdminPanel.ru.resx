@@ -133,7 +133,7 @@
     <value>Email</value>
   </data>
   <data name="GiveAdmin" xml:space="preserve">
-    <value>Дать Админку</value>
+    <value>Дать админку</value>
   </data>
   <data name="NotBanned" xml:space="preserve">
     <value>Не забанен</value>

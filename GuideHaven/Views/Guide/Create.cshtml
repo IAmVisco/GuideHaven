@@ -39,8 +39,7 @@
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new {
                    @class = "bs-textarea",
-                   rows = "5",
-                   style = "margin-bottom: 15px;"
+                   rows = "5"
                })
 
                 <label asp-for="Image" class="control-label">@Localizer["Image"]</label>
@@ -50,7 +49,7 @@
                 <img src="" id="desc-img" />
 
                 <label class="control-label">@Localizer["Tags"]</label>
-                <input name="tags" type="text" placeholder="Tags...">
+                <input name="tags" type="text" placeholder="@Localizer["Tags"]...">
 
                 <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
                 <select name="category" asp-for="Category" asp-items="options" class="form-control" required>

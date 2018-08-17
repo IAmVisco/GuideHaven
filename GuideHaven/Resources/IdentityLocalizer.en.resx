@@ -600,4 +600,10 @@
   <data name="LogInHere" xml:space="preserve">
     <value>Log in here.</value>
   </data>
+  <data name="AddExtService" xml:space="preserve">
+    <value>Add another service to log in.</value>
+  </data>
+  <data name="AuthApp" xml:space="preserve">
+    <value>Authenticator app</value>
+  </data>
 </root>

@@ -3,7 +3,7 @@
 @inject IHtmlLocalizer<IdentityLocalizer> Localizer
 @model TwoFactorAuthenticationModel
 @{
-    ViewData["Title"] = Localizer["2fa"] + " (2FA)";
+    ViewData["Title"] = Localizer["2fa"];
 }
 
 @Html.Partial("_StatusMessage", Model.StatusMessage)
@@ -42,7 +42,7 @@
     <a asp-page="./GenerateRecoveryCodes" class="btn btn-default">@Localizer["ResetCodes"]</a>
 }
 
-<h5>Authenticator app</h5>
+<h5>@Localizer["AuthApp"]</h5>
 @if (!Model.HasAuthenticator)
 {
     <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-default">@Localizer["AddAuthApp"]</a>

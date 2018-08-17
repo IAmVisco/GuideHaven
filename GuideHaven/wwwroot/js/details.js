@@ -35,7 +35,7 @@ function get_rating() {
         url: '/Guide/GetRating',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
-            $("#rating-text").text("Rating: " + response.toFixed(2) + " stars");
+            $("#rating-number").text(response.toFixed(2));
             set_rating(Math.round(response));
         }
     });
@@ -145,6 +145,12 @@ $(document).ready(function () {
     });
 
     $(".sidenav li").on("click", changeStep);
+
+    $(".arrows-alert").on("closed.bs.alert", function () {
+        var date = new Date();
+        date = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 365);
+        document.cookie = 'ArrowAlert=seen;expires=' + date.toGMTString() + ';path=/';
+    });
 
     $("#comment-field").keyup(function (e) {
         if ($("#comment-field").val().length > 0) {

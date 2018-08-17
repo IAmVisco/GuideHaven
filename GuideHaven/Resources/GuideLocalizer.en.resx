@@ -124,7 +124,7 @@
     <value>Are you sure you want to delete</value>
   </data>
   <data name="BackToGuide" xml:space="preserve">
-    <value>Back to the Guide</value>
+    <value>Back to Guide</value>
   </data>
   <data name="CannotBeUndone" xml:space="preserve">
     <value>This action cannot be undone</value>
@@ -182,5 +182,47 @@
   </data>
   <data name="YesDelete" xml:space="preserve">
     <value>Yes, delete that guide</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="ArrowsTip" xml:space="preserve">
+    <value>You can use left and right arrows on your keyboard to navigate through steps.</value>
+  </data>
+  <data name="by" xml:space="preserve">
+    <value>by</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>Tip!</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>views</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Add comment...</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>Header</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
   </data>
 </root>

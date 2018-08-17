@@ -600,4 +600,10 @@
   <data name="LogInHere" xml:space="preserve">
     <value>Войдите здесь.</value>
   </data>
+  <data name="AddExtService" xml:space="preserve">
+    <value>Добавить логин со стороннего сервиса.</value>
+  </data>
+  <data name="AuthApp" xml:space="preserve">
+    <value>Приложение-аутентификатор</value>
+  </data>
 </root>
