@@ -468,7 +468,6 @@ footer > a {
 
 .guide-img-div {
     margin: auto 0;
-    float: left;
     display: table-cell;
     text-align: center;
     width: 224px;
@@ -711,6 +710,7 @@ footer > a {
     .banner {
         margin-bottom: 15px;
         height: inherit;
+        flex-direction: column;
     }
 
     .banner-inner {
@@ -720,7 +720,7 @@ footer > a {
 
     .banner-form {
         width: inherit;
-        float: none;
+        margin: 0 auto 40px;
     }
 
     .switch-label {
@@ -752,10 +752,14 @@ footer > a {
         display: none;
     }
 
+    .guide-entry {
+        display: block;
+        padding: 10px;
+    }
+
     .guide-img-div {
         width: auto;
-        float: initial;
-        display: flex;
+        display: block;
     }
 
     .search-field {
