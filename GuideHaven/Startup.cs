@@ -112,6 +112,8 @@ namespace GuideHaven
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
+            services.AddSignalR();
+
             services.AddDbContext<GuideContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("GuideContext")));
         }
@@ -142,6 +144,13 @@ namespace GuideHaven
             app.UseAuthentication();
             app.UseCookiePolicy();
             app.UseStatusCodePagesWithReExecute("/Error/{0}"); // or Redirects
+
+            app.UseSignalR(routes => {
+                routes.MapHub<CommentsHub>("/comments", o =>
+                {
+                    o.ApplicationMaxBufferSize = 300000;
+                });
+            });
 
             app.UseMvc(routes =>
             {
