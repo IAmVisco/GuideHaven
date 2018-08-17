@@ -174,7 +174,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public IActionResult PostComment(int guideId, string comment)
+        public ActionResult<string> PostComment(int guideId, string comment)
         {
             Comment newComment = new Comment()
             {
@@ -185,7 +185,9 @@ namespace GuideHaven.Models
             var guide = context.GetGuide(context, guideId);
             guide.Comments.Add(newComment);
             context.SaveChanges();
-            return Ok();
+            string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
+
+            return output;
         }
 
         [HttpGet]
@@ -202,27 +204,21 @@ namespace GuideHaven.Models
             string output = "";
             foreach (var item in context.GetGuide(context, guideId).Comments)
             {
-                string liked = "";
-                if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
-                    liked += " checked ";
-                output +=
-                "<label class=\"commenter\">" + item.Owner + ":</label>"
-                + "<div class=\"comment-wrap\">"
-                    + "<div class=\"comment-block\">"
-                        + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
-                        + "<p>" + item.Content + "</p>"
-                        + "<div class=\"bottom-comment\">"
-                            + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
-                              + "<div class=\"comment-actions\">"
-                                + "<input" + liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\"/>"
-                                + "<label for=\"like-"+item.CommentId+ "\" value=\"" + item.CommentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
-                                + "<span class=\"like-count\">" + item.Likes.Count + "</span>"
-                            + "</div>"
-                        + "</div>"
-                    + "</div>"
-                + "</div>";
+                output += CreateComment(item);
             }
             return output;
+        }
+
+        [AllowAnonymous]
+        public ActionResult<int[]> GetLikes(int guideId)
+        {
+            var guide = context.GetGuide(context, guideId);
+            List<int> likes = new List<int>();
+            foreach (var item in guide.Comments)
+            {
+                likes.Add(item.Likes.Count);
+            }
+            return likes.ToArray();
         }
 
         [HttpPost]
@@ -311,6 +307,28 @@ namespace GuideHaven.Models
                 item.GuideTags.Add(guideTag);
             }
             //guide.GuideTags = list;
+        }
+
+        private string CreateComment(Comment item)
+        {
+            string liked = "";
+            if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
+                liked += " checked ";
+            return "<label class=\"commenter\">" + item.Owner + ":</label>"
+                    + "<div class=\"comment-wrap\">"
+                        + "<div class=\"comment-block\">"
+                            + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
+                            + "<p>" + item.Content + "</p>"
+                            + "<div class=\"bottom-comment\">"
+                                + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
+                                + "<div class=\"comment-actions\">"
+                                    + "<input" + liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\"/>"
+                                    + "<label for=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
+                                    + "<span class=\"like-count\">" + item.Likes.Count + "</span>"
+                                + "</div>"
+                            + "</div>"
+                        + "</div>"
+                    + "</div>";
         }
     }
 }
