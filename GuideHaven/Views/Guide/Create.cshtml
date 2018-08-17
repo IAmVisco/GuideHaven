@@ -17,6 +17,14 @@
 <h2>@Localizer["CreateGuide"]</h2>
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
 <script src="~/js/tags-input-beautifier.js"></script>
+<script>
+    UPLOADCARE_PUBLIC_KEY = '03f07bf8408eb92c146e';
+    UPLOADCARE_LOCALE = '@Localizer["loc"]';
+    UPLOADCARE_TABS = 'file camera url gdrive gphotos dropbox vk';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_CLEARABLE = true;
+</script>
+<script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.6.0/uploadcare.min.js"></script>
 
 <hr />
 <div class="row">
@@ -29,11 +37,15 @@
                 <span asp-validation-for="GuideName" class="text-danger"></span><br />
 
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
-                @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
+                @Html.TextAreaFor(model => model.Description, new {
+                   @class = "bs-textarea",
+                   rows = "5",
+                   style = "margin-bottom: 15px;"
+               })
 
                 <label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                 <input id="image-url" asp-for="Image" hidden />
-                <a href="#" id="upload_widget_opener">Upload image</a>
+                <input type="hidden" role="uploadcare-uploader" name="content" data-images-only />
                 <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
                 <img src="" id="desc-img" />
 
@@ -80,7 +92,6 @@
     <script src="/js/step_functions.js"></script>
     <script src="~/js/showdown.js"></script>
     <script src="~/js/mdhtmlform.js"></script>
-    <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
 
     @section Scripts {

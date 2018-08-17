@@ -162,6 +162,9 @@
   <data name="Index" xml:space="preserve">
     <value>Главная</value>
   </data>
+  <data name="loc" xml:space="preserve">
+    <value>ru</value>
+  </data>
   <data name="NoDelete" xml:space="preserve">
     <value>Нет, я передумал</value>
   </data>

@@ -1,4 +1,5 @@
 ﻿var index = 0, visual_index = 0;
+var widget = uploadcare.Widget('[role=uploadcare-uploader]');
 
 function createStep() {
 	index++;
@@ -49,18 +50,9 @@ function decodeHtml(html) {
     return txt.value;
 }
 
-document.getElementById("upload_widget_opener").addEventListener("click", function() {
-    cloudinary.openUploadWidget({ cloud_name: 'dzg8mz4pm', upload_preset: 'qsebzf0m', folder: 'guide_thumbnails' },
-        function (error, result) {
-            console.log(error, result);           
-        });
-}, false);
-
-$(document).on('cloudinarywidgetsuccess', function (e, data) {
-    console.log("Global success", e, data);
-    $("#image-url").val(data[0].url);
+widget.onUploadComplete(function(info) {
+    $("#image-url").val(info.cdnUrl);
     $(".glyphicon-ok").fadeIn();
     $("#desc-img").addClass("desc-img");
-    $("#desc-img").attr("src", data[0].url);
-    //$("#url").text(data[0].url);
+    $("#desc-img").attr("src", info.cdnUrl);
 });
