@@ -1,0 +1,12 @@
+﻿@using GuideHaven.Areas.Identity.Data
+@model ApplicationUser
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>@Model.UserName Profile</h2>
+
+<h3>Your Guides</h3>
+@await Html.PartialAsync("../Home/_GuidesListPartial", ViewData["Guides"], 
+    new ViewDataDictionary(this.ViewData) { { "mode", "l" } })
+
