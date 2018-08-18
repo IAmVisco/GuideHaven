@@ -219,6 +219,9 @@
   <data name="AddComment" xml:space="preserve">
     <value>Add comment...</value>
   </data>
+  <data name="GuideName" xml:space="preserve">
+    <value>Guide Name</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Header</value>
   </data>

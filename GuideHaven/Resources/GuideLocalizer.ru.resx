@@ -219,6 +219,9 @@
   <data name="AddComment" xml:space="preserve">
     <value>Добавить комментарий...</value>
   </data>
+  <data name="GuideName" xml:space="preserve">
+    <value>Название инструкции</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Заголовок</value>
   </data>

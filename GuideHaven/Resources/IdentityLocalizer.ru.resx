@@ -606,4 +606,7 @@
   <data name="AuthApp" xml:space="preserve">
     <value>Приложение-аутентификатор</value>
   </data>
+  <data name="MyGuides" xml:space="preserve">
+    <value>Мои инструкции</value>
+  </data>
 </root>

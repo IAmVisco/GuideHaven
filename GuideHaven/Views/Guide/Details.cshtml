@@ -39,7 +39,7 @@
         <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3"></label>
         <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2"></label>
         <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1"></label>
-        <p id="rating-text">@Localizer["Rating"]: <span id="rating-number"></span></p>
+        <p id="rating-text">@Localizer["Rating"]: <span id="rating-number"></span> <i class="icon-star" style="color: #FFD700;"></i></p>
     </fieldset><br />
     <span class="details-date details-info" title="@Localizer["Created"]: @Model.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")"><i class="icon-calendar"></i>  @Model.CreationDate.ToString("HH:mm dd.MM.yyyy")</span>
     <span class="details-category details-info" title="@Localizer["Category"]: @CategoryLocalizer[Model.Category]"><i class="icon-list"></i> @CategoryLocalizer[Model.Category]</span>
