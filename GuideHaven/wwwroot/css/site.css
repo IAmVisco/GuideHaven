@@ -481,7 +481,7 @@ footer > a {
     margin: auto 0;
     display: table-cell;
     text-align: center;
-    width: 224px;
+    min-width: 224px;
 }
 
 .guide-inner {
@@ -702,6 +702,10 @@ footer > a {
 		text-align: center;
 		margin-bottom: 5px;
 	}
+
+    .tab .nav-tabs {
+        width: 100%;
+    }
 
 	.tab .nav-tabs li a,
 	.tab .nav-tabs li a:hover {

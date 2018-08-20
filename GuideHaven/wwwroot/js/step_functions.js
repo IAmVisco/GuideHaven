@@ -2,8 +2,23 @@
     visual_index = 0,
     imgs = "";
 
-var widget = uploadcare.Widget('[role=uploadcare-uploader]'),
-    multiWidget = uploadcare.MultipleWidget($("#multi0"));
+var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+widget.onChange(function (file) {
+    if (file) {
+        file.done(function (info) {
+            $("#image-url").val(info.cdnUrl);
+            $("#desc-img").addClass("desc-img");
+            $("#desc-img").attr("src", info.cdnUrl);
+        });
+    }
+    else {
+        $("#image-url").val("");
+        $("#desc-img").attr("src", "");
+    }
+});
+
+multiWidget = uploadcare.MultipleWidget($("#multi0"));
 
 function uploadHandler(info, index) {
     var arr = [];
@@ -18,7 +33,6 @@ function widgetCleared(index) {
     $("#images" + index).val("");
 }
 
-
 multiWidget.onChange(function (info) {
     if (!info) widgetCleared(0);
 });
@@ -26,19 +40,19 @@ multiWidget.onUploadComplete(function (info) {
     uploadHandler(info, 0);
 });
 
-function createStep() {
+function createStep(step, header, content, images) {
 	index++;
 	visual_index++;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
+        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Header">' + header + '</label>'
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Content">' + content + '</label>'
 
         + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
 
-        + '<label class="control-label">Images</label>'
+        + '<label class="control-label" style="margin-right: 3px;">' + images + '</label>'
         + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
         + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
 
@@ -87,9 +101,3 @@ function decodeHtml(html) {
     txt.innerHTML = html;
     return txt.value;
 }
-
-widget.onUploadComplete(function (info) {
-    $("#image-url").val(info.cdnUrl);
-    $("#desc-img").addClass("desc-img");
-    $("#desc-img").attr("src", info.cdnUrl);
-});

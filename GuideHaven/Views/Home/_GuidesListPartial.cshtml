@@ -25,7 +25,7 @@
                 <h4 class="guide-header"><strong>@item.GuideName</strong></h4>
                 <span class="guide-author">
                     <strong>
-                        by&nbsp;
+                        @Localizer["by"]
                         @{ApplicationUser owner = await userManager.FindByIdAsync(item.Owner);}
                         @if (owner != null)
                         {

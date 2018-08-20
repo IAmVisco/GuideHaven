@@ -30,11 +30,11 @@
 <script src="~/js/showdown.js"></script>
 <script src="~/js/to-markdown.js"></script>
 <script src="~/js/mdhtmlform.js"></script>
+
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
 <script src="~/js/tags-input-beautifier.js"></script>
-<script src="~/js/step_functions.js"></script>
-<script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.6.0/uploadcare.min.js"></script>
-<script>var index = 0, visual_index = 0, multiWidget;</script>
+
+
 
 <hr />
 <div class="row">
@@ -57,7 +57,6 @@
                 <input id="image-url" asp-for="Image" hidden />
                 <input type="hidden" role="uploadcare-uploader" name="content" data-images-only />
                 <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
-                <img src="" id="desc-img" />
                 <img src="
                 @if (Model.Image != null)
                 {
@@ -91,6 +90,10 @@
     </div>
 </div>
 
+<script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.6.0/uploadcare.min.js"></script>
+
+<script src="~/js/step_functions.js"></script>
+<script src="~/js/edit_functions.js"></script>
 <script>
     var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
     var arr = new Array();
@@ -99,45 +102,21 @@
         @:arr.push("@tag.TagId");
     }
     tags.update(arr);
+    widget.value('@Model.Image');
 </script>
 
 @for (int i = 0; i < Model.GuideSteps.Count; i++)
 {
+    string imgs = "";
+    @if (@Model.GuideSteps[index].Images != null)
+    {
+        imgs = Model.GuideSteps[index].Images.Split(',')[0];
+    }
     <script>
-        document.getElementById("step_holder").insertAdjacentHTML(
-            'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">@Localizer["Step"] ' + (visual_index + 1) + '</label>'
-	        + '<label class="control-label" for="GuideSteps_' + index + '__Header">@Localizer["Header"]</label>'
-	        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-            + '<label class="control-label" for="GuideSteps_' + index + '__Content">@Localizer["Content"]</label>'
-
-            + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5">'
-            + toMarkdown(he.decode("@Model.GuideSteps[index].Content")) + '</textarea>'
-            + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
-            + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
-
-            + '<label class="control-label">@Localizer["Images"] </label>'
-            + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
-            + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
-
-            + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
-            + '<span class="glyphicon glyphicon-remove"></span></button></div >'
-        );
-        document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
-        multiWidget = uploadcare.MultipleWidget($("#multi" + index));
-        multiWidget.onChange(function (info) {
-            if (!info) widgetCleared(index);
-        });
-        multiWidget.onUploadComplete(function (info) {
-            uploadHandler(info, index);
-        });
-        @if (Model.GuideSteps[index].Images != null)
-        {
-            @:multiWidget.value('@Model.GuideSteps[index].Images.Split(',')[0]');
-        }
-        index++;
-        visual_index++;
+        recreateSteps('@Localizer["Step"]', '@Localizer["Header"]', '@Localizer["Content"]', '@Localizer["Images"]',
+            '@Model.GuideSteps[index].Header', '@Model.GuideSteps[index].Content', '@imgs');
     </script>
+
     index++;
 }
 <script>

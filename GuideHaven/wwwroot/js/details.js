@@ -23,7 +23,7 @@ connection.start();
 
 function join_group() {
     connection.invoke("joingroup", $("#guideId").attr("value"));
-};
+}
 
 function set_rating(rating) {
     $("#star" + rating).prop("checked", true);
