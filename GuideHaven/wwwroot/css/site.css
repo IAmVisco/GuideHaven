@@ -527,14 +527,18 @@ footer > a {
 }
 
 .create-btn {
-    /*margin: auto 10px;*/
     font-size: 14pt;
 }
 
 .index-side {
     margin-top: 80px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#tagcloud {
+    text-align: center;
 }
 
 .md-help li {
@@ -693,8 +697,6 @@ footer > a {
 
     .index-side {
         margin-top: 0;
-        display: flex;
-        justify-content: center;
     }
 
     .tab .nav-tabs li {

@@ -49,6 +49,7 @@ namespace GuideHaven.Models
 
         [AllowAnonymous]
         [HttpPost("Tags/{searchText}")]
+        [HttpGet("Tags/{searchText}")]
         public async Task<IActionResult> SearchTags(string searchText)
         {
             var guides = context.GetGuides(context);
