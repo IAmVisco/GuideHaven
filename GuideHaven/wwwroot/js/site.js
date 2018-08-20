@@ -73,4 +73,9 @@
         $("#md-btn").toggleClass("glyphicon-plus");
         $("#md-btn").toggleClass("glyphicon-minus");
     });
+
+    $("#tagcloud a").tagcloud({
+        //size: { start: 12, end: 16, unit: "px" },
+        color: { start: '#3498DB', end: '#46CFB0' }
+    });
 });
