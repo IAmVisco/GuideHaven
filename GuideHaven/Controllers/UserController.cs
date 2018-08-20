@@ -43,6 +43,7 @@ namespace GuideHaven.Controllers
             public List<Guide> Guides { get; set; }
         }
 
+        [HttpGet("User/{name}")]
         public async Task<IActionResult> Index(string name)
         {
             //CreateMedals();

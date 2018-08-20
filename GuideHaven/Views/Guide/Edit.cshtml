@@ -32,9 +32,9 @@
 <script src="~/js/mdhtmlform.js"></script>
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
 <script src="~/js/tags-input-beautifier.js"></script>
+<script src="~/js/step_functions.js"></script>
 <script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.6.0/uploadcare.min.js"></script>
-<script>var index = 0, visual_index = 0;</script>
-
+<script>var index = 0, visual_index = 0, multiWidget;</script>
 
 <hr />
 <div class="row">
@@ -100,11 +100,6 @@
     }
     tags.update(arr);
 </script>
-<script src="~/js/step_functions.js"></script>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
 
 @for (int i = 0; i < Model.GuideSteps.Count; i++)
 {
@@ -121,10 +116,25 @@
             + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
             + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
+            + '<label class="control-label">@Localizer["Images"] </label>'
+            + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
+            + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
+
             + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
             + '<span class="glyphicon glyphicon-remove"></span></button></div >'
         );
         document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
+        multiWidget = uploadcare.MultipleWidget($("#multi" + index));
+        multiWidget.onChange(function (info) {
+            if (!info) widgetCleared(index);
+        });
+        multiWidget.onUploadComplete(function (info) {
+            uploadHandler(info, index);
+        });
+        @if (Model.GuideSteps[index].Images != null)
+        {
+            @:multiWidget.value('@Model.GuideSteps[index].Images.Split(',')[0]');
+        }
         index++;
         visual_index++;
     </script>
@@ -134,3 +144,8 @@
     index--;
     visual_index--;
 </script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

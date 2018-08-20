@@ -76,6 +76,14 @@
                 <div id="@step" class="step">
                     <h2 class="step-header">@item.Header</h2>
                     <div class="step-content">@Html.Raw(item.Content)</div>
+                    @if (item.Images != null)
+                    {
+                        string[] images = item.Images.Split(',');
+                        @foreach (var img in images.Skip(1))
+                        {
+                            <img src="@img" class="step-img"/>
+                        }
+                    }
                 </div>
             }
         </div>

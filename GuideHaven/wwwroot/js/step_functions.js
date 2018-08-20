@@ -1,5 +1,30 @@
-﻿var index = 0, visual_index = 0;
-var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+﻿var index = 0,
+    visual_index = 0,
+    imgs = "";
+
+var widget = uploadcare.Widget('[role=uploadcare-uploader]'),
+    multiWidget = uploadcare.MultipleWidget($("#multi0"));
+
+function uploadHandler(info, index) {
+    var arr = [];
+    arr.push(info.uuid);
+    for (var i = 0; i < info.count; i++) {
+        arr.push(info.cdnUrl + "nth/" + i + "/");
+    }
+    $("#images" + index).val(arr.join());
+}
+
+function widgetCleared(index) {
+    $("#images" + index).val("");
+}
+
+
+multiWidget.onChange(function (info) {
+    if (!info) widgetCleared(0);
+});
+multiWidget.onUploadComplete(function (info) {
+    uploadHandler(info, 0);
+});
 
 function createStep() {
 	index++;
@@ -13,6 +38,10 @@ function createStep() {
 
         + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
 
+        + '<label class="control-label">Images</label>'
+        + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
+        + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
+
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
         + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
@@ -21,6 +50,15 @@ function createStep() {
     );
     document.getElementById("step" + (index + 1)).scrollIntoView();
     new MdHtmlForm(document.getElementById('DummyArea' + index));
+
+    multiWidget = uploadcare.MultipleWidget($("#multi" + index));
+    multiWidget.onChange(function (info) {
+        if (!info) widgetCleared(index);
+    });
+    multiWidget.onUploadComplete(function (info) {
+        uploadHandler(info, index);
+    });
+
 }
 
 function deleteStep(id) {
@@ -50,9 +88,8 @@ function decodeHtml(html) {
     return txt.value;
 }
 
-widget.onUploadComplete(function(info) {
+widget.onUploadComplete(function (info) {
     $("#image-url").val(info.cdnUrl);
-    $(".glyphicon-ok").fadeIn();
     $("#desc-img").addClass("desc-img");
     $("#desc-img").attr("src", info.cdnUrl);
 });
