@@ -11,7 +11,7 @@
     {
         options.Add(new SelectListItem { Value = entry.Name, Text = entry.Value });
     }
-    options = options.OrderBy(x => x.Value).ToList();
+    options = options.OrderBy(x => x.Text).ToList();
 }
 
 <h2>@Localizer["CreateGuide"]</h2>

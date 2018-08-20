@@ -61,6 +61,19 @@ namespace GuideHaven.Models
                 return View("Index");
         }
 
+        [AllowAnonymous]
+        [HttpGet("Categories/{category}")]
+        public async Task<IActionResult> GetGuidesByCategory(string category)
+        {
+            var guides = context.GetGuides(context);
+            if (!string.IsNullOrEmpty(category))
+            {
+                return View("Index", guides.Where(x => x.Category == category).ToList());
+            }
+            else
+                return View("Index");
+        }
+
         // GET: Guide/Details/5
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
