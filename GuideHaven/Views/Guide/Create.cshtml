@@ -45,8 +45,7 @@
                 <label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                 <input id="image-url" asp-for="Image" hidden />
                 <input type="hidden" role="uploadcare-uploader" name="content" data-images-only />
-                <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
-                <img src="" id="desc-img" />
+                <img src="" id="desc-img" /><br />
 
                 <label class="control-label">@Localizer["Tags"]</label>
                 <input name="tags" type="text" placeholder="@Localizer["Tags"]...">
@@ -63,6 +62,7 @@
                     <label class="control-label" style="display: block">@Localizer["Step"] 1</label>
                     <label asp-for="GuideSteps[0].Header" class="control-label">@Localizer["Title"]</label>
                     @Html.TextBoxFor(model => model.GuideSteps[0].Header, new { @class = "form-control", required = "" })
+
                     <label asp-for="GuideSteps[0].Content" class="control-label">@Localizer["Content"]</label>
                     <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="5"></textarea>
                     @Html.TextAreaFor(model => model.GuideSteps[0].Content, new {
@@ -70,6 +70,10 @@
                         data_mdhtmlform_group = "0",
                         style = "display: none;"
                     })
+
+                    <label class="control-label">Images</label>
+                    <input id="images0" hidden name="GuideSteps[0].Images" />
+                    <input type="hidden" id="multi0" name="content" data-images-only data-multiple />
                 </div>
             </div>
             <button type="button" id="create_step" class="btn btn-success"
@@ -91,7 +95,6 @@
     <script src="/js/step_functions.js"></script>
     <script src="~/js/showdown.js"></script>
     <script src="~/js/mdhtmlform.js"></script>
-
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

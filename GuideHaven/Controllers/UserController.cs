@@ -36,6 +36,7 @@ namespace GuideHaven.Controllers
             this.guidecontext = guidecontext;
         }
 
+        [HttpGet("User/{name}")]
         public async Task<IActionResult> Index(string name)
         {
             ViewData["Guides"] = guidecontext.GetGuides(guidecontext, userManager.Users.FirstOrDefault(x => x.UserName == name).Id);
