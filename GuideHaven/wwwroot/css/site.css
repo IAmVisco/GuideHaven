@@ -703,6 +703,10 @@ footer > a {
 		margin-bottom: 5px;
 	}
 
+    .tab .nav-tabs {
+        width: 100%;
+    }
+
 	.tab .nav-tabs li a,
 	.tab .nav-tabs li a:hover {
 		border-bottom: 1px solid #dfdfdf;
