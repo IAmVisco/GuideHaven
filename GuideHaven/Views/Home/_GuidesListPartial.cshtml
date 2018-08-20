@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.AspNetCore.Identity
 @using GuideHaven.Areas.Identity.Data;
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<GuideLocalizer> Localizer
 @inject UserManager<ApplicationUser> userManager
 
 @{ int i = 0; }
@@ -23,17 +23,20 @@
 
             <div class="guide-inner">
                 <h4 class="guide-header"><strong>@item.GuideName</strong></h4>
-                <span class="guide-author"><strong>by&nbsp;
-                    @{ApplicationUser owner = await userManager.FindByIdAsync(item.Owner);}
-                    @if (owner != null)
-                    {
-                        @owner.UserName
-                    }
-                    else
-                    {
-                        @Localizer["DeletedUser"]
-                    }
-                </strong></span>
+                <span class="guide-author">
+                    <strong>
+                        @Localizer["by"]
+                        @{ApplicationUser owner = await userManager.FindByIdAsync(item.Owner);}
+                        @if (owner != null)
+                        {
+                            @owner.UserName
+                        }
+                        else
+                        {
+                            @Localizer["DeletedUser"]
+                        }
+                    </strong>
+                </span>
                 @if (item.Ratings != null)
                 {
                     <fieldset class="rating-index">
@@ -59,8 +62,8 @@
                 {
                     <span>@Localizer["NoRatingsYet"]</span>
                 }
-                <span class="guide-views guide-info"><i class="icon-eye-open"></i>  @item.Views</span>
-                <span class="guide-date guide-info"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
+                <span class="guide-views guide-info" title="@item.Views  @Localizer["Views"]"><i class="icon-eye-open"></i>  @item.Views</span>
+                <span class="guide-date guide-info" title="@Localizer["Created"]: @item.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
                 <p>@item.Description</p>
             </div>
         </div>

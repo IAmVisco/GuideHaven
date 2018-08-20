@@ -162,6 +162,9 @@
   <data name="Index" xml:space="preserve">
     <value>Главная</value>
   </data>
+  <data name="loc" xml:space="preserve">
+    <value>ru</value>
+  </data>
   <data name="NoDelete" xml:space="preserve">
     <value>Нет, я передумал</value>
   </data>
@@ -179,5 +182,53 @@
   </data>
   <data name="YesDelete" xml:space="preserve">
     <value>Да, удалить эту инструкцию</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Назад к списку</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Тэги</value>
+  </data>
+  <data name="ArrowsTip" xml:space="preserve">
+    <value>Вы можете использовать стрелки на клавиатуре чтобы переключать шаги.</value>
+  </data>
+  <data name="by" xml:space="preserve">
+    <value>от</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Создано</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>Совет!</value>
+  </data>
+  <data name="Views" xml:space="preserve">
+    <value>просмотров</value>
+  </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Добавить комментарий...</value>
+  </data>
+  <data name="GuideName" xml:space="preserve">
+    <value>Название инструкции</value>
+  </data>
+  <data name="Header" xml:space="preserve">
+    <value>Заголовок</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Images" xml:space="preserve">
+    <value>Изображения</value>
   </data>
 </root>

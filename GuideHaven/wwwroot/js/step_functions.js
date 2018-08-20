@@ -1,16 +1,60 @@
-﻿var index = 0, visual_index = 0;
+﻿var index = 0,
+    visual_index = 0,
+    imgs = "";
 
-function createStep() {
+var widget = uploadcare.Widget('[role=uploadcare-uploader]');
+
+widget.onChange(function (file) {
+    if (file) {
+        file.done(function (info) {
+            $("#image-url").val(info.cdnUrl);
+            $("#desc-img").addClass("desc-img");
+            $("#desc-img").attr("src", info.cdnUrl);
+        });
+    }
+    else {
+        $("#image-url").val("");
+        $("#desc-img").attr("src", "");
+    }
+});
+
+multiWidget = uploadcare.MultipleWidget($("#multi0"));
+
+function uploadHandler(info, index) {
+    var arr = [];
+    arr.push(info.uuid);
+    for (var i = 0; i < info.count; i++) {
+        arr.push(info.cdnUrl + "nth/" + i + "/");
+    }
+    $("#images" + index).val(arr.join());
+}
+
+function widgetCleared(index) {
+    $("#images" + index).val("");
+}
+
+multiWidget.onChange(function (info) {
+    if (!info) widgetCleared(0);
+});
+multiWidget.onUploadComplete(function (info) {
+    uploadHandler(info, 0);
+});
+
+function createStep(step, header, content, images) {
 	index++;
 	visual_index++;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
+        + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Header">' + header + '</label>'
         + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
+        + '<label class="control-label" for="GuideSteps_' + index + '__Content">' + content + '</label>'
 
         + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
+
+        + '<label class="control-label" style="margin-right: 3px;">' + images + '</label>'
+        + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
+        + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
 
         + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
         + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
@@ -20,6 +64,15 @@ function createStep() {
     );
     document.getElementById("step" + (index + 1)).scrollIntoView();
     new MdHtmlForm(document.getElementById('DummyArea' + index));
+
+    multiWidget = uploadcare.MultipleWidget($("#multi" + index));
+    multiWidget.onChange(function (info) {
+        if (!info) widgetCleared(index);
+    });
+    multiWidget.onUploadComplete(function (info) {
+        uploadHandler(info, index);
+    });
+
 }
 
 function deleteStep(id) {
@@ -48,19 +101,3 @@ function decodeHtml(html) {
     txt.innerHTML = html;
     return txt.value;
 }
-
-document.getElementById("upload_widget_opener").addEventListener("click", function() {
-    cloudinary.openUploadWidget({ cloud_name: 'dzg8mz4pm', upload_preset: 'qsebzf0m', folder: 'guide_thumbnails' },
-        function (error, result) {
-            console.log(error, result);           
-        });
-}, false);
-
-$(document).on('cloudinarywidgetsuccess', function (e, data) {
-    console.log("Global success", e, data);
-    $("#image-url").val(data[0].url);
-    $(".glyphicon-ok").fadeIn();
-    $("#desc-img").addClass("desc-img");
-    $("#desc-img").attr("src", data[0].url);
-    //$("#url").text(data[0].url);
-});

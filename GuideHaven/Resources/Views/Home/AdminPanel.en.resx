@@ -133,13 +133,13 @@
     <value>Email</value>
   </data>
   <data name="GiveAdmin" xml:space="preserve">
-    <value>Give Admin</value>
+    <value>Give admin</value>
   </data>
   <data name="NotBanned" xml:space="preserve">
     <value>Not Banned</value>
   </data>
   <data name="RemoveAdmin" xml:space="preserve">
-    <value>Remove Admin</value>
+    <value>Remove admin</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Status</value>

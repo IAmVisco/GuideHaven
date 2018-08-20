@@ -1,0 +1,30 @@
+﻿@model GuideHaven.Controllers.UserController.ProfileModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>@Model.User.UserName Profile</h2>
+<a asp-area="Identity" asp-page="/Account/Manage/Index"><span class="glyphicon glyphicon-cog"></span> Edit profile</a>
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">Localizer["CreateGuide"]</a>
+}
+<div class="row">
+    <div class="col-md-8">
+        <h3>Your Guides</h3>
+        @await Html.PartialAsync("../Home/_GuidesListPartial", Model.Guides,
+            new ViewDataDictionary(this.ViewData) { { "mode", "l" } })
+    </div>
+    <div class="col-md-4">
+        <h3>Your Medals</h3>
+        <ul>
+            @if (Model.Medals != null)
+            {
+                foreach (var item in Model.Medals)
+                {
+                    <li title="@item.Description">@item.Name</li>
+                }
+            }
+        </ul>
+    </div>
+</div>

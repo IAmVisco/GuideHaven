@@ -1,6 +1,30 @@
 ﻿var sidenavTop = $('.sidenav').offset().top;
 var step = 0;
 
+var connection = new signalR.HubConnectionBuilder()
+    .withUrl('/comments')
+    .build();
+
+connection.on('addcomment', function (comment) {
+    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comment);
+
+    $(".like-lbl").on("click", function () {
+        let likes = parseInt(this.nextSibling.innerHTML);
+        if (this.previousSibling.checked)
+            likes -= 1;
+        else
+            likes += 1;
+        this.nextSibling.innerHTML = likes;
+        post_like($(this));
+    });
+});
+
+connection.start();
+
+function join_group() {
+    connection.invoke("joingroup", $("#guideId").attr("value"));
+}
+
 function set_rating(rating) {
     $("#star" + rating).prop("checked", true);
 }
@@ -11,7 +35,7 @@ function get_rating() {
         url: '/Guide/GetRating',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
-            $("#rating-text").text("Rating: " + response.toFixed(2) + " stars");
+            $("#rating-number").text(response.toFixed(2));
             set_rating(Math.round(response));
         }
     });
@@ -24,6 +48,20 @@ function get_comments() {
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
             addComments(response);
+        }
+    });
+}
+
+function get_likes() {
+    $.ajax({
+        type: "GET",
+        url: '/Guide/GetLikes',
+        data: { guideId: $("#guideId").attr("value") },
+        success: function (response) {
+            let index = 0;
+            $(".like-count").each(function () {
+                $(this).html(response[index++]);
+            });
         }
     });
 }
@@ -70,7 +108,9 @@ $(document).ready(function () {
     $("#desc").click();
     get_rating();
     get_comments();
-    setInterval(get_comments, 3000);
+
+    setInterval(get_likes, 3000);
+    setTimeout(join_group, 500);
 
     function showPopover() {
         $(".rating").popover("toggle");
@@ -106,6 +146,12 @@ $(document).ready(function () {
 
     $(".sidenav li").on("click", changeStep);
 
+    $(".arrows-alert").on("closed.bs.alert", function () {
+        var date = new Date();
+        date = new Date(date.getTime() + 1000 * 60 * 60 * 24 * 365);
+        document.cookie = 'ArrowAlert=seen;expires=' + date.toGMTString() + ';path=/';
+    });
+
     $("#comment-field").keyup(function (e) {
         if ($("#comment-field").val().length > 0) {
             $(".comment-btn").removeAttr("disabled");
@@ -136,7 +182,7 @@ $(document).ready(function () {
             $.post("/Guide/PostComment", {
                 guideId: $("#guideId").attr("value"),
                 comment: $("#comment-field").val()
-            });
+            }, function (data) { connection.invoke("addcomment", $("#guideId").attr("value"), data) });
             $("#comment-field").val("");
             $(".comment-btn").attr("disabled", true);
         }

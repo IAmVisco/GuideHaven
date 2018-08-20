@@ -9,7 +9,6 @@
     height: 34px;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #555;
     background-color: #fff;
     background-image: none;
     border: 1px solid #ccc;
@@ -101,20 +100,22 @@
 }
 
 .tags-input span {
-	float: none;
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 4;
-	padding: inherit;
+    float: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    padding: inherit;
+    color: #000;
 }
 
 .tags-input span+span {
 	position: static;
 	padding: 0;
 	opacity: .5;
+
 }
 
 .tags .tag+.tags-input {

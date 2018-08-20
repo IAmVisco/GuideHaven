@@ -9,16 +9,16 @@
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
 <link rel="stylesheet" href="~/css/comment.css" />
-<script async src="~/js/details.js"></script>
+<script src="~/js/signalr.min.js"></script>
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
 @*<script src="~/js/tags-input-beautifier.js"></script>*@
 
 <div style="position: relative">
-    <h3 style="display: inline-block">@Html.DisplayFor(model => model.GuideName)</h3>
+    <h2 style="display: inline-block"><strong>@Html.DisplayFor(model => model.GuideName)</strong></h2>
     <input id="guideId" hidden value="@Model.GuideId" />
     @{ApplicationUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
-        By @if (owner != null)
+        @Localizer["by"] @if (owner != null)
         {
             @owner.UserName
         }
@@ -27,23 +27,23 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
- (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
-            <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;"><i class="icon-edit icon-large"></i></a>
+            <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;" title="@Localizer["Edit"]"><i class="icon-edit icon-large"></i></a>
         }
     </p>
 
     <fieldset class="rating">
-        <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome"></label>
-        <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4" title="Pretty good"></label>
-        <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Meh"></label>
-        <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Kinda bad"></label>
-        <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Awful"></label>
-        <p id="rating-text"></p>
+        <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"></label>
+        <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4"></label>
+        <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3"></label>
+        <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2"></label>
+        <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1"></label>
+        <p id="rating-text">@Localizer["Rating"]: <span id="rating-number"></span> <i class="icon-star" style="color: #FFD700;"></i></p>
     </fieldset><br />
-    <span class="details-date details-info"><i class="icon-calendar"></i>  @Model.CreationDate.ToString("HH:mm dd.MM.yyyy")</span>
-    <span class="details-category details-info"><i class="icon-list"></i> @CategoryLocalizer[Model.Category]</span>
-    <span class="details-views details-info"><i class="icon-eye-open"></i>  @Model.Views </span>
+    <span class="details-date details-info" title="@Localizer["Created"]: @Model.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")"><i class="icon-calendar"></i>  @Model.CreationDate.ToString("HH:mm dd.MM.yyyy")</span>
+    <span class="details-category details-info" title="@Localizer["Category"]: @CategoryLocalizer[Model.Category]"><i class="icon-list"></i> @CategoryLocalizer[Model.Category]</span>
+    <span class="details-views details-info" title="@Model.Views @Localizer["Views"]"><i class="icon-eye-open"></i>  @Model.Views </span>
     <form asp-action="SearchTags">
         <span class="tags details-tags">
             @foreach (var tag in Model.GuideTags)
@@ -55,18 +55,20 @@
     </form>
     <hr />
     <div class="row">
+        <div class="alert alert-info alert-dismissible arrows-alert" style="display: none;">
+            <a href="#" class="close" id="close-arrow-alert" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong><i class="icon-lightbulb"></i> @Localizer["Tip"]</strong> @Localizer["ArrowsTip"]
+        </div>
         <div class="col-xs-8 steps-wrap">
-            @*<div class="alert alert-info alert-dismissible arrows-alert" style="display: none;">
-                    <a href="#" class="close" id="close-arrow-alert" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong><i class="icon-lightbulb"></i> Tip!</strong> You can use left and right arrows on your keyboard to navigate through steps.
-                </div>*@
             <div id="step0" class="step">
                 <h2 class="step-header">@Localizer["Description"]</h2>
                 @Html.DisplayFor(model => model.Description)
                 <img src="@Html.DisplayFor(model => model.Image)" class="desc-img" />
             </div>
-            @{int i = 0;
-                string step = "";}
+            @{
+            int i = 0;
+            string step = "";
+            }
             @foreach (var item in Model.GuideSteps)
             {
                 i++;
@@ -74,6 +76,14 @@
                 <div id="@step" class="step">
                     <h2 class="step-header">@item.Header</h2>
                     <div class="step-content">@Html.Raw(item.Content)</div>
+                    @if (item.Images != null)
+                    {
+                        string[] images = item.Images.Split(',');
+                        @foreach (var img in images.Skip(1))
+                        {
+                            <img src="@img" class="step-img"/>
+                        }
+                    }
                 </div>
             }
         </div>
@@ -84,7 +94,7 @@
         <div class="col-xs-4 sidenav">
             @{i = 0;}
             <ol id="side-menu">
-                <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this, @i)">Description</a></li>
+                <li class="sidenav-option"><a href="#step0" id="desc" onclick="focusOption(this, @i)">@Localizer["Description"]</a></li>
                 @foreach (var item in Model.GuideSteps)
                 {
                     i++;
@@ -95,14 +105,14 @@
         </div>
     </div>
     <div class="comments">
-        @Localizer["Comments"]:<br />
+        <strong>@Localizer["Comments"]:</strong><br />
         <div id="posted-comments"></div>
         @if (User.Identity.IsAuthenticated)
         {
             <div class="comment-wrap">
                 <div class="comment-block comment-shadow">
                     <form action="post">
-                        <textarea name="" id="comment-field" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                        <textarea name="" id="comment-field" cols="30" rows="3" placeholder="@Localizer["AddComment"]"></textarea>
                     </form>
                 </div>
             </div>
@@ -110,3 +120,5 @@
         }
     </div>
 </div>
+
+<script src="~/js/details.js"></script>

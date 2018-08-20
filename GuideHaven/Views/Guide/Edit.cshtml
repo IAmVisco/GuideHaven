@@ -7,8 +7,6 @@
     ViewData["Title"] = Localizer["Edit"];
     int index = 0;
 
-    ViewData["Title"] = Localizer["Create"];
-
     List<SelectListItem> options = new List<SelectListItem>();
     foreach (var entry in CategoryResource.GetAllStrings())
     {
@@ -21,14 +19,21 @@
 }
 
 <h2>@Localizer["EditGuide"]</h2>
-
+<script>
+    UPLOADCARE_PUBLIC_KEY = '03f07bf8408eb92c146e';
+    UPLOADCARE_LOCALE = '@Localizer["loc"]';
+    UPLOADCARE_TABS = 'file camera url gdrive gphotos dropbox vk';
+    UPLOADCARE_IMAGES_ONLY = true;
+    UPLOADCARE_CLEARABLE = true;
+</script>
 <script src="~/js/he.js"></script>
 <script src="~/js/showdown.js"></script>
 <script src="~/js/to-markdown.js"></script>
 <script src="~/js/mdhtmlform.js"></script>
+
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
 <script src="~/js/tags-input-beautifier.js"></script>
-<script>var index = 0, visual_index = 0;</script>
+
 
 
 <hr />
@@ -48,12 +53,9 @@
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new { @class = "bs-textarea", rows = "5" })
 
-                @*<label class="control-label">@Localizer["Tags"]</label>
-                <input name="tags" type="text" placeholder="Tags...">*@
-
                 <label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                 <input id="image-url" asp-for="Image" hidden />
-                <a href="#" id="upload_widget_opener">Upload image</a>
+                <input type="hidden" role="uploadcare-uploader" name="content" data-images-only />
                 <span class="glyphicon glyphicon-ok" style="display: none"></span><br />
                 <img src="
                 @if (Model.Image != null)
@@ -62,7 +64,8 @@
                 }
                 " id="desc-img" class="desc-img" />
 
-                <input name="tags" type="text">
+                <label class="control-label">@Localizer["Tags"]</label>
+                <input name="tags" type="text" placeholder="@Localizer[" Tags"]...">
 
                 <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
                 <select name="category" asp-for="Category" asp-items="options" class="form-control">
@@ -70,37 +73,9 @@
                 </select>
 
                 <div id="step_holder" class="form-group">
-                    @for (int i = 0; i < Model.GuideSteps.Count; i++)
-                    {
-                        <script>
-                            document.getElementById("step_holder").insertAdjacentHTML(
-                                'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
-	                            + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">Step ' + (visual_index + 1) + '</label>'
-	                            + '<label class="control-label" for="GuideSteps_' + index + '__Header">Header</label>'
-	                            + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-                                + '<label class="control-label" for="GuideSteps_' + index + '__Content">Content</label>'
-
-                                + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5">'
-                                + toMarkdown(he.decode("@Model.GuideSteps[index].Content")) + '</textarea>'
-                                + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
-                                + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
-
-                                + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
-                                + '<span class="glyphicon glyphicon-remove"></span></button></div >'
-                            );
-                            document.getElementById('GuideSteps_' + index + '__Header').value = he.decode('@Model.GuideSteps[index].Header');
-                            index++;
-                            visual_index++;
-                        </script>
-                        index++;
-                    }
-                    <script>
-                        index--;
-                        visual_index--;
-                    </script>
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">Create step</button>
+            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
             <hr />
             <div class="form-group">
                 <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
@@ -115,6 +90,10 @@
     </div>
 </div>
 
+<script charset="utf-8" src="https://ucarecdn.com/libs/widget/3.6.0/uploadcare.min.js"></script>
+
+<script src="~/js/step_functions.js"></script>
+<script src="~/js/edit_functions.js"></script>
 <script>
     var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
     var arr = new Array();
@@ -123,9 +102,28 @@
         @:arr.push("@tag.TagId");
     }
     tags.update(arr);
+    widget.value('@Model.Image');
 </script>
-<script src="~/js/step_functions.js"></script>
-<script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+@for (int i = 0; i < Model.GuideSteps.Count; i++)
+{
+    string imgs = "";
+    @if (@Model.GuideSteps[index].Images != null)
+    {
+        imgs = Model.GuideSteps[index].Images.Split(',')[0];
+    }
+    <script>
+        recreateSteps('@Localizer["Step"]', '@Localizer["Header"]', '@Localizer["Content"]', '@Localizer["Images"]',
+            '@Model.GuideSteps[index].Header', '@Model.GuideSteps[index].Content', '@imgs');
+    </script>
+
+    index++;
+}
+<script>
+    index--;
+    visual_index--;
+</script>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
