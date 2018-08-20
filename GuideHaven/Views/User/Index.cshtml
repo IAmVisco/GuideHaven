@@ -1,12 +1,24 @@
-﻿@using GuideHaven.Areas.Identity.Data
-@model ApplicationUser
+﻿@model GuideHaven.Controllers.UserController.ProfileModel
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>@Model.UserName Profile</h2>
+<h2>@Model.User.UserName Profile</h2>
+
+<h3>Your Medals</h3>
+<ul>
+    @if (Model.Medals != null)
+    {
+        var medals = ViewData["Medals"];
+        foreach (var item in Model.Medals)
+        {
+            <li title="@item.Description">@item.Name</li>
+        }
+    }
+</ul>
 
 <h3>Your Guides</h3>
-@await Html.PartialAsync("../Home/_GuidesListPartial", ViewData["Guides"], 
+@await Html.PartialAsync("../Home/_GuidesListPartial", Model.Guides,
     new ViewDataDictionary(this.ViewData) { { "mode", "l" } })
+
 

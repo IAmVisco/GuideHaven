@@ -17,11 +17,13 @@ namespace GuideHaven.Models
     {
         private readonly GuideContext context;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IdentityContext identityContext;
 
-        public GuideController(GuideContext context, UserManager<ApplicationUser> userManager)
+        public GuideController(GuideContext context, UserManager<ApplicationUser> userManager, IdentityContext identityContext)
         {
             this.context = context;
             this.userManager = userManager;
+            this.identityContext = identityContext;
         }
 
         public string ReturnUrl { get; set; }
@@ -103,6 +105,7 @@ namespace GuideHaven.Models
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
+                CheckGuideMedals();
                 return RedirectToAction(nameof(Index));
             }
             return View(guide);
@@ -186,7 +189,7 @@ namespace GuideHaven.Models
             guide.Comments.Add(newComment);
             context.SaveChanges();
             string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
-
+            CheckCommentMedals();
             return output;
         }
 
@@ -241,6 +244,7 @@ namespace GuideHaven.Models
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
+            CheckRateMedals(rating);
             return Ok();
         }
 
@@ -263,6 +267,7 @@ namespace GuideHaven.Models
                 guide.Comments.Find(x => x == comment).Likes.RemoveAll(g => g.Owner == User.Identity.Name);
             }
             context.SaveChanges();
+            CheckLikeMedals();
             return Ok();
         }
 
@@ -307,6 +312,65 @@ namespace GuideHaven.Models
                 item.GuideTags.Add(guideTag);
             }
             //guide.GuideTags = list;
+        }
+
+        private void CheckLikeMedals()
+        {
+            int[] conditions = new int[] { 1, 10, 100 };
+            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+            CheckProcess(user, conditions, 1, 3, context.Likes.Where(x => x.Owner == User.Identity.Name).ToList());
+            identityContext.SaveChanges();
+        }
+
+        private void CheckCommentMedals()
+        {
+            int[] conditions = new int[] { 1, 10, 100 };
+            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+            CheckProcess(user, conditions, 4, 6, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
+            identityContext.SaveChanges();
+        }
+
+        private void CheckGuideMedals()
+        {
+            int[] conditions = new int[] { 1, 10, 100 };
+            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+            CheckProcess(user, new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == user.Id).ToList());
+            identityContext.SaveChanges();
+        }
+        
+
+        private void CheckProcess<T>(ApplicationUser user, int[] conditions, int startMedalIndex, int endIndex, List<T> list)
+        {
+            int index = 0;
+            for (int i = startMedalIndex; i <= endIndex; i++)
+            {
+                if (list.Count() == conditions[index] && !user.Medals.Any(x => x.MedalId == i))
+                {
+                    var newMedal = new AspNetUserMedals() { Medal = identityContext.Medals.FirstOrDefault(x => x.Id == i), MedalId = i, User = user, UserId = user.Id };
+                    identityContext.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == i).Users.Add(newMedal);
+                }
+                index++;
+            }
+        }
+
+        private void CheckRateMedals(int rating)
+        {
+            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+            if (rating == 5 && !user.Medals.Any(x => x.MedalId == 8))
+            {
+                AddMedal(8, user);
+            }
+            if (context.Likes.Where(x => x.Owner == User.Identity.Name).Count() == 1 && !user.Medals.Any(x => x.MedalId == 9))
+            {
+                AddMedal(9, user);
+            }
+            identityContext.SaveChanges();
+        }
+
+        private void AddMedal(int id, ApplicationUser user)
+        {
+            var newMedal = new AspNetUserMedals() { Medal = identityContext.Medals.FirstOrDefault(x => x.Id == id), MedalId = id, User = user, UserId = user.Id };
+            identityContext.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == id).Users.Add(newMedal);
         }
 
         private string CreateComment(Comment item)

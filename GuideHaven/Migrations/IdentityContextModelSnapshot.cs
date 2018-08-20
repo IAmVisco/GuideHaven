@@ -26,8 +26,6 @@ namespace GuideHaven.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
-                    b.Property<int>("CommentCount");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -35,8 +33,6 @@ namespace GuideHaven.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<int>("LikeCount");
 
                     b.Property<bool>("LockoutEnabled");
 

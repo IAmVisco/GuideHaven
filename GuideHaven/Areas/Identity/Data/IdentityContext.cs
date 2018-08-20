@@ -17,6 +17,7 @@ namespace GuideHaven.Models
         }
 
         public DbSet<Medal> Medals { get; set; }
+        public DbSet<ApplicationUser> UsersWithMedals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,7 +25,8 @@ namespace GuideHaven.Models
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
-            //builder.Entity<Medal>().ToTable("Medal");
+
+            //builder.Entity<Medal>().ToTable("Medals");
 
             builder.Entity<AspNetUserMedals>()
                 .HasKey(t => new { t.UserId, t.MedalId });

@@ -1,22 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GuideHaven.Migrations
 {
-    public partial class UserUpdate : Migration
+    public partial class yahz : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.CreateTable(
-                name: "Medal",
+                name: "Medals",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medal", x => x.Id);
+                    table.PrimaryKey("PK_Medals", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -24,15 +28,15 @@ namespace GuideHaven.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    MedalId = table.Column<string>(nullable: false)
+                    MedalId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserMedals", x => new { x.UserId, x.MedalId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserMedals_Medal_MedalId",
+                        name: "FK_AspNetUserMedals_Medals_MedalId",
                         column: x => x.MedalId,
-                        principalTable: "Medal",
+                        principalTable: "Medals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -50,12 +54,14 @@ namespace GuideHaven.Migrations
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        { 
+
             migrationBuilder.DropTable(
                 name: "AspNetUserMedals");
 
             migrationBuilder.DropTable(
-                name: "Medal");
+                name: "Medals");
+
         }
     }
 }
