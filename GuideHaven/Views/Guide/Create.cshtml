@@ -38,14 +38,14 @@
 
                 <label asp-for="Description" class="control-label">@Localizer["ShortDescription"]</label>
                 @Html.TextAreaFor(model => model.Description, new {
-                   @class = "bs-textarea",
-                   rows = "5"
-               })
+               @class = "bs-textarea",
+               rows = "5"
+           })
 
                 <label asp-for="Image" class="control-label">@Localizer["Image"]</label>
                 <input id="image-url" asp-for="Image" hidden />
                 <input type="hidden" role="uploadcare-uploader" name="content" data-images-only />
-                <img src="" id="desc-img" /><br />
+                @*<img src="" id="desc-img" />*@<br />
 
                 <label class="control-label">@Localizer["Tags"]</label>
                 <input name="tags" type="text" placeholder="@Localizer["Tags"]...">
@@ -66,28 +66,27 @@
                     <label asp-for="GuideSteps[0].Content" class="control-label">@Localizer["Content"]</label>
                     <textarea class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="0" rows="5"></textarea>
                     @Html.TextAreaFor(model => model.GuideSteps[0].Content, new {
-                        @class = " mdhtmlform-html",
-                        data_mdhtmlform_group = "0",
-                        style = "display: none;"
-                    })
+                       @class = " mdhtmlform-html",
+                       data_mdhtmlform_group = "0",
+                       style = "display: none;"
+                   })
 
-                    <label class="control-label">Images</label>
+                    <label class="control-label">@Localizer["Images"]</label>
                     <input id="images0" hidden name="GuideSteps[0].Images" />
                     <input type="hidden" id="multi0" name="content" data-images-only data-multiple />
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success"
-                    value="Create step" style="margin-bottom: 10px" onclick="createStep()">
-                @Localizer["CreateStep"]
-                </button>
-                <hr />
-                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
-            </form>
-        </div>
-        <div class="col-md-5">
-            <partial name="_MarkdownHelpPartial" />
-        </div>
+            <button type="button" id="create_step" class="btn btn-success" value="Create step" 
+                    style="margin-bottom: 10px" onclick="createStep('@Localizer["Step"]', '@Localizer["Header"]', 
+                    '@Localizer["Content"]', '@Localizer["Images"]')">@Localizer["CreateStep"]</button>
+            <hr />
+            <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-default">@Localizer["BackToList"]</a>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <partial name="_MarkdownHelpPartial" />
+    </div>
     </div>
     <script>
         var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
