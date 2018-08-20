@@ -481,7 +481,7 @@ footer > a {
     margin: auto 0;
     display: table-cell;
     text-align: center;
-    width: 224px;
+    min-width: 224px;
 }
 
 .guide-inner {
