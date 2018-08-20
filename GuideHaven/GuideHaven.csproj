@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180820090317_yahz.cs" />
+    <Compile Remove="Migrations\20180820091023_yahz.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\images\longtest.jpg" />
     <Content Remove="wwwroot\js\cloudinary-core.js" />
     <Content Remove="wwwroot\ProductSans.otf" />

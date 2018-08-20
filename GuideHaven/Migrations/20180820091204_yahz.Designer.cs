@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuideHaven.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20180815101432_UserUpdate")]
-    partial class UserUpdate
+    [Migration("20180820091204_yahz")]
+    partial class yahz
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace GuideHaven.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("GuideHaven.Areas.Identity.Data.WebUser", b =>
+            modelBuilder.Entity("GuideHaven.Areas.Identity.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -76,7 +76,7 @@ namespace GuideHaven.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("MedalId");
+                    b.Property<int>("MedalId");
 
                     b.HasKey("UserId", "MedalId");
 
@@ -87,8 +87,9 @@ namespace GuideHaven.Migrations
 
             modelBuilder.Entity("GuideHaven.Models.Medal", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
@@ -96,7 +97,7 @@ namespace GuideHaven.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Medal");
+                    b.ToTable("Medals");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -220,7 +221,7 @@ namespace GuideHaven.Migrations
                         .HasForeignKey("MedalId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GuideHaven.Areas.Identity.Data.WebUser", "User")
+                    b.HasOne("GuideHaven.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany("Medals")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -236,7 +237,7 @@ namespace GuideHaven.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("GuideHaven.Areas.Identity.Data.WebUser")
+                    b.HasOne("GuideHaven.Areas.Identity.Data.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -244,7 +245,7 @@ namespace GuideHaven.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("GuideHaven.Areas.Identity.Data.WebUser")
+                    b.HasOne("GuideHaven.Areas.Identity.Data.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -257,7 +258,7 @@ namespace GuideHaven.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("GuideHaven.Areas.Identity.Data.WebUser")
+                    b.HasOne("GuideHaven.Areas.Identity.Data.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -265,7 +266,7 @@ namespace GuideHaven.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("GuideHaven.Areas.Identity.Data.WebUser")
+                    b.HasOne("GuideHaven.Areas.Identity.Data.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

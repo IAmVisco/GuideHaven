@@ -73,12 +73,6 @@ namespace GuideHaven.Controllers
             return View(await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.GuideId).ToListAsync());
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    await CreateUserRoles();
-        //    return View();
-        //}
-
         public IActionResult Authors()
         {
             return View();
