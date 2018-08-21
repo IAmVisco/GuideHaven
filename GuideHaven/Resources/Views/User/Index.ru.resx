@@ -153,6 +153,9 @@
   <data name="5StarDesc" xml:space="preserve">
     <value>Получите 5 звезд на Вашей инструкции</value>
   </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
   <data name="CreateGuide" xml:space="preserve">
     <value>Создать инструкцию</value>
   </data>
@@ -181,7 +184,7 @@
     <value>Оцените любую инструкцию</value>
   </data>
   <data name="RuProfile" xml:space="preserve">
-    <value>Профиль пользователя</value>
+    <value>Профиль</value>
   </data>
   <data name="UserGuides" xml:space="preserve">
     <value>Инструкции пользователя</value>

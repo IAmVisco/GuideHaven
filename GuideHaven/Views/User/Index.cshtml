@@ -1,12 +1,19 @@
 ﻿@model GuideHaven.Controllers.UserController.ProfileModel
+@using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.Localization
+@using GuideHaven.Areas.Identity.Data;
 @inject IViewLocalizer Localizer
+@inject UserManager<ApplicationUser> userManager
 @{
     ViewData["Title"] = "Index";
     bool self = User.Identity.Name == Model.User.UserName;
 }
 
-<h2 style="display: inline-block">@Localizer["RuProfile"] @Model.User.UserName@Localizer["EnProfile"]</h2>
+<h2 style="display: inline-block">@Localizer["RuProfile"] @Model.User.UserName@Localizer["EnProfile"] </h2>
+@if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == @Model.User.UserName), "Admin"))
+{
+    <i class="icon-shield icon-2x" title="@Localizer["Admin"]"></i>
+}
 @if (self)
 {
     <a asp-area="Identity" asp-page="/Account/Manage/Index"><span class="glyphicon glyphicon-cog"></span> @Localizer["ManageProfile"]</a>
@@ -16,7 +23,7 @@
     <div class="col-md-8">
         <h3>
             @if (self)
-            { 
+            {
                 @Localizer["YourGuides"]
             }
             else

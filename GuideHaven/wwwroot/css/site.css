@@ -687,6 +687,10 @@ footer > a {
     margin-left: 15px;
 }
 
+.icon-shield {
+    margin-left: 5px;
+}
+
 @media screen and (max-width: 991px) {
     .row {
         margin: 0;

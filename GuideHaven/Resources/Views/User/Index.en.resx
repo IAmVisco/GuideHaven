@@ -153,6 +153,9 @@
   <data name="5StarDesc" xml:space="preserve">
     <value>Get 5 stars on any of your guides</value>
   </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
   <data name="CreateGuide" xml:space="preserve">
     <value>Create guide</value>
   </data>
