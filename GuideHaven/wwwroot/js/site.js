@@ -51,6 +51,10 @@
 
     var checkBoxes = $('.check');
 
+    $("#users-table").on('all.bs.table', function () {
+        checkBoxes = $('.check');
+    });
+
     $("#checkAll").click(function () {
         checkBoxes.not(this).prop('checked', this.checked);
     });
@@ -80,8 +84,8 @@
         $("#category-btn").toggleClass("glyphicon-minus");
     });
 
-    $("#tagcloud a").tagcloud({
-        //size: { start: 12, end: 16, unit: "px" },
-        color: { start: '#3498DB', end: '#46CFB0' }
-    });
+    //$("#tagcloud a").tagcloud({
+    //    //size: { start: 12, end: 16, unit: "px" },
+    //    color: { start: '#3498DB', end: '#46CFB0' }
+    //});
 });

@@ -70,8 +70,7 @@ new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
                 {
                     categories.Add(entry.Name, entry.Value);
                 }
-                categories = categories.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-                foreach (var pair in categories)
+                foreach (var pair in categories.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value))
                 {
                     <a asp-action="GetGuidesByCategory" asp-controller="Guide" asp-route-category="@pair.Key" class="category">@pair.Value</a>
                 }

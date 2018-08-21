@@ -11,6 +11,8 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
     <form method="post" name="toolbar" id="toolbar">
         <input asp-action="AddRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="@Localizer["Ban"]" />
         <input asp-action="RemoveRole" asp-route-role="Banned" class="btn btn-default" type="submit" value="@Localizer["Unban"]" />
@@ -21,14 +23,14 @@
         <input asp-action="DeleteUsers" class="btn btn-danger" type="submit" value="@Localizer["Delete"]" />
 
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" data-toggle="table" data-sort-name="Username" id="users-table">
                 <thead>
                     <tr>
                         <th scope="col"><input type="checkbox" value="Select all" id="checkAll" /></th>
-                        <th scope="col">@Localizer["Username"]</th>
-                        <th scope="col">@Localizer["Email"]</th>
-                        <th scope="col">@Localizer["Admin"]</th>
-                        <th scope="col">@Localizer["Status"]</th>
+                        <th scope="col" data-sortable="true" data-field="Username">@Localizer["Username"]</th>
+                        <th scope="col" data-sortable="true" data-field="Email">@Localizer["Email"]</th>
+                        <th scope="col" data-sortable="true" data-field="Admin">@Localizer["Admin"]</th>
+                        <th scope="col" data-sortable="true" data-field="Status">@Localizer["Status"]</th>
                     </tr>
                 </thead>
                 <tbody>

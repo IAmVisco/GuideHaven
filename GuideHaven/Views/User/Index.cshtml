@@ -1,30 +1,57 @@
 ﻿@model GuideHaven.Controllers.UserController.ProfileModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @{
     ViewData["Title"] = "Index";
+    bool self = User.Identity.Name == Model.User.UserName;
 }
 
-<h2>@Model.User.UserName Profile</h2>
-<a asp-area="Identity" asp-page="/Account/Manage/Index"><span class="glyphicon glyphicon-cog"></span> Edit profile</a>
-@if (User.Identity.IsAuthenticated)
+<h2 style="display: inline-block">@Localizer["RuProfile"] @Model.User.UserName@Localizer["EnProfile"]</h2>
+@if (self)
 {
-    <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">Localizer["CreateGuide"]</a>
+    <a asp-area="Identity" asp-page="/Account/Manage/Index"><span class="glyphicon glyphicon-cog"></span> @Localizer["ManageProfile"]</a>
+    <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn profile-btn">@Localizer["CreateGuide"]</a>
 }
 <div class="row">
     <div class="col-md-8">
-        <h3>Your Guides</h3>
+        <h3>
+            @if (self)
+            { 
+                @Localizer["YourGuides"]
+            }
+            else
+            {
+                @Localizer["UserGuides"]
+            }
+        </h3>
         @await Html.PartialAsync("../Home/_GuidesListPartial", Model.Guides,
             new ViewDataDictionary(this.ViewData) { { "mode", "l" } })
     </div>
     <div class="col-md-4">
-        <h3>Your Medals</h3>
-        <ul>
-            @if (Model.Medals != null)
+        <h3>
+            @if (self)
             {
-                foreach (var item in Model.Medals)
-                {
-                    <li title="@item.Description">@item.Name</li>
-                }
+                @Localizer["YourMedals"]
             }
-        </ul>
+            else
+            {
+                @Localizer["UserMedals"]
+            }
+        </h3>
+        @if (Model.Medals != null)
+        {
+            foreach (var item in Model.Medals)
+            {
+                <div class="medal">
+                    @*<div class="medal-img-container">*@
+                    <img src="@item.Image" class="medal-img" />
+                    @*</div>*@
+                    <div class="medal-inner">
+                        <h3>@Localizer[item.Name]</h3>
+                        <p>@Localizer[item.Description]</p>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
