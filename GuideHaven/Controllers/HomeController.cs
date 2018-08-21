@@ -68,9 +68,20 @@ namespace GuideHaven.Controllers
             public string ConfirmPassword { get; set; }
         }
 
+        public class GuidesAndTags
+        {
+            public List<Guide> Guides { get; set; }
+            public List<Tag> Tags { get; set; }
+        }
+
         public async Task<IActionResult> Index()
         {
-            return View(await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.GuideId).ToListAsync());
+            GuidesAndTags gnt = new GuidesAndTags()
+            {
+                Guides = await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.GuideId).ToListAsync(),
+                Tags = await context.Tags.Include(x => x.GuideTags).ToListAsync()
+            };
+            return View(gnt);
         }
 
         public IActionResult Authors()

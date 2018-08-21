@@ -27,8 +27,10 @@
                     <a asp-action="Details" asp-route-id="@item.GuideId">@Html.DisplayFor(modelItem => item.GuideName)</a>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.GuideId">@Localizer["Edit"]</a> |
-                    <a href="#" data-toggle="modal" data-target="#@item.GuideId">@Localizer["Delete"]</a>
+                    <a asp-action="Edit" asp-route-id="@item.GuideId" title="@Localizer["Edit"]"><i class="icon-edit icon-large"></i></a> |
+                    <a href="#" data-toggle="modal" data-target="#@item.GuideId" title="@Localizer["Delete"]">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
 
                     <div id="@item.GuideId" class="modal fade" role="dialog">
                         <div class="modal-dialog">

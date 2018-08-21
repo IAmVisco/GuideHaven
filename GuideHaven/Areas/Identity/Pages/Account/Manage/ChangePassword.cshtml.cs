@@ -44,7 +44,7 @@ namespace GuideHaven.Areas.Identity.Pages.Account.Manage
             public string OldPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "LengthWarning", MinimumLength = 6)]
+            [StringLength(64, ErrorMessage = "LengthWarning", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "NewPass")]
             public string NewPassword { get; set; }

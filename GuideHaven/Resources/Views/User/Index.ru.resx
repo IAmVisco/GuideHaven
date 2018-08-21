@@ -117,25 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CategoryList" xml:space="preserve">
-    <value>Список категорий</value>
+  <data name="10Comments" xml:space="preserve">
+    <value>10 комментариев</value>
+  </data>
+  <data name="10CommentsDesc" xml:space="preserve">
+    <value>Оставьте 10 комментариев к любым инструкциям</value>
+  </data>
+  <data name="10Likes" xml:space="preserve">
+    <value>10 лайков</value>
+  </data>
+  <data name="10LikesDesc" xml:space="preserve">
+    <value>Лайкните 10 комментариев</value>
+  </data>
+  <data name="1stComment" xml:space="preserve">
+    <value>Первый комментарий</value>
+  </data>
+  <data name="1stCommentDesc" xml:space="preserve">
+    <value>Оставьте свой первый комментарий</value>
+  </data>
+  <data name="1stGuide" xml:space="preserve">
+    <value>Первая инструкция</value>
+  </data>
+  <data name="1stGuideDesc" xml:space="preserve">
+    <value>Создайте свою первую инструкцию</value>
+  </data>
+  <data name="1stLike" xml:space="preserve">
+    <value>Первый лайк</value>
+  </data>
+  <data name="1stLikeDesc" xml:space="preserve">
+    <value>Лайкните любой комментарий</value>
+  </data>
+  <data name="5Star" xml:space="preserve">
+    <value>Лучший из лучших</value>
+  </data>
+  <data name="5StarDesc" xml:space="preserve">
+    <value>Получите 5 звезд на Вашей инструкции</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Администратор</value>
   </data>
   <data name="CreateGuide" xml:space="preserve">
     <value>Создать инструкцию</value>
   </data>
-  <data name="LatestGuides" xml:space="preserve">
-    <value>Последние инструкции</value>
+  <data name="EnProfile" xml:space="preserve">
+    <value />
   </data>
-  <data name="MostRatedGuides" xml:space="preserve">
-    <value>Лучшие инструкции</value>
+  <data name="ExpCritic" xml:space="preserve">
+    <value>Опытный критик</value>
   </data>
-  <data name="OpenHide" xml:space="preserve">
-    <value>Показать/Скрыть</value>
+  <data name="ExpCriticDesc" xml:space="preserve">
+    <value>Оцените 10 инструкций</value>
   </data>
-  <data name="PopularGuides" xml:space="preserve">
-    <value>Популярные инструкции</value>
+  <data name="MadLad" xml:space="preserve">
+    <value>ПОЛНЫЙ БЕЗУМЕЦ</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Главная страница</value>
+  <data name="MadLadDesc" xml:space="preserve">
+    <value>Получите все остальные медали</value>
+  </data>
+  <data name="ManageProfile" xml:space="preserve">
+    <value>Управление</value>
+  </data>
+  <data name="NewbieCritic" xml:space="preserve">
+    <value>Критик-новичок</value>
+  </data>
+  <data name="NewbieCriticDesc" xml:space="preserve">
+    <value>Оцените любую инструкцию</value>
+  </data>
+  <data name="RuProfile" xml:space="preserve">
+    <value>Профиль</value>
+  </data>
+  <data name="UserGuides" xml:space="preserve">
+    <value>Инструкции пользователя</value>
+  </data>
+  <data name="UserMedals" xml:space="preserve">
+    <value>Медали пользователя</value>
+  </data>
+  <data name="YourGuides" xml:space="preserve">
+    <value>Ваши инструкции</value>
+  </data>
+  <data name="YourMedals" xml:space="preserve">
+    <value>Ваши медали</value>
   </data>
 </root>

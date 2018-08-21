@@ -20,7 +20,7 @@
     <p class="owner-label">
         @Localizer["by"] @if (owner != null)
         {
-            @owner.UserName
+            <a asp-controller="User" asp-action="Index" asp-route-name="@owner.UserName">@owner.UserName</a>
         }
         else
         {

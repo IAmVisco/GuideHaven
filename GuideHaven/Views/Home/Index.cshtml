@@ -1,9 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Identity
-@using GuideHaven.Areas.Identity.Data;
+@using System.Collections.Generic
+@using GuideHaven.Areas.Identity.Data
 @inject IViewLocalizer Localizer
 @inject UserManager<ApplicationUser> userManager
-@model IEnumerable<GuideHaven.Models.Guide>
+@inject IStringLocalizer<CategoryLocalizer> CategoryResource
+@model GuideHaven.Controllers.HomeController.GuidesAndTags
 @{
     ViewData["Title"] = Localizer["Title"];
 }
@@ -11,7 +14,7 @@
 @await Html.PartialAsync("_IndexRegisterPartial", new GuideHaven.Controllers.HomeController.InputModel())
 
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-9">
         <div class="tab" role="tabpanel">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
@@ -22,28 +25,58 @@
             <!-- Tab panes -->
             <div class="tab-content tabs">
                 <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
-                    @await  Html.PartialAsync("_GuidesListPartial", new ViewDataDictionary(this.ViewData) { { "mode", "l"} })
+                    @await Html.PartialAsync("_GuidesListPartial",
+Model.Guides,
+new ViewDataDictionary(this.ViewData) { { "mode", "l" } }
+)
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="popular">
-                    @await Html.PartialAsync("_GuidesListPartial", 
-                        Model.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count), 
-                        new ViewDataDictionary(this.ViewData) { { "mode", "p" } }
-                   )
+                    @await Html.PartialAsync("_GuidesListPartial",
+Model.Guides.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count),
+new ViewDataDictionary(this.ViewData) { { "mode", "p" } }
+)
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="rated">
-                    @await Html.PartialAsync("_GuidesListPartial", 
-                        Model.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count), 
-                        new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
-                   )
+                    @await Html.PartialAsync("_GuidesListPartial",
+Model.Guides.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count),
+new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
+)
                 </div>
             </div>
         </div>
 
     </div>
-    <div class="col-md-2 index-side">
+    <div class="col-md-3 index-side">
         @if (User.Identity.IsAuthenticated)
         {
-            <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
+            @*<a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>*@
         }
+        <div id="tagcloud">
+            <h3>Tags cloud</h3>
+            @foreach (var tag in Model.Tags)
+            {
+                //if (tag.GuideTags.Count > 0)
+                {
+                    <a asp-action="SearchTags" asp-controller="Guide" asp-route-searchText="@tag.TagId" rel="@tag.GuideTags.Count">@tag.TagId</a>
+                }
+            }
+        </div>
+        <span class="glyphicon glyphicon-plus plus-minus" id="category-btn" title="@Localizer["OpenHide"]"></span>
+        <h3 class="category-header plus-header">@Localizer["CategoryList"]</h3>
+        <div id="category-list">
+            @{
+                Dictionary<string, string> categories = new Dictionary<string, string>();
+                foreach (var entry in CategoryResource.GetAllStrings())
+                {
+                    categories.Add(entry.Name, entry.Value);
+                }
+                foreach (var pair in categories.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value))
+                {
+                    <a asp-action="GetGuidesByCategory" asp-controller="Guide" asp-route-category="@pair.Key" class="category">@pair.Value</a>
+                }
+            }
+        </div>
     </div>
 </div>
+
+<script src="~/js/jquery.tagcloud.js"></script>
