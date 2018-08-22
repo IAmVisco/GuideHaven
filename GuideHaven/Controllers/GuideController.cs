@@ -351,14 +351,19 @@ namespace GuideHaven.Models
             }
         }
 
-        private async Task CheckRateMedals(int rating)
+        private async Task CheckRateMedals()
         {
             var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            if (rating == 5 && !user.Medals.Any(x => x.MedalId == 5))
+            int ratings = context.Ratings.Where(x => x.Owner == User.Identity.Name).Count();
+            if (ratings >= 1 && !user.Medals.Any(x => x.MedalId == 5))
             {
                 AddMedal(5, user);
             }
-            if (context.Ratings.Where(x => x.Owner == User.Identity.Name).Count() >= 1 && !user.Medals.Any(x => x.MedalId == 6))
+            if (ratings >= 10 && !user.Medals.Any(x => x.MedalId == 6))
+            {
+                AddMedal(6, user);
+            }
+            if (context.GetGuides(context, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
             {
                 AddMedal(6, user);
             }
