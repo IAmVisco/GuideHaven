@@ -75,7 +75,9 @@
                 <div id="step_holder" class="form-group">
                 </div>
             </div>
-            <button type="button" id="create_step" class="btn btn-success" value="Create step" style="margin-bottom: 10px" onclick="createStep()">@Localizer["CreateStep"]</button>
+            <button type="button" id="create_step" class="btn btn-success" value="Create step" 
+                    style="margin-bottom: 10px" onclick="createStep('@Localizer["Step"]', '@Localizer["Header"]', 
+                    '@Localizer["Content"]', '@Localizer["Images"]')">@Localizer["CreateStep"]</button>
             <hr />
             <div class="form-group">
                 <input type="submit" value="@Localizer["Save"]" class="btn btn-default" />
