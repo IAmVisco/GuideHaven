@@ -47,6 +47,7 @@ namespace GuideHaven.Controllers
         public async Task<IActionResult> Index(string name)
         {
             //CreateMedals();
+            await Check5StarMedal();
             var user = context.Users.FirstOrDefault(x => x.UserName == name);
             ProfileModel profile = new ProfileModel()
             {
@@ -55,6 +56,30 @@ namespace GuideHaven.Controllers
                 Medals = context.Medals.Where(x => x.Users.Any(m => m.UserId == user.Id)).ToList()
             };
             return View(profile);
+        }
+
+        private async Task Check5StarMedal()
+        {
+            var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+            if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
+            {
+                AddMedal(8, user);
+            }
+            await CheckSuperMedal();
+            context.SaveChanges();
+        }
+
+        private async Task CheckSuperMedal()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user.Medals.Count == context.Medals.Count() - 1)
+                AddMedal(context.Medals.Count(), user);
+        }
+
+        private void AddMedal(int id, ApplicationUser user)
+        {
+            var newMedal = new AspNetUserMedals() { Medal = context.Medals.FirstOrDefault(x => x.Id == id), MedalId = id, User = user, UserId = user.Id };
+            context.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == id).Users.Add(newMedal);
         }
 
         public void CreateMedals()
