@@ -121,7 +121,7 @@ namespace GuideHaven.Models
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
-                CheckMedals(new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == guide.Owner).ToList());
+                await CheckMedals(new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == guide.Owner).ToList());
                 return RedirectToAction(nameof(Index));
             }
             return View(guide);
@@ -193,7 +193,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public ActionResult<string> PostComment(int guideId, string comment)
+        public async Task<ActionResult<string>> PostComment(int guideId, string comment)
         {
             Comment newComment = new Comment()
             {
@@ -205,7 +205,7 @@ namespace GuideHaven.Models
             guide.Comments.Add(newComment);
             context.SaveChanges();
             string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
-            CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
+            await CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
             return output;
         }
 
@@ -241,7 +241,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public IActionResult PostRating(int guideId, int rating)
+        public async Task<IActionResult> PostRating(int guideId, int rating)
         {
             var guide = context.GetGuide(context, guideId);
             Rating newRating = new Rating()
@@ -260,12 +260,12 @@ namespace GuideHaven.Models
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
-            CheckRateMedals(rating);
+            await CheckRateMedals(rating);
             return Ok();
         }
 
         [HttpPost]
-        public IActionResult PostLike(int guideId, int commentId)
+        public async Task<IActionResult> PostLike(int guideId, int commentId)
         {
             var guide = context.GetGuide(context, guideId);
             var comment = guide.Comments.FirstOrDefault(x => x.CommentId == commentId);
@@ -283,7 +283,7 @@ namespace GuideHaven.Models
                 guide.Comments.Find(x => x == comment).Likes.RemoveAll(g => g.Owner == User.Identity.Name);
             }
             context.SaveChanges();
-            CheckMedals(new int[] { 1, 10 }, 1, 2, context.Likes.Where(x => x.Owner == User.Identity.Name).ToList());
+            await CheckMedals(new int[] { 1, 10 }, 1, 2, context.Likes.Where(x => x.Owner == User.Identity.Name).ToList());
             return Ok();
         }
 

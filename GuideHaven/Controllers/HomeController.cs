@@ -76,6 +76,7 @@ namespace GuideHaven.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //await CreateUserRoles();
             GuidesAndTags gnt = new GuidesAndTags()
             {
                 Guides = await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.GuideId).ToListAsync(),

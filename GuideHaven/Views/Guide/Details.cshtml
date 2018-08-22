@@ -11,10 +11,11 @@
 <link rel="stylesheet" href="~/css/comment.css" />
 <script src="~/js/signalr.min.js"></script>
 <link href="~/css/tags-input-beautifier.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
 @*<script src="~/js/tags-input-beautifier.js"></script>*@
 
-<div style="position: relative">
-    <h2 style="display: inline-block"><strong>@Html.DisplayFor(model => model.GuideName)</strong></h2>
+<div id="content" style="position: relative">
+    <h2 id="guide-name" style="display: inline-block"><strong>@Html.DisplayFor(model => model.GuideName)</strong></h2>
     <input id="guideId" hidden value="@Model.GuideId" />
     @{ApplicationUser owner = await UserManager.FindByIdAsync(Model.Owner);}
     <p class="owner-label">
@@ -27,12 +28,13 @@
             @Localizer["DeletedUser"]
         }
         @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-        (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+       (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;" title="@Localizer["Edit"]"><i class="icon-edit icon-large"></i></a>
         }
     </p>
-
+    <label style="cursor: pointer" for="pdf-btn"><i class="icon-save"></i></label>
+    <button id="pdf-btn" value="PDF" hidden></button>
     <fieldset class="rating">
         <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"></label>
         <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4"></label>
@@ -66,22 +68,22 @@
                 <img src="@Html.DisplayFor(model => model.Image)" class="desc-img" />
             </div>
             @{
-            int i = 0;
-            string step = "";
+                int i = 0;
+                string step = "";
             }
             @foreach (var item in Model.GuideSteps)
             {
                 i++;
                 step = "step" + i.ToString();
                 <div id="@step" class="step">
-                    <h2 class="step-header">@item.Header</h2>
+                    <h2 id="header" class="step-header">@item.Header</h2>
                     <div class="step-content">@Html.Raw(item.Content)</div>
                     @if (item.Images != null)
                     {
                         string[] images = item.Images.Split(',');
                         @foreach (var img in images.Skip(1))
                         {
-                            <img src="@img" class="step-img"/>
+                            <img src="@img" class="step-img" />
                         }
                     }
                 </div>
