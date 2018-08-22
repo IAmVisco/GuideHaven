@@ -33,7 +33,10 @@ namespace GuideHaven.Models
             {
                 temp += item.OwnerRating;
             }
-            return temp / Ratings.Count;
+            if (Ratings.Count > 0)
+                return temp / Ratings.Count;
+            else
+                return 0;
         }
     }
 }

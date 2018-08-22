@@ -121,7 +121,7 @@
     <value>Code blocks</value>
   </data>
   <data name="CodeDesc" xml:space="preserve">
-    <value>To produce a code block in Markdown, simply indent every line of the block by at least 4 spaces or surround it with ```
+    <value>To produce a code block in Markdown, simply indent every line of the block by at least 4 spaces.
 You can also make inline code lines by surrounding them with `</value>
   </data>
   <data name="EmpDesc" xml:space="preserve">

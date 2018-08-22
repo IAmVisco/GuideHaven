@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Korzh.EasyQuery.Linq;
 using GuideHaven.Areas.Identity.Data;
+using Rotativa.AspNetCore;
+using GuideHaven.Models;
 
 namespace GuideHaven.Models
 {
@@ -32,7 +34,7 @@ namespace GuideHaven.Models
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await context.Guide.ToListAsync());
+            return View(await context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).ToListAsync());
         }
 
         [AllowAnonymous]
@@ -41,7 +43,9 @@ namespace GuideHaven.Models
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                return View("Index", context.Guide.Include(g => g.GuideTags).FullTextSearchQuery(searchText, new FullTextSearchOptions() { }));
+                var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
+                var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
+                return View("Index", list1.Union(list2).ToList());
             }
             else
                 return View("Index", await context.Guide.ToListAsync());
@@ -56,6 +60,19 @@ namespace GuideHaven.Models
             if (!string.IsNullOrEmpty(searchText))
             {
                 return View("Index", guides.Where(x => x.GuideTags.Any(t => t.TagId == searchText)).ToList());
+            }
+            else
+                return View("Index");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Categories/{category}")]
+        public async Task<IActionResult> GetGuidesByCategory(string category)
+        {
+            var guides = context.GetGuides(context);
+            if (!string.IsNullOrEmpty(category))
+            {
+                return View("Index", guides.Where(x => x.Category == category).ToList());
             }
             else
                 return View("Index");
@@ -78,6 +95,13 @@ namespace GuideHaven.Models
             context.Guide.FirstOrDefault(x => x.GuideId == id).Views++;
             await context.SaveChangesAsync();
             return View(guide);
+        }
+
+        [AllowAnonymous]
+        public IActionResult PDF(int? id)
+        {
+            return new ViewAsPdf("PDF", context.GetGuide(context, id));
+            //return View(context.GetGuide(context, id));
         }
 
         // GET: Guide/Create
@@ -106,7 +130,7 @@ namespace GuideHaven.Models
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
-                CheckGuideMedals();
+                await CheckMedals(new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == guide.Owner).ToList());
                 return RedirectToAction(nameof(Index));
             }
             return View(guide);
@@ -178,7 +202,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public ActionResult<string> PostComment(int guideId, string comment)
+        public async Task<ActionResult<string>> PostComment(int guideId, string comment)
         {
             Comment newComment = new Comment()
             {
@@ -190,7 +214,7 @@ namespace GuideHaven.Models
             guide.Comments.Add(newComment);
             context.SaveChanges();
             string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
-            CheckCommentMedals();
+            await CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
             return output;
         }
 
@@ -226,7 +250,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public IActionResult PostRating(int guideId, int rating)
+        public async Task<IActionResult> PostRating(int guideId, int rating)
         {
             var guide = context.GetGuide(context, guideId);
             Rating newRating = new Rating()
@@ -245,12 +269,12 @@ namespace GuideHaven.Models
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
-            CheckRateMedals(rating);
+            await CheckRateMedals();
             return Ok();
         }
 
         [HttpPost]
-        public IActionResult PostLike(int guideId, int commentId)
+        public async Task<IActionResult> PostLike(int guideId, int commentId)
         {
             var guide = context.GetGuide(context, guideId);
             var comment = guide.Comments.FirstOrDefault(x => x.CommentId == commentId);
@@ -268,7 +292,7 @@ namespace GuideHaven.Models
                 guide.Comments.Find(x => x == comment).Likes.RemoveAll(g => g.Owner == User.Identity.Name);
             }
             context.SaveChanges();
-            CheckLikeMedals();
+            await CheckMedals(new int[] { 1, 10 }, 1, 2, context.Likes.Where(x => x.Owner == User.Identity.Name).ToList());
             return Ok();
         }
 
@@ -315,57 +339,48 @@ namespace GuideHaven.Models
             //guide.GuideTags = list;
         }
 
-        private void CheckLikeMedals()
-        {
-            int[] conditions = new int[] { 1, 10, 100 };
+        private async Task CheckMedals<T>(int[] conditions, int startMedalIndex, int endMedalIndex, List<T> list)
+        {       
             var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            CheckProcess(user, conditions, 1, 3, context.Likes.Where(x => x.Owner == User.Identity.Name).ToList());
+            CheckProcess(user, conditions, startMedalIndex, endMedalIndex, list);
+            await CheckSuperMedal();
             identityContext.SaveChanges();
-        }
-
-        private void CheckCommentMedals()
-        {
-            int[] conditions = new int[] { 1, 10, 100 };
-            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            CheckProcess(user, conditions, 4, 6, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
-            identityContext.SaveChanges();
-        }
-
-        private void CheckGuideMedals()
-        {
-            int[] conditions = new int[] { 1, 10, 100 };
-            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            CheckProcess(user, new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == user.Id).ToList());
-            identityContext.SaveChanges();
-        }
-        
+        }        
 
         private void CheckProcess<T>(ApplicationUser user, int[] conditions, int startMedalIndex, int endIndex, List<T> list)
         {
             int index = 0;
             for (int i = startMedalIndex; i <= endIndex; i++)
             {
-                if (list.Count() == conditions[index] && !user.Medals.Any(x => x.MedalId == i))
+                if (list.Count() >= conditions[index] && !user.Medals.Any(x => x.MedalId == i))
                 {
-                    var newMedal = new AspNetUserMedals() { Medal = identityContext.Medals.FirstOrDefault(x => x.Id == i), MedalId = i, User = user, UserId = user.Id };
-                    identityContext.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == i).Users.Add(newMedal);
+                    AddMedal(i, user);
                 }
                 index++;
             }
         }
 
-        private void CheckRateMedals(int rating)
+        private async Task CheckRateMedals()
         {
             var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            if (rating == 5 && !user.Medals.Any(x => x.MedalId == 8))
+            int ratings = context.Ratings.Where(x => x.Owner == User.Identity.Name).Count();
+            if (ratings >= 1 && !user.Medals.Any(x => x.MedalId == 5))
             {
-                AddMedal(8, user);
+                AddMedal(5, user);
             }
-            if (context.Likes.Where(x => x.Owner == User.Identity.Name).Count() == 1 && !user.Medals.Any(x => x.MedalId == 9))
+            if (ratings >= 10 && !user.Medals.Any(x => x.MedalId == 6))
             {
-                AddMedal(9, user);
+                AddMedal(6, user);
             }
+            await CheckSuperMedal();
             identityContext.SaveChanges();
+        }
+
+        private async Task CheckSuperMedal()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user.Medals.Count == identityContext.Medals.Count() - 1)
+                AddMedal(identityContext.Medals.Count(), user);
         }
 
         private void AddMedal(int id, ApplicationUser user)

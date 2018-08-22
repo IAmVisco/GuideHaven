@@ -47,6 +47,7 @@ namespace GuideHaven.Controllers
         public async Task<IActionResult> Index(string name)
         {
             //CreateMedals();
+            await Check5StarMedal();
             var user = context.Users.FirstOrDefault(x => x.UserName == name);
             ProfileModel profile = new ProfileModel()
             {
@@ -57,17 +58,53 @@ namespace GuideHaven.Controllers
             return View(profile);
         }
 
+        private async Task Check5StarMedal()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+                if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
+                {
+                    AddMedal(8, user);
+                }
+                await CheckSuperMedal();
+                context.SaveChanges();
+            }
+        }
+
+        private async Task CheckSuperMedal()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user.Medals.Count == context.Medals.Count() - 1)
+                AddMedal(context.Medals.Count(), user);
+        }
+
+        private void AddMedal(int id, ApplicationUser user)
+        {
+            var newMedal = new AspNetUserMedals() { Medal = context.Medals.FirstOrDefault(x => x.Id == id), MedalId = id, User = user, UserId = user.Id };
+            context.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == id).Users.Add(newMedal);
+        }
+
         public void CreateMedals()
         {
-            context.Medals.Add(new Medal() { Name = "First like", Description = "Post your first like to any comment" });
-            context.Medals.Add(new Medal() { Name = "10 likes", Description = "Post 10 likes to any comments" });
-            context.Medals.Add(new Medal() { Name = "100 likes", Description = "Post 100 likes to any comments" });
-            context.Medals.Add(new Medal() { Name = "First comment", Description = "Leave your first comment" });
-            context.Medals.Add(new Medal() { Name = "10 comments", Description = "Post 10 comments to any guides" });
-            context.Medals.Add(new Medal() { Name = "100 comments", Description = "Post 100 comments to any guides" });
-            context.Medals.Add(new Medal() { Name = "First guide", Description = "Create your first guide" });
-            context.Medals.Add(new Medal() { Name = "5 Rating", Description = "Get 5 stars on any of your guides" });
-            context.Medals.Add(new Medal() { Name = "Critic", Description = "Rate any guide" });
+            context.Database.ExecuteSqlCommand("DBCC CHECKIDENT('dbo.Medals', RESEED, 0)");
+
+            context.Medals.Add(new Medal() { Name = "1stLike", Description = "1stLikeDesc", Image = "https://ucarecdn.com/9cfce6f9-10c5-480d-911f-d6c80f5669aa/like.png" });
+            context.Medals.Add(new Medal() { Name = "10Likes", Description = "10LikesDesc", Image = "https://ucarecdn.com/d34459e1-8807-4d39-a3e9-0e11fbb3ca85/likered.png" });
+            //context.Medals.Add(new Medal() { Name = "100 likes", Description = "Like 100 comments" });
+
+            context.Medals.Add(new Medal() { Name = "1stComment", Description = "1stCommentDesc", Image = "https://ucarecdn.com/b890b7e8-2b37-4a31-9d78-e4849ea72fb6/comment.png" });
+            context.Medals.Add(new Medal() { Name = "10Comments", Description = "10CommentsDesc", Image = "https://ucarecdn.com/483398a3-5cc2-40f9-aa67-e5dbb203ebf9/commentgold.png" });
+            //context.Medals.Add(new Medal() { Name = "100 comments", Description = "Leave 100 comments to any guides" });
+
+            context.Medals.Add(new Medal() { Name = "NewbieCritic", Description = "NewbieCriticDesc", Image = "https://ucarecdn.com/1b7134a3-4846-47e6-b3b1-ad9dcc3ea1e3/critic.png" });
+            context.Medals.Add(new Medal() { Name = "ExpCritic", Description = "ExpCriticDesc", Image = "https://ucarecdn.com/800e6cca-7865-4f79-8b32-d251f6bcea5e/criticgold.png" });
+            //context.Medals.Add(new Medal() { Name = "Senior critic", Description = "Rate 100 guides" });
+
+            context.Medals.Add(new Medal() { Name = "1stGuide", Description = "1stGuideDesc", Image = "https://ucarecdn.com/b141616d-ec03-4f91-bd7d-5b3c14002896/firstguide.png" });
+            context.Medals.Add(new Medal() { Name = "5Star", Description = "5StarDesc", Image = "https://ucarecdn.com/cd0f42f1-4f74-4536-b883-e05a293db0de/5star.png" });
+
+            context.Medals.Add(new Medal() { Name = "MadLad", Description = "MadLadDesc", Image = "https://ucarecdn.com/b074ad4d-1353-4ae5-beb3-ffc8c8aa2c1d/madlad.png" });
             context.SaveChanges();
         }
     }

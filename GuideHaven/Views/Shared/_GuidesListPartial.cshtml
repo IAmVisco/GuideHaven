@@ -7,9 +7,12 @@
 @{ int i = 0; }
 @foreach (var item in Model)
 {
+    bool allowDelete = ((string)ViewData["AllowDelete"] == "Profile" || (string)ViewData["AllowDelete"] == "Index") 
+        && User.Identity.IsAuthenticated && (await userManager.FindByIdAsync(item.Owner) == await userManager.GetUserAsync(User) ||
+             await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"));
     i++;
     <a href="~/Guide/Details/@item.GuideId" style="color: inherit; text-decoration: none;">
-        <div class="guide-entry">
+        <div class="guide-entry @if (allowDelete) { <text>guide-delete</text> }">
             <div class="guide-img-div">
                 @if (item.Image == null)
                 {
@@ -52,10 +55,10 @@
                         <label class="full" for="star1-@i-@ViewData["mode"]"></label>
                     </fieldset>
                     <script>
-                        setTimeout(function () {
-                            var x = "#star" + Math.round(@item.GetRating()) + "-@i-@ViewData["mode"]";
-                            $(x).prop("checked", true);
-                        }, 500);
+                    setTimeout(function () {
+                        var x = "#star" + Math.round(@item.GetRating()) + "-@i-@ViewData["mode"]";
+                        $(x).prop("checked", true);
+                    }, 500);
                     </script>
                 }
                 else
@@ -64,8 +67,36 @@
                 }
                 <span class="guide-views guide-info" title="@item.Views  @Localizer["Views"]"><i class="icon-eye-open"></i>  @item.Views</span>
                 <span class="guide-date guide-info" title="@Localizer["Created"]: @item.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
+
                 <p>@item.Description</p>
             </div>
         </div>
     </a>
+    @if (allowDelete)
+    {
+        <button href="#" data-toggle="modal" data-target="#modal-@item.GuideId" title="@Localizer["Delete"]" class="btn-link outer-delete">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <div id="modal-@item.GuideId" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">@Localizer["AreUSure"]</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>@Localizer["AreUSureMsg"] '@item.GuideName'? @Localizer["CannotBeUndone"].</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["NoDelete"]</button>
+                        <form asp-action="Delete" asp-controller="Guide" 
+                              asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" 
+                              asp-route-id="@item.GuideId" method="post" style="display: inline-block;">
+                            <input type="submit" class="btn btn-danger" value="@Localizer["YesDelete"]" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }

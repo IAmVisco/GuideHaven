@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryList" xml:space="preserve">
+    <value>Categories list</value>
+  </data>
   <data name="CreateGuide" xml:space="preserve">
     <value>Create guide</value>
   </data>
@@ -125,6 +128,9 @@
   </data>
   <data name="MostRatedGuides" xml:space="preserve">
     <value>Most rated guides</value>
+  </data>
+  <data name="OpenHide" xml:space="preserve">
+    <value>Open/Hide</value>
   </data>
   <data name="PopularGuides" xml:space="preserve">
     <value>Popular guides</value>

@@ -415,7 +415,7 @@
     <value>Сторонние сервисы</value>
   </data>
   <data name="RegisterSuccess" xml:space="preserve">
-    <value>Успешно зарегистрировано</value>
+    <value>Регистрация успешна</value>
   </data>
   <data name="RegisterSuccessMsg" xml:space="preserve">
     <value>Ваш аккаунт был успешно зарегистрирован. Для того, чтобы войти, Вам необходимо подтвердить свой аккаунт, для этого проверьте почту и перейдти по ссылке в письме.</value>

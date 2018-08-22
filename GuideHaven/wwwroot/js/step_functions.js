@@ -18,8 +18,6 @@ widget.onChange(function (file) {
     }
 });
 
-multiWidget = uploadcare.MultipleWidget($("#multi0"));
-
 function uploadHandler(info, index) {
     var arr = [];
     arr.push(info.uuid);
@@ -27,12 +25,13 @@ function uploadHandler(info, index) {
         arr.push(info.cdnUrl + "nth/" + i + "/");
     }
     $("#images" + index).val(arr.join());
+    console.log('set ' + index);
 }
 
 function widgetCleared(index) {
     $("#images" + index).val("");
 }
-
+multiWidget = uploadcare.MultipleWidget($("#multi0"));
 multiWidget.onChange(function (info) {
     if (!info) widgetCleared(0);
 });

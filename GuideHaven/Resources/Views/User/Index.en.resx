@@ -117,48 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CodeBlocks" xml:space="preserve">
-    <value>Блоки кода</value>
+  <data name="10Comments" xml:space="preserve">
+    <value>10 comments</value>
   </data>
-  <data name="CodeDesc" xml:space="preserve">
-    <value>Чтобы создать блок кода в Markdown, поставьте 4 пробела перед каждой строкой.
-Вы также можете создавать внутристрочные блоки кода, окружив их символом `</value>
+  <data name="10CommentsDesc" xml:space="preserve">
+    <value>Leave 10 comments to any guides</value>
   </data>
-  <data name="EmpDesc" xml:space="preserve">
-    <value>Markdown расценивает звездочки (*) и символы нижнего подчеркивания (_) как индикаторы акцентного шрифта</value>
+  <data name="10Likes" xml:space="preserve">
+    <value>10 likes</value>
   </data>
-  <data name="Emphasis" xml:space="preserve">
-    <value>Акцент</value>
+  <data name="10LikesDesc" xml:space="preserve">
+    <value>Like 10 comments</value>
   </data>
-  <data name="Headers" xml:space="preserve">
-    <value>Заголовки</value>
+  <data name="1stComment" xml:space="preserve">
+    <value>First comment</value>
   </data>
-  <data name="HeadersDesc" xml:space="preserve">
-    <value>Markdown поддерживает 2 стиля заголовков</value>
+  <data name="1stCommentDesc" xml:space="preserve">
+    <value>Leave your first comment</value>
   </data>
-  <data name="LinksDesc" xml:space="preserve">
-    <value>Вы можете вставлять ссылки и изображения в свой текст следующим образом</value>
+  <data name="1stGuide" xml:space="preserve">
+    <value>First guide</value>
   </data>
-  <data name="LinksImgs" xml:space="preserve">
-    <value>Ссылки и изображения</value>
+  <data name="1stGuideDesc" xml:space="preserve">
+    <value>Create your first guide</value>
   </data>
-  <data name="Lists" xml:space="preserve">
-    <value>Списки</value>
+  <data name="1stLike" xml:space="preserve">
+    <value>First like</value>
   </data>
-  <data name="ListsDesc" xml:space="preserve">
-    <value>Markdown поддерживает упорядоченные и неупорядоченные списки. Неупорядоченные списки использют звездочки, плюсы и тире для обозначения списка.
-Упорядоченные списки использует цифры с последующей точкой:</value>
+  <data name="1stLikeDesc" xml:space="preserve">
+    <value>Like any comment</value>
   </data>
-  <data name="MarkdownHelp" xml:space="preserve">
-    <value>Помощь с разметкой (Markdown)</value>
+  <data name="5Star" xml:space="preserve">
+    <value>Best in class</value>
   </data>
-  <data name="OpenHide" xml:space="preserve">
-    <value>Показать/Скрыть</value>
+  <data name="5StarDesc" xml:space="preserve">
+    <value>Get 5 stars on any of your guides</value>
   </data>
-  <data name="Quotes" xml:space="preserve">
-    <value>Цитаты</value>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
   </data>
-  <data name="QuotesDesc" xml:space="preserve">
-    <value>Цитаты могут быть вложены или иметь другие элементы разметки</value>
+  <data name="CreateGuide" xml:space="preserve">
+    <value>Create guide</value>
+  </data>
+  <data name="EnProfile" xml:space="preserve">
+    <value>'s profile</value>
+  </data>
+  <data name="ExpCritic" xml:space="preserve">
+    <value>Experienced critic</value>
+  </data>
+  <data name="ExpCriticDesc" xml:space="preserve">
+    <value>Rate 10 guides</value>
+  </data>
+  <data name="MadLad" xml:space="preserve">
+    <value>ABSOLUTE MADLAD</value>
+  </data>
+  <data name="MadLadDesc" xml:space="preserve">
+    <value>Get all other medals</value>
+  </data>
+  <data name="ManageProfile" xml:space="preserve">
+    <value>Manage profile</value>
+  </data>
+  <data name="NewbieCritic" xml:space="preserve">
+    <value>Newbie critic</value>
+  </data>
+  <data name="NewbieCriticDesc" xml:space="preserve">
+    <value>Rate any guide</value>
+  </data>
+  <data name="RuProfile" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UserGuides" xml:space="preserve">
+    <value>User's guides</value>
+  </data>
+  <data name="UserMedals" xml:space="preserve">
+    <value>User's medals</value>
+  </data>
+  <data name="YourGuides" xml:space="preserve">
+    <value>Your guides</value>
+  </data>
+  <data name="YourMedals" xml:space="preserve">
+    <value>Your medals</value>
   </data>
 </root>
