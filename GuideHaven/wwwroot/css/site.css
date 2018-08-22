@@ -478,6 +478,10 @@ footer > a {
     min-width: 220px;
 }
 
+.guide-delete {
+    width: 95%;
+}
+
 .guide-img {
     max-width: 200px;
     max-height: 150px;
@@ -544,7 +548,6 @@ footer > a {
 }
 
 #tagcloud {
-    text-align: center;
     margin-bottom: 10px;
 }
 
@@ -662,6 +665,10 @@ footer > a {
     margin-top: 0;
 }
 
+.outer-delete {
+    position: absolute;
+}
+
 .profile-btn {
     float: right;
     margin-top: 20px;
@@ -673,6 +680,7 @@ footer > a {
     display: flex;
     margin: 20px 0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all .3s ease-in-out;
 }
 
 .medal-img {
@@ -682,6 +690,7 @@ footer > a {
 
 .medal-inner {
     display: inline;
+    padding-right: 5px;
 }
 
 .glyphicon-cog {
@@ -833,5 +842,9 @@ footer > a {
     .btn-separator {
         display: block;
         height: 15px;
+    }
+
+    .arrows-alert {
+        max-width: 100%;
     }
 }

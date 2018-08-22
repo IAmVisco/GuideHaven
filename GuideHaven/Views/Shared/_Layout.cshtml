@@ -43,7 +43,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Guide" asp-action="Index">@Localizer["Guides"]</a></li>
+                    @*<li><a asp-area="" asp-controller="Guide" asp-action="Index">@Localizer["Guides"]</a></li>*@
                     @if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"))
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>

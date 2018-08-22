@@ -26,21 +26,21 @@
             <div class="tab-content tabs">
                 <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
                     @await Html.PartialAsync("_GuidesListPartial",
-Model.Guides,
-new ViewDataDictionary(this.ViewData) { { "mode", "l" } }
-)
+                        Model.Guides,
+                        new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Home" } }
+                    )
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="popular">
                     @await Html.PartialAsync("_GuidesListPartial",
-Model.Guides.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count),
-new ViewDataDictionary(this.ViewData) { { "mode", "p" } }
-)
+                        Model.Guides.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count),
+                        new ViewDataDictionary(this.ViewData) { { "mode", "p" }, { "AllowDelete", "Home" } }
+                    )
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="rated">
                     @await Html.PartialAsync("_GuidesListPartial",
-Model.Guides.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count),
-new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
-)
+                        Model.Guides.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count),
+                        new ViewDataDictionary(this.ViewData) { { "mode", "r" }, { "AllowDelete", "Home" } }
+                    )
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@ new ViewDataDictionary(this.ViewData) { { "mode", "r" } }
         }
         <div id="tagcloud">
             <h3>Tags cloud</h3>
-            @foreach (var tag in Model.Tags)
+            @foreach (var tag in Model.Tags.OrderByDescending(x => x.GuideTags.Count).Take(20))
             {
                 //if (tag.GuideTags.Count > 0)
                 {

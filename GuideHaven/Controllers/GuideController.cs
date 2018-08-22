@@ -34,7 +34,7 @@ namespace GuideHaven.Models
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return View(await context.Guide.ToListAsync());
+            return View(await context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).ToListAsync());
         }
 
         [AllowAnonymous]
@@ -97,6 +97,7 @@ namespace GuideHaven.Models
             return View(guide);
         }
 
+        [AllowAnonymous]
         public IActionResult PDF(int? id)
         {
             return new ViewAsPdf("PDF", context.GetGuide(context, id));

@@ -60,13 +60,16 @@ namespace GuideHaven.Controllers
 
         private async Task Check5StarMedal()
         {
-            var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
+            if (User.Identity.IsAuthenticated)
             {
-                AddMedal(8, user);
+                var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
+                if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
+                {
+                    AddMedal(8, user);
+                }
+                await CheckSuperMedal();
+                context.SaveChanges();
             }
-            await CheckSuperMedal();
-            context.SaveChanges();
         }
 
         private async Task CheckSuperMedal()

@@ -31,8 +31,8 @@
                 @Localizer["UserGuides"]
             }
         </h3>
-        @await Html.PartialAsync("../Home/_GuidesListPartial", Model.Guides,
-            new ViewDataDictionary(this.ViewData) { { "mode", "l" } })
+        @await Html.PartialAsync("_GuidesListPartial", Model.Guides,
+            new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Profile" } })
     </div>
     <div class="col-md-4">
         <h3>
