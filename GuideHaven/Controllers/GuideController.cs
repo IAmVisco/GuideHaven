@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Korzh.EasyQuery.Linq;
 using GuideHaven.Areas.Identity.Data;
+using Rotativa.AspNetCore;
+using GuideHaven.Models;
 
 namespace GuideHaven.Models
 {
@@ -93,6 +95,12 @@ namespace GuideHaven.Models
             context.Guide.FirstOrDefault(x => x.GuideId == id).Views++;
             await context.SaveChangesAsync();
             return View(guide);
+        }
+
+        public IActionResult PDF(int? id)
+        {
+            return new ViewAsPdf("PDF", context.GetGuide(context, id));
+            //return View(context.GetGuide(context, id));
         }
 
         // GET: Guide/Create
@@ -260,7 +268,7 @@ namespace GuideHaven.Models
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
-            await CheckRateMedals(rating);
+            await CheckRateMedals();
             return Ok();
         }
 

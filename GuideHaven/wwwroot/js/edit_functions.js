@@ -1,6 +1,7 @@
-﻿var index = 0, visual_index = 0, multiWidget;
+﻿var multiWidget;
 
 function recreateSteps(step, header, content, images, raw_header, raw_content, imgs) {
+    let img_index = index;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
         + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
@@ -22,11 +23,12 @@ function recreateSteps(step, header, content, images, raw_header, raw_content, i
     );
     document.getElementById('GuideSteps_' + index + '__Header').value = he.decode(raw_header);
     multiWidget = uploadcare.MultipleWidget($("#multi" + index));
+    
     multiWidget.onChange(function (info) {
-        if (!info) widgetCleared(index);
+        if (!info) widgetCleared(img_index);
     });
     multiWidget.onUploadComplete(function (info) {
-        uploadHandler(info, index);
+        uploadHandler(info, img_index);
     });
     multiWidget.value(imgs);
     index++;

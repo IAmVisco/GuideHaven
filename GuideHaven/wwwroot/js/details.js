@@ -109,17 +109,17 @@ $(document).ready(function () {
     get_rating();
     get_comments();
 
-    $("#pdf-btn").on("click", function () {
-        var doc = new jsPDF();
-        var output = "Guide Name: " + $("#guide-name").text() + '\n\n';
-        $("#header").each(function ( index ) {
-            output += "Step " + (index + 1) + ": " + $(this).text() + '\n';
-            output += $(this).next().text() + '\n\n';
-        });
-        doc.setFont('product-sans');
-        doc.text(output, 10, 10);
-        doc.save($("#guide-name").text() + ".pdf");
-    });
+    //$("#pdf-btn").on("click", function () {
+    //    var doc = new jsPDF();
+    //    var output = "Guide Name: " + $("#guide-name").text() + '\n\n';
+    //    $("#header").each(function ( index ) {
+    //        output += "Step " + (index + 1) + ": " + $(this).text() + '\n';
+    //        output += $(this).next().text() + '\n\n';
+    //    });
+    //    doc.setFont('product-sans');
+    //    doc.text(output, 10, 10);
+    //    doc.save($("#guide-name").text() + ".pdf");
+    //});
 
     setInterval(get_likes, 3000);
     setTimeout(join_group, 500);
