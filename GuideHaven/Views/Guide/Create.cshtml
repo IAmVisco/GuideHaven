@@ -90,7 +90,13 @@
     </div>
     </div>
     <script>
-        var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
+        var tags = new TIB(document.querySelector('input[name="tags"]'),
+            config = {
+                alert: false,
+                update: function () {
+                    $(".tags").height($(".tags")[0].scrollHeight - 10);
+                }
+            });
     </script>
     <script src="/js/step_functions.js"></script>
     <script src="~/js/showdown.js"></script>

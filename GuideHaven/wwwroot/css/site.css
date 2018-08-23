@@ -127,6 +127,10 @@ label {
     border-radius: 8px;
 }
 
+.switch-input {
+    display: none;
+}
+
 .switch-label {
     position: relative;
     display: inline-block;
