@@ -32,29 +32,9 @@ namespace GuideHaven.Models
 
         // GET: Guide
         [AllowAnonymous]
-        //[HttpGet("Categories/{category}")]
-        //[HttpGet("Search/{searchText}")]
-        //[HttpPost("Search/{searchText}")]
-        //[HttpPost("Tags/{tag}")]
-        //[HttpGet("Tags/{tag}")]
-        public async Task<IActionResult> Index(int page = 1, string searchText = null, string tag = null, string category = null)
+        public IActionResult Index(string searchText, string tag, string category, int page = 1)
         {
-            var guides = context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).AsQueryable();
-            if (searchText != null)
-            {
-                guides = Search(searchText);
-                ViewBag.searchText = searchText;
-            }
-            if (category != null)
-            {
-                guides = GetGuidesByCategory(category);
-                ViewBag.category = category;
-            }
-            if (tag != null)
-            {
-                guides = SearchTags(tag);
-                ViewBag.tag = tag;
-            }
+            var guides = CheckInput(searchText, tag, category);
             return View(guides.ToPagedList(page, PageSize));
         }
 
@@ -62,18 +42,17 @@ namespace GuideHaven.Models
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
-                var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
-                return list1.Union(list2).AsQueryable();
+                var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})");
+                var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide);
+                return list1.Union(list2);
             }
             else
-                return context.Guide.AsQueryable();
+                return context.Guide.Include(x => x.Ratings).AsQueryable();
         }
 
         public IQueryable<Guide> SearchTags(string tag)
         {
-            var guides = context.GetGuides(context);
-            return guides.Where(x => x.GuideTags.Any(t => t.TagId == tag)).AsQueryable();
+            return context.GetGuides(context).Where(x => x.GuideTags.Any(t => t.TagId == tag)).AsQueryable();
         }
 
         public IQueryable<Guide> GetGuidesByCategory(string category)
@@ -122,25 +101,20 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
-                if (tags != null)
-                {
-                    var tagsList = TagListCreator(tags);
-                    CreateGuideTagsConnection(guide, tagsList);
-                    context.SaveTags(context, tagsList, null);
-                }
+                AddTags(guide, tags);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
-                await CheckMedals(new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == guide.Owner).ToList());
-                return RedirectToAction(nameof(Index));
+                await CheckMedals(new int[] { 1 }, 7, 7, context.GetGuides(context, guide.Owner));
+                return RedirectToAction("Details", new { id = context.Guide.LastOrDefault(x => x.GuideName == guide.GuideName).GuideId });
             }
             return View(guide);
         }
 
         // GET: Guide/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -161,7 +135,7 @@ namespace GuideHaven.Models
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, 
-            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags)
         {
             if (id != guide.GuideId)
             {
@@ -172,16 +146,11 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    if (tags != null)
-                    {
-                        var tagsList = TagListCreator(tags);
-                        CreateGuideTagsConnection(guide, tagsList);
-                        context.SaveTags(context, tagsList, id);
-                    }
+                    AddTags(guide, tags);
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
-                    if (tags == null)
+                    if (string.IsNullOrEmpty(tags))
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
                     else
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
@@ -272,7 +241,7 @@ namespace GuideHaven.Models
                 context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
-            await CheckRateMedals();
+            await CheckMedals(new int[] { 1, 10 }, 5, 6, context.Ratings.Where(x => x.Owner == User.Identity.Name).ToList());
             return Ok();
         }
 
@@ -302,14 +271,13 @@ namespace GuideHaven.Models
         // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id, string returnUrl = null)
+        public async Task<IActionResult> DeleteConfirmed(int? id, string returnUrl = null, string user = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl + ("?user=" + user ?? "") ?? Url.Content("~/");
             var guide = context.GetGuide(context, id);
             context.Guide.Remove(guide);
             await context.SaveChangesAsync();
             return LocalRedirect(returnUrl);
-            //return RedirectToAction(nameof(Index));
         }
 
         private bool GuideExists(int id)
@@ -331,15 +299,22 @@ namespace GuideHaven.Models
 
         private void CreateGuideTagsConnection(Guide guide, List<Tag> tags)
         {
-            List<GuideTag> list = new List<GuideTag>();
             foreach (var item in tags)
             {
                 GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item, GuideId = guide.GuideId };
-                list.Add(guideTag);
                 item.GuideTags = new List<GuideTag>();
                 item.GuideTags.Add(guideTag);
             }
-            //guide.GuideTags = list;
+        }
+
+        private void AddTags(Guide guide, string tags)
+        {
+            if (!string.IsNullOrEmpty(tags))
+            {
+                var tagsList = TagListCreator(tags);
+                CreateGuideTagsConnection(guide, tagsList);
+                context.SaveTags(context, tagsList, null);
+            }
         }
 
         private async Task CheckMedals<T>(int[] conditions, int startMedalIndex, int endMedalIndex, List<T> list)
@@ -363,22 +338,6 @@ namespace GuideHaven.Models
             }
         }
 
-        private async Task CheckRateMedals()
-        {
-            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            int ratings = context.Ratings.Where(x => x.Owner == User.Identity.Name).Count();
-            if (ratings >= 1 && !user.Medals.Any(x => x.MedalId == 5))
-            {
-                AddMedal(5, user);
-            }
-            if (ratings >= 10 && !user.Medals.Any(x => x.MedalId == 6))
-            {
-                AddMedal(6, user);
-            }
-            await CheckSuperMedal();
-            identityContext.SaveChanges();
-        }
-
         private async Task CheckSuperMedal()
         {
             var user = await userManager.GetUserAsync(User);
@@ -390,6 +349,26 @@ namespace GuideHaven.Models
         {
             var newMedal = new AspNetUserMedals() { Medal = identityContext.Medals.FirstOrDefault(x => x.Id == id), MedalId = id, User = user, UserId = user.Id };
             identityContext.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == id).Users.Add(newMedal);
+        }
+
+        private IQueryable<Guide> CheckInput(string searchText, string tag, string category) {
+            var guides = context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).AsQueryable(); ;
+            if (!String.IsNullOrEmpty(searchText))
+            {
+                guides = Search(searchText);
+                ViewBag.searchText = searchText;
+            }
+            else if (!String.IsNullOrEmpty(category))
+            {
+                guides = GetGuidesByCategory(category);
+                ViewBag.category = category;
+            }
+            else if (!String.IsNullOrEmpty(tag))
+            {
+                guides = SearchTags(tag);
+                ViewBag.tag = tag;
+            }
+            return guides;
         }
 
         private string CreateComment(Comment item)

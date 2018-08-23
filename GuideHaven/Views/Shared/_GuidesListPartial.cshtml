@@ -91,7 +91,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["NoDelete"]</button>
-                        <form asp-action="Delete" asp-controller="Guide" 
+                        <form asp-action="Delete" asp-controller="Guide"
+                              asp-route-user ="@ViewData["UserName"]"
                               asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" 
                               asp-route-id="@item.GuideId" method="post" style="display: inline-block;">
                             <input type="submit" class="btn btn-danger" value="@Localizer["YesDelete"]" />

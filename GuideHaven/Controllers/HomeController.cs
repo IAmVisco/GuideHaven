@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using GuideHaven.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
@@ -123,7 +122,7 @@ namespace GuideHaven.Controllers
 
         public async Task <IActionResult> AdminPanel()
         {
-            if (!signInManager.IsSignedIn(User) || !(await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+            if (!signInManager.IsSignedIn(User) || !(await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
                 return RedirectToAction("AccessDenied", "Identity/Account");
             return View();
         }
@@ -149,9 +148,9 @@ namespace GuideHaven.Controllers
         {
             foreach (var item in list)
             {
-                if (!(await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == item), role)))
+                if (!(await userManager.IsInRoleAsync(await userManager.FindByNameAsync(item), role)))
                 {
-                    await userManager.AddToRoleAsync(userManager.Users.First(x => x.UserName == item), role);
+                    await userManager.AddToRoleAsync(await userManager.FindByNameAsync(item), role);
                 }
             } 
             if (list.Contains(userManager.GetUserName(User)) && role == "Banned")
@@ -166,9 +165,9 @@ namespace GuideHaven.Controllers
         {
             foreach (var item in list)
             {
-                if (await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == item), role))
+                if (await userManager.IsInRoleAsync(await userManager.FindByNameAsync(item), role))
                 {
-                    await userManager.RemoveFromRoleAsync(userManager.Users.First(x => x.UserName == item), role);
+                    await userManager.RemoveFromRoleAsync(await userManager.FindByNameAsync(item), role);
                 }
             }
             if (list.Contains(userManager.GetUserName(User)) && role == "Admin")
@@ -180,7 +179,7 @@ namespace GuideHaven.Controllers
         {
             foreach (var item in list)
             {
-                await userManager.DeleteAsync(userManager.Users.First(x => x.UserName == item));
+                await userManager.DeleteAsync(await userManager.FindByNameAsync(item));
             }
             if (list.Contains(userManager.GetUserName(User)))
             {
@@ -206,12 +205,9 @@ namespace GuideHaven.Controllers
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    //callbackUrl.Insert(callbackUrl.IndexOf('?'), "Identity/Account/ConfirmEmail");
-
                     await emailSender.SendEmailAsync(Input.Email, localizer["ConfEmail"],
                         localizer["PlsConfirm"] + $" <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>" + localizer["ClickingHere"] + "</a>.");
 
-                    // await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("RegisterSuccess","Identity/Account");
                 }
                 foreach (var error in result.Errors)
@@ -219,8 +215,6 @@ namespace GuideHaven.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-
-            // If we got this far, something failed, redisplay form
             return RedirectToAction("Index");
         }
     }
