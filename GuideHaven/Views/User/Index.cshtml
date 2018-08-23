@@ -50,9 +50,7 @@
             foreach (var item in Model.Medals)
             {
                 <div class="medal">
-                    @*<div class="medal-img-container">*@
                     <img src="@item.Image" class="medal-img" />
-                    @*</div>*@
                     <div class="medal-inner">
                         <h3>@Localizer[item.Name]</h3>
                         <p>@Localizer[item.Description]</p>
