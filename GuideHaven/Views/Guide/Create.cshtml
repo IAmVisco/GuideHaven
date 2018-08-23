@@ -51,7 +51,8 @@
                 <input name="tags" type="text" placeholder="@Localizer["Tags"]...">
 
                 <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
-                <select name="category" asp-for="Category" asp-items="options" class="form-control" required>
+                <select name="category" asp-for="Category" asp-items="options" 
+                        class="selectpicker" data-live-search="true" data-size="10" required>
                     <option disabled selected>---</option>
                 </select>
 
