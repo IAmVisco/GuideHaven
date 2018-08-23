@@ -134,8 +134,8 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,
-            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
+        public async Task<IActionResult> Edit(int id, 
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags)
         {
             if (id != guide.GuideId)
             {
@@ -146,19 +146,19 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    if (tags != null)
-                    {
-                        var tagsList = TagListCreator(tags);
-                        CreateGuideTagsConnection(guide, tagsList);
-                        context.SaveTags(context, tagsList, id);
-                    }
+                    AddTags(guide, tags);
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
-                    if (tags == null)
+                    if (string.IsNullOrEmpty(tags))
+                    {
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
+                    }
                     else
-                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
+                    {
+                        var list = TagListCreator(tags);
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !list.Any(t => t.TagId == x.TagId));
+                    }
                     await context.SaveChangesAsync();
 
                 }
