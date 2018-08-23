@@ -16,6 +16,6 @@
 <form asp-controller="Home" asp-action="SetLanguage" style="display:inline-block; float:right;" asp-route-returnUrl="@Context.Request.Path"
       method="post" class="form-horizontal">
     @Localizer["Language"]:
-    <select name="culture" onchange="this.form.submit();" style="color:initial;" asp-for="@requestCulture.RequestCulture.UICulture.Name"
-            asp-items="cultureItems"></select>
+    <select name="culture" onchange="this.form.submit();" class="selectpicker dropup" data-width="120px" 
+            style="color:initial;" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>
 </form>

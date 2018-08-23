@@ -44,12 +44,12 @@
                 </div>
             </div>
         </div>
-
+        <a asp-action="Index" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["ViewAll"]</a>
     </div>
     <div class="col-md-3 index-side">
         @if (User.Identity.IsAuthenticated)
         {
-            @*<a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>*@
+            <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
         }
         <div id="tagcloud">
             <h3>Tags cloud</h3>

@@ -4,6 +4,7 @@
     font-style: normal;
     display: block;
     padding: 0.2em 0.25em;
+    margin-bottom: 15px;
     cursor: text;
     overflow: hidden;
     height: 34px;
@@ -23,6 +24,7 @@
     border: none;
     box-shadow: none;
     color: #fff;
+    margin-bottom: 0;
 }
 
 .tags span {
