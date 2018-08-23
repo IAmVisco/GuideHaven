@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using PagedList.Core;
 
 namespace GuideHaven.Controllers
 {
@@ -40,21 +41,24 @@ namespace GuideHaven.Controllers
         {
             public List<Medal> Medals { get; set; }
             public ApplicationUser User { get; set; }
-            public List<Guide> Guides { get; set; }
+            public IPagedList<Guide> Guides { get; set; }
         }
 
-        [HttpGet("User/{name}")]
-        public async Task<IActionResult> Index(string name)
+        public int PageSize { get; set; } = 10;
+
+        //[HttpGet("User/{name}")]
+        public async Task<IActionResult> Index(string user, int page = 1)
         {
             //CreateMedals();
             await Check5StarMedal();
-            var user = context.Users.FirstOrDefault(x => x.UserName == name);
+            var userinfo = context.Users.FirstOrDefault(x => x.UserName == user);
             ProfileModel profile = new ProfileModel()
             {
-                Guides = guidecontext.GetGuides(guidecontext, userManager.Users.FirstOrDefault(x => x.UserName == name).Id),
-                User = user,
-                Medals = context.Medals.Where(x => x.Users.Any(m => m.UserId == user.Id)).ToList()
+                Guides = guidecontext.GetGuides(guidecontext, userManager.Users.FirstOrDefault(x => x.UserName == user).Id).AsQueryable().ToPagedList(page, PageSize),
+                User = userinfo,
+                Medals = context.Medals.Where(x => x.Users.Any(m => m.UserId == userinfo.Id)).ToList()
             };
+            ViewBag.user = user;
             return View(profile);
         }
 

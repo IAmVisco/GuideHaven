@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace GuideHaven
 {
@@ -111,6 +112,7 @@ namespace GuideHaven
             });
 
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddSignalR();
@@ -160,7 +162,7 @@ namespace GuideHaven
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            RotativaConfiguration.Setup(env);
+            //RotativaConfiguration.Setup(env);
         }
     }
 }

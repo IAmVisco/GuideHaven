@@ -31,8 +31,9 @@
                 @Localizer["UserGuides"]
             }
         </h3>
-        @await Html.PartialAsync("_GuidesListPartial", Model.Guides,
+        @await Html.PartialAsync("_GuidesListPartial", Model.Guides.ToList(),
             new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Profile" } })
+        <pager class="pager-container" list="@Model.Guides" @*options="@PagedListRenderOptions.TwitterBootstrapPager" *@ asp-action="Index" asp-controller="User" asp-route-user="@ViewBag.user" />
     </div>
     <div class="col-md-4">
         <h3>

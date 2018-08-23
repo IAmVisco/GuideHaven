@@ -1,11 +1,12 @@
-﻿@model IEnumerable<GuideHaven.Models.Guide>
+﻿@model IPagedList<Guide>
 @using Microsoft.AspNetCore.Mvc.Localization
+@using PagedList.Core
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @{
     ViewData["Title"] = Localizer["Index"];
 }
 
-@await Html.PartialAsync("_GuidesListPartial",
-    Model,
-    new ViewDataDictionary(this.ViewData) { { "mode", "l" },
-        { "AllowDelete", "Index" } })
+@await Html.PartialAsync("_GuidesListPartial", Model.ToList(), new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Index" } })
+<br />
+@*Page @(Model.Guides.PageCount < Model.Guides.PageNumber ? 0 : Model.Guides.PageNumber) of @Model.Guides.PageCount*@
+<pager class="pager-container" list="@Model" @*options="@PagedListRenderOptions.TwitterBootstrapPager"*@ asp-action="Index" asp-controller="Guide" asp-route-tag="@ViewBag.tag" asp-route-category="@ViewBag.category" asp-route-searchText="@ViewBag.searchText"/>

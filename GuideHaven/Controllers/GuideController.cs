@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Korzh.EasyQuery.Linq;
 using GuideHaven.Areas.Identity.Data;
 using Rotativa.AspNetCore;
-using GuideHaven.Models;
+using PagedList.Core;
 
 namespace GuideHaven.Models
 {
     [Authorize]
     public class GuideController : Controller
     {
+        public int PageSize { get; set; } = 10;
+
         private readonly GuideContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IdentityContext identityContext;
@@ -32,50 +32,53 @@ namespace GuideHaven.Models
 
         // GET: Guide
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        //[HttpGet("Categories/{category}")]
+        //[HttpGet("Search/{searchText}")]
+        //[HttpPost("Search/{searchText}")]
+        //[HttpPost("Tags/{tag}")]
+        //[HttpGet("Tags/{tag}")]
+        public async Task<IActionResult> Index(int page = 1, string searchText = null, string tag = null, string category = null)
         {
-            return View(await context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).ToListAsync());
+            var guides = context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).AsQueryable();
+            if (searchText != null)
+            {
+                guides = Search(searchText);
+                ViewBag.searchText = searchText;
+            }
+            if (category != null)
+            {
+                guides = GetGuidesByCategory(category);
+                ViewBag.category = category;
+            }
+            if (tag != null)
+            {
+                guides = SearchTags(tag);
+                ViewBag.tag = tag;
+            }
+            return View(guides.ToPagedList(page, PageSize));
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Search(string searchText)
+        public IQueryable<Guide> Search(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
             {
                 var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
                 var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
-                return View("Index", list1.Union(list2).ToList());
+                return list1.Union(list2).AsQueryable();
             }
             else
-                return View("Index", await context.Guide.ToListAsync());
+                return context.Guide.AsQueryable();
         }
 
-        [AllowAnonymous]
-        [HttpPost("Tags/{searchText}")]
-        [HttpGet("Tags/{searchText}")]
-        public async Task<IActionResult> SearchTags(string searchText)
+        public IQueryable<Guide> SearchTags(string tag)
         {
             var guides = context.GetGuides(context);
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                return View("Index", guides.Where(x => x.GuideTags.Any(t => t.TagId == searchText)).ToList());
-            }
-            else
-                return View("Index");
+            return guides.Where(x => x.GuideTags.Any(t => t.TagId == tag)).AsQueryable();
         }
 
-        [AllowAnonymous]
-        [HttpGet("Categories/{category}")]
-        public async Task<IActionResult> GetGuidesByCategory(string category)
+        public IQueryable<Guide> GetGuidesByCategory(string category)
         {
-            var guides = context.GetGuides(context);
-            if (!string.IsNullOrEmpty(category))
-            {
-                return View("Index", guides.Where(x => x.Category == category).ToList());
-            }
-            else
-                return View("Index");
+            return context.Guide.Include(x => x.Ratings).FromSql($"select * FROM Guide WHERE FREETEXT( Category , {category})");
         }
 
         // GET: Guide/Details/5

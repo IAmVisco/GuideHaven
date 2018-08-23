@@ -41,7 +41,7 @@ multiWidget.onUploadComplete(function (info) {
 
 function createStep(step, header, content, images) {
 	index++;
-	visual_index++;
+    visual_index++;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
         + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'

@@ -23,7 +23,6 @@ function recreateSteps(step, header, content, images, raw_header, raw_content, i
     );
     document.getElementById('GuideSteps_' + index + '__Header').value = he.decode(raw_header);
     multiWidget = uploadcare.MultipleWidget($("#multi" + index));
-    
     multiWidget.onChange(function (info) {
         if (!info) widgetCleared(img_index);
     });
