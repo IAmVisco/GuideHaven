@@ -523,6 +523,7 @@ footer > a {
 
 .guide-inner {
     display: inline;
+    max-width: 80%;
 }
 
 .guide-author {
@@ -560,7 +561,6 @@ footer > a {
 
 .guide-header {
     margin-bottom: 0;
-    max-width: 80%;
 }
 
 .create-btn {
@@ -755,7 +755,7 @@ footer > a {
     }
 
     .sidenav {
-        top: 330px;
+        top: 350px;
     }
 
     .create-fields {
@@ -764,8 +764,8 @@ footer > a {
     }
 
     .banner {
-        margin-left: 0 ;
-        margin-right: 0 ;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .steps-wrap {
