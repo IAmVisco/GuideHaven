@@ -103,7 +103,7 @@ namespace GuideHaven.Models
             {
                 AddTags(guide, tags);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
-                guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
+                guide.Owner = (await userManager.GetUserAsync(User)).Id;
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
@@ -146,7 +146,12 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    AddTags(guide, tags);
+                    if (!string.IsNullOrEmpty(tags))
+                    {
+                        var tagsList = TagListCreator(tags);
+                        CreateGuideTagsConnection(guide, tagsList);
+                        context.SaveTags(context, tagsList, null);
+                    }
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
