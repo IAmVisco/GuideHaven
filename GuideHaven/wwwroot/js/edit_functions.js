@@ -2,6 +2,7 @@
 
 function recreateSteps(step, header, content, images, raw_header, raw_content, imgs) {
     let img_index = index;
+    step_loc = step;
     var stepHtml = '<div id="step' + (index + 1) + '" style="position:relative">'
         + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
         + '<label class="control-label" for="GuideSteps_' + index + '__Header">' + header + '</label>'
