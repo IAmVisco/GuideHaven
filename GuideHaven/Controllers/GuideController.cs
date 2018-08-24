@@ -185,7 +185,7 @@ namespace GuideHaven.Models
             var guide = context.GetGuide(context, guideId);
             guide.Comments.Add(newComment);
             context.SaveChanges();
-            string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
+            string output = await CreateComment(context.GetGuide(context, guideId).Comments.Last());
             await CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
             return output;
         }
@@ -199,12 +199,12 @@ namespace GuideHaven.Models
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult<string> GetComments(int guideId)
+        public async Task<ActionResult<string>> GetComments(int guideId)
         {
             string output = "";
             foreach (var item in context.GetGuide(context, guideId).Comments)
             {
-                output += CreateComment(item);
+                output += await CreateComment(item);
             }
             return output;
         }
@@ -371,13 +371,19 @@ namespace GuideHaven.Models
             return guides;
         }
 
-        private string CreateComment(Comment item)
+        private async Task<string> CreateComment(Comment item)
         {
-            string liked = "";
+            string liked = "", delete = "";
             if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
                 liked += " checked ";
+            if (!User.Identity.IsAuthenticated)
+                liked += " disabled ";
+            if (item.Owner == userManager.GetUserName(User) ||
+                (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
+                delete = "<button href=\"#\" title=\"\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
             return "<label class=\"commenter\">" + item.Owner + ":</label>"
                     + "<div class=\"comment-wrap\">"
+                        + delete
                         + "<div class=\"comment-block\">"
                             + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
                             + "<p>" + item.Content + "</p>"
