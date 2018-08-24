@@ -79,6 +79,15 @@ namespace GuideHaven.Models
             return View(guide);
         }
 
+        [HttpPost]
+        public IActionResult DeleteComment(int id, int guideId)
+        {
+            var guide = context.GetGuide(context, guideId);
+            guide.Comments.RemoveAll(x => x.CommentId == id);
+            context.SaveChanges();
+            return Ok();
+        }
+
         [AllowAnonymous]
         public IActionResult PDF(int? id)
         {
@@ -380,12 +389,12 @@ namespace GuideHaven.Models
                 liked += " disabled ";
             if (item.Owner == userManager.GetUserName(User) ||
                 (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
-                delete = "<button href=\"#\" title=\"\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
-            return "<label class=\"commenter\">" + item.Owner + ":</label>"
+                delete = "<button id=\"deleter\" href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
+            return "<div id=\""+ item.CommentId +"\"><label class=\"commenter\">" + item.Owner + ":</label>"
                     + "<div class=\"comment-wrap\">"
                         + delete
                         + "<div class=\"comment-block\">"
-                            + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
+                            + "<input id=\"commentId\" hidden value=\"" + item.CommentId + "\" />"
                             + "<p>" + item.Content + "</p>"
                             + "<div class=\"bottom-comment\">"
                                 + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
@@ -396,7 +405,7 @@ namespace GuideHaven.Models
                                 + "</div>"
                             + "</div>"
                         + "</div>"
-                    + "</div>";
+                    + "</div></div>";
         }
     }
 }

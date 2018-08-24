@@ -8,6 +8,8 @@ var connection = new signalR.HubConnectionBuilder()
 connection.on('addcomment', function (comment) {
     document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comment);
 
+    $(".like-lbl").off("click");
+
     $(".like-lbl").on("click", function () {
         let likes = parseInt(this.nextSibling.innerHTML);
         if (this.previousSibling.checked)
@@ -16,6 +18,12 @@ connection.on('addcomment', function (comment) {
             likes += 1;
         this.nextSibling.innerHTML = likes;
         post_like($(this));
+    });
+
+    $("#deleter").off("click");
+
+    $("#deleter").on("click", function () {
+        delete_comment($(this).val());
     });
 });
 
@@ -66,6 +74,18 @@ function get_likes() {
     });
 }
 
+function delete_comment(id) {
+    $.ajax({
+        type: "POST",
+        url: '/Guide/DeleteComment',
+        data: { id: id, guideId: $("#guideId").attr("value") },
+        success: function (response) {
+            $("#" + id).remove();
+        }
+    });
+}
+
+
 function post_like(div) {
     $.ajax({
         type: "POST",
@@ -86,6 +106,10 @@ function addComments(comments) {
             likes += 1;
         this.nextSibling.innerHTML = likes;
         post_like($(this));
+    });
+
+    $("#deleter").on("click", function () {
+        delete_comment($(this).val());
     });
 }
 
