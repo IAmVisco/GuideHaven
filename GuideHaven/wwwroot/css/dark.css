@@ -3,14 +3,17 @@
     color: #fff;
 }
 
+pre {
+    color: inherit;
+    background-color: inherit;
+}
+
 .comment-block {
     background-color: #424242 !important;
 }
 
 input, textarea {
     background: #424242;
-    /*color: #fff;*/
-    /*color: #555f77;*/
 }
 
 .sidenav a {
