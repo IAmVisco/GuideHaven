@@ -4,7 +4,7 @@
 @using GuideHaven.Areas.Identity.Data;
 @inject IHtmlLocalizer<GuideLocalizer> Localizer
 @inject IHtmlLocalizer<CategoryLocalizer> CategoryLocalizer
-@inject UserManager<ApplicationUser> UserManager
+@inject UserManager<ApplicationUser> userManager
 @{
     ViewData["Title"] = Html.DisplayFor(model => model.GuideName);
 }
@@ -17,7 +17,12 @@
 <div id="content" style="position: relative">
     <h2 id="guide-name" style="display: inline-block"><strong>@Html.DisplayFor(model => model.GuideName)</strong></h2>
     <input id="guideId" hidden value="@Model.GuideId" />
-    @{ApplicationUser owner = await UserManager.FindByIdAsync(Model.Owner);}
+    @{ApplicationUser owner = await userManager.FindByIdAsync(Model.Owner);}
+    @if (Model.Owner == userManager.GetUserId(User) ||
+       (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
+    {
+        <input id="admin" hidden value="admin"/>
+    }
     <p class="owner-label">
         @Localizer["by"] @if (owner != null)
         {
@@ -27,14 +32,14 @@
         {
             @Localizer["DeletedUser"]
         }
-        @if ((await UserManager.GetUserAsync(User) == owner && owner != null) ||
-       (User.Identity.IsAuthenticated && await UserManager.IsInRoleAsync(UserManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
+        @if ((await userManager.GetUserAsync(User) == owner && owner != null) ||
+     (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin")))
         {
             <a asp-action="Edit" asp-route-id="@Model.GuideId" style="color: inherit;" title="@Localizer["Edit"]"><i class="icon-edit icon-large"></i></a>
         }
     </p>
     @*<label style="cursor: pointer" for="pdf-btn"><i class="icon-save"></i></label>
-    <button id="pdf-btn" value="PDF" hidden></button>*@
+        <button id="pdf-btn" value="PDF" hidden></button>*@
     @*<a asp-action="Pdf" asp-route-id="@Model.GuideId"><i class="icon-save"></i></a>*@
     <fieldset class="rating">
         <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"></label>

@@ -399,7 +399,7 @@ namespace GuideHaven.Models
                 liked += " disabled ";
             if (item.Owner == userManager.GetUserName(User) ||
                 (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
-                delete = "<button id=\"deleter\" href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
+                delete = "<button href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
             return "<div id=\""+ item.CommentId +"\"><label class=\"commenter\">" + item.Owner + ":</label>"
                     + "<div class=\"comment-wrap\">"
                         + delete

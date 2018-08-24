@@ -20,9 +20,12 @@ connection.on('addcomment', function (comment) {
         post_like($(this));
     });
 
-    $("#deleter").off("click");
+    if ($("#admin").attr("value") != "admin")
+        $(".cmnt-delete").remove();
 
-    $("#deleter").on("click", function () {
+    $(".cmnt-delete").off("click");
+
+    $(".cmnt-delete").on("click", function () {
         delete_comment($(this).val());
     });
 });
@@ -108,7 +111,7 @@ function addComments(comments) {
         post_like($(this));
     });
 
-    $("#deleter").on("click", function () {
+    $(".cmnt-delete").on("click", function () {
         delete_comment($(this).val());
     });
 }
