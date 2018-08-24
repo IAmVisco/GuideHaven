@@ -53,6 +53,11 @@
 
     $("#users-table").on('all.bs.table', function () {
         checkBoxes = $('.check');
+
+        $(".check").click(function () {
+            $("#checkAll").prop('checked', false, checkBoxes.filter(':checked').length < checkBoxes.length);
+            $("#checkAll").prop('checked', checkBoxes.filter(':checked').length === checkBoxes.length);
+        });
     });
 
     $("#checkAll").click(function () {

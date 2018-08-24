@@ -1,6 +1,7 @@
 ﻿var index = 0,
-    visual_index = 0,
-    imgs = "";
+    visual_index = 0;
+var imgs = "",
+    step_loc = "";
 
 var widget = uploadcare.Widget('[role=uploadcare-uploader]');
 
@@ -42,6 +43,7 @@ multiWidget.onUploadComplete(function (info) {
 function createStep(step, header, content, images) {
 	index++;
     visual_index++;
+    step_loc = step;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
         + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
@@ -83,8 +85,8 @@ function deleteStep(id) {
 	document.getElementById("step" + id).style.display = "none";
 	for (var i = 1; i <= index; i++) {
 		let obj;
-		if ((obj = document.getElementById("step_count_" + i)) !== null) {
-			obj.innerHTML = "Step " + step++;
+        if ((obj = document.getElementById("step_count_" + i)) !== null) {
+            obj.innerHTML = step_loc + " " + step++;
 		}
 	}
 	visual_index--;
