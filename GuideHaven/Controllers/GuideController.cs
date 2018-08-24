@@ -35,16 +35,16 @@ namespace GuideHaven.Models
         public IActionResult Index(string searchText, string tag, string category, int page = 1)
         {
             var guides = CheckInput(searchText, tag, category);
-            return View(guides.ToPagedList(page, PageSize));
+            return View(guides.OrderByDescending(x => x.GuideId).ToPagedList(page, PageSize));
         }
 
         public IQueryable<Guide> Search(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})");
-                var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide);
-                return list1.Union(list2);
+                var list1 = context.Guide.Include(x => x.Ratings).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
+                var list2 = context.Steps.Include(x => x.Guide).ThenInclude(guide => guide.Ratings).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
+                return list1.Union(list2).AsQueryable();
             }
             else
                 return context.Guide.Include(x => x.Ratings).AsQueryable();
@@ -101,7 +101,7 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
-                AddTags(guide, tags);
+                AddTags(guide, tags, null);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                 guide.Owner = (await userManager.GetUserAsync(User)).Id;
                 guide.CreationDate = DateTime.Now;
@@ -134,8 +134,8 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, 
-            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
         {
             if (id != guide.GuideId)
             {
@@ -146,24 +146,14 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    if (!string.IsNullOrEmpty(tags))
-                    {
-                        var tagsList = TagListCreator(tags);
-                        CreateGuideTagsConnection(guide, tagsList);
-                        context.SaveTags(context, tagsList, null);
-                    }
+                    AddTags(guide, tags, id);
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
                     if (string.IsNullOrEmpty(tags))
-                    {
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
-                    }
                     else
-                    {
-                        var list = TagListCreator(tags);
-                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !list.Any(t => t.TagId == x.TagId));
-                    }
+                        context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
                     await context.SaveChangesAsync();
 
                 }
@@ -295,13 +285,13 @@ namespace GuideHaven.Models
             return context.Guide.Any(e => e.GuideId == id);
         }
 
-        private void AddTags(Guide guide, string tags)
+        private void AddTags(Guide guide, string tags, int? id)
         {
             if (!string.IsNullOrEmpty(tags))
             {
                 var tagsList = TagListCreator(tags);
                 CreateGuideTagsConnection(guide, tagsList);
-                context.SaveTags(context, tagsList, null);
+                context.SaveTags(context, tagsList, id);
             }
         }
 
