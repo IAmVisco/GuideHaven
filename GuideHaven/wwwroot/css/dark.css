@@ -69,3 +69,7 @@ blockquote {
 .modal-content {
     background-color: #282828;
 }
+
+.search-field {
+    border: solid 1px #000;
+}

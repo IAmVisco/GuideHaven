@@ -1,8 +1,45 @@
 ﻿@{
-    ViewData["Title"] = Localizer["About"];
+    ViewData["Title"] = Localizer["Authors"];
 }
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 <h2>@ViewData["Title"]</h2>
 
-<p>Smth smth about authors, will write later</p>
+<p> @Localizer["DescPt1"]
+    @Localizer["CreatedWith"] <i class="icon-heart" style="color: #eb0c0c" title="@Localizer["Love"]"></i> @Localizer["By"] 
+    <a href="https://github.com/IAmVisco">Visco</a> @Localizer["And"] <a href="https://github.com/vakers2">Vakers</a>.
+</p>
+<p>
+    @Localizer["Techs"]
+    <ul>
+        <li><a href="https://www.asp.net/core/overview/aspnet-vnext">ASP.NET Core 2.1</a></li>
+        <li><a href="https://www.nuget.org/packages/AspNet.Security.OAuth.Vkontakte/">AspNet.Security.OAuth.Vkontakte v2.0.0</a></li>
+        <li><a href="https://getbootstrap.com/docs/3.3/">Bootstrap v3.3.7</a></li>
+        <li><a href="https://developer.snapappointments.com/bootstrap-select/">Bootstrap Select v1.13.1</a></li>
+        <li><a href="https://www.nuget.org/packages/BuildBundlerMinifier/">BuildBundlerMinifier v2.8.391</a></li>
+        <li><a href="https://docs.microsoft.com/en-us/ef/">Entity Framework Core</a></li>
+        <li><a href="https://fontawesome.com/v3.2.1/icons/">Font Awesome v3.2.1</a></li>
+        <li><a href="https://github.com/mathiasbynens/he">he (HTML entities) v1.1.1</a></li>
+        <li><a href="https://jquery.com/">jQuery v3.3.1</a></li>
+        <li><a href="https://github.com/addywaddy/jquery.tagcloud.js">jQuery Tag Cloud</a></li>
+        <li><a href="https://github.com/justinmc/markdown-html-form">Markdown HTML Form v1.12.7 patched</a></li>
+        <li><a href="https://www.nuget.org/packages/PagedList.Core.Mvc/">PagedList.Core.Mvc v1.1.0</a></li>
+        <li><a href="https://befonts.com/product-sans-font.html">Product Sans</a></li>
+        <li><a href="https://www.nuget.org/packages/Rotativa.AspNetCore/">Rotativa.AspNetCore v1.0.6</a></li>
+        <li><a href="https://www.nuget.org/packages/Sendgrid/">Sendgrid v9.9.0</a></li>
+        <li><a href="https://github.com/showdownjs/showdown">Showdown v1.8.6</a></li>
+        <li><a href="https://github.com/SignalR/SignalR">SignalR v2.3.0</a></li>
+        <li><a href="https://www.microsoft.com/en-us/sql-server/sql-server-2017">SQL Server 17</a></li>
+        <li><a href="https://github.com/tovic/tags-input-beautifier">Tags Input Beautifier v2.2.1</a></li>
+        <li><a href="https://github.com/domchristie/turndown/tree/0.0.3">to-markdown v0.0.3</a></li>
+        <li><a href="https://uploadcare.com/">Uploadcare v3.6.0</a></li>
+    </ul>
+    @Localizer["Soft"]
+    <ul>
+        <li><a href="https://visualstudio.microsoft.com/">Microsfot Visual Studio 17 v15.8</a></li>
+        <li><a href="https://discordapp.com/">Discord</a></li>
+        <li><a href="https://www.gitkraken.com/">GitKraken v4.0.2</a></li>
+        <li><a href="https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017">SQL Server Management Studio 17 v17.8.1</a></li>
+        <li><a href="https://www.sublimetext.com/">Sublime Text v3.1.1</a></li>
+    </ul>
+</p>

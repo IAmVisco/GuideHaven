@@ -11,26 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\images\longtest.jpg" />
-    <Content Remove="wwwroot\js\cloudinary-core.js" />
-    <Content Remove="wwwroot\ProductSans.otf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Vkontakte" Version="2.0.0" />
     <PackageReference Include="buildbundlerminifier" Version="2.8.391" />
-    <PackageReference Include="Korzh.EasyQuery.Linq" Version="4.3.1" />
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
     <PackageReference Include="PagedList.Core.Mvc" Version="1.1.0" />
-    <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
     <PackageReference Include="rotativa.aspnetcore" Version="1.0.6" />
     <PackageReference Include="SendGrid" Version="9.9.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Classes\" />
   </ItemGroup>
 
 </Project>

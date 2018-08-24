@@ -57,7 +57,7 @@
         <span class="tags details-tags">
             @foreach (var tag in Model.GuideTags)
             {
-                <input asp-action="SearchTags" asp-route-searchText="@tag.TagId" type="submit" id="@tag.TagId" name="searchText" value="@tag.TagId" hidden />
+                <input asp-action="Index" asp-route-tag="@tag.TagId" type="submit" id="@tag.TagId" name="tag" value="@tag.TagId" hidden />
                 <label for="@tag.TagId" class="tag">@tag.TagId</label>
             }
         </span>

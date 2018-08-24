@@ -16,13 +16,11 @@
 <div class="row">
     <div class="col-md-9">
         <div class="tab" role="tabpanel">
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">@Localizer["LatestGuides"]</a></li>
                 <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">@Localizer["PopularGuides"]</a></li>
                 <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">@Localizer["MostRatedGuides"]</a></li>
             </ul>
-            <!-- Tab panes -->
             <div class="tab-content tabs">
                 <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
                     @await Html.PartialAsync("_GuidesListPartial",
