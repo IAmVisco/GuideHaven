@@ -307,11 +307,21 @@ namespace GuideHaven.Models
         private List<Tag> TagListCreator(string tags)
         {
             var tagsArray = tags.Split(',');
+            bool skip = false;
             List<Tag> tagsList = new List<Tag>();
             foreach (var item in tagsArray.Select(s => s.Trim().ToLower()))
             {
-                Tag tag = new Tag() { TagId = item };
-                tagsList.Add(tag);
+                foreach (var word in item.Split(' '))
+                {
+                    if (word.Length > 24)
+                        skip = true;
+                }
+                if (!skip)
+                {
+                    Tag tag = new Tag() { TagId = item };
+                    tagsList.Add(tag);
+                }
+                skip = false;
             }
             return tagsList;
         }
