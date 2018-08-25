@@ -393,7 +393,7 @@ namespace GuideHaven.Models
             if (item.Owner == userManager.GetUserName(User) ||
                 (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
                 delete = "<button href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
-            return "<div id=\""+ item.CommentId +"\"><label class=\"commenter\">" + item.Owner + ":</label>"
+            return "<div id=\""+ item.CommentId +"\"><label class=\"commenter\"><a href=\"../../User?user=" + item.Owner + "\">" + item.Owner + "</a>:</label>"
                     + "<div class=\"comment-wrap\">"
                         + delete
                         + "<div class=\"comment-block\">"
