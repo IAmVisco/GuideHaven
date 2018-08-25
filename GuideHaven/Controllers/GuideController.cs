@@ -247,7 +247,7 @@ namespace GuideHaven.Models
             }
             else
             {
-                context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
+                guide.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
             await CheckMedals(new int[] { 1, 10 }, 5, 6, context.Ratings.Where(x => x.Owner == User.Identity.Name).ToList());
