@@ -50,7 +50,7 @@
             <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
         }
         <div id="tagcloud">
-            <h3>Tags cloud</h3>
+            <h3>@Localizer["TagsCloud"]</h3>
             @foreach (var tag in Model.Tags.OrderByDescending(x => x.GuideTags.Count).Take(20).OrderBy(x => x.TagId))
             {
                 //if (tag.GuideTags.Count > 0)

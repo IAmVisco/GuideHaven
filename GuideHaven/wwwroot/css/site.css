@@ -605,6 +605,7 @@ footer > a {
 .plus-header {
     display: inline;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .nav-tabs a:hover,
