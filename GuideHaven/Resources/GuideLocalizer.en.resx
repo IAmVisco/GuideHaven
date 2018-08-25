@@ -231,4 +231,7 @@
   <data name="Images" xml:space="preserve">
     <value>Images</value>
   </data>
+  <data name="TagsComma" xml:space="preserve">
+    <value>Tags, separated by comma</value>
+  </data>
 </root>

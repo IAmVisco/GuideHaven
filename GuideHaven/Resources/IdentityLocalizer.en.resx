@@ -418,7 +418,7 @@
     <value>Successfully registered</value>
   </data>
   <data name="RegisterSuccessMsg" xml:space="preserve">
-    <value>Your account have been successfully registered. In order to log in you need to confrim your account so check your inbox for confimation mail.</value>
+    <value>Your account have been successfully registered. In order to log in you need to confirm your account so check your inbox for confirmation mail.</value>
   </data>
   <data name="Remember me?" xml:space="preserve">
     <value>Remember me?</value>

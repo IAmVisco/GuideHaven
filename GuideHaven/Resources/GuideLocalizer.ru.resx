@@ -231,4 +231,7 @@
   <data name="Images" xml:space="preserve">
     <value>Изображения</value>
   </data>
+  <data name="TagsComma" xml:space="preserve">
+    <value>Тэги, разделенные запятой</value>
+  </data>
 </root>

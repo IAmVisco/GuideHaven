@@ -138,7 +138,4 @@
   <data name="ToggleNav" xml:space="preserve">
     <value>Toggle navigation</value>
   </data>
-  <data name="WhatsThis" xml:space="preserve">
-    <value>What's this?</value>
-  </data>
 </root>

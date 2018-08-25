@@ -25,9 +25,8 @@
         </li>
         <li>
             <p>@Localizer["EnterKeyPt1"] <kbd>@Model.SharedKey</kbd> @Localizer["EnterKeyPt2"]</p>
-            @*<div class="alert alert-info">To enable QR code generation please read our <a href="https://go.microsoft.com/fwlink/?Linkid=852423">documentation</a>.</div>
             <div id="qrCode"></div>
-            <div id="qrCodeData" data-url="@Html.Raw(Model.AuthenticatorUri)"></div>*@
+            <div id="qrCodeData" data-url="@Html.Raw(Model.AuthenticatorUri)"></div>
         </li>
         <li>
             <p>
@@ -52,4 +51,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="~/lib/qrcode.js"></script>
+    <script type="text/javascript">
+        new QRCode(document.getElementById("qrCode"),
+        {
+        text: "@Html.Raw(Model.AuthenticatorUri)",
+        width: 150,
+        height: 150
+        });
+    </script>
 }

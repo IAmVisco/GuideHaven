@@ -6,6 +6,10 @@
     background: #eee;
 }
 
+#qrCode {
+    margin: 15px;
+}
+
 .body-content {
     padding: 15px;
 }
@@ -29,6 +33,7 @@
 .brand-img {
     max-width: 105px;
 }
+
 .glyphicon-ok {
     color: #11da7e;
 }
@@ -43,10 +48,6 @@
 
 .login-icon {
     padding-right: 5px;
-}
-
-.navbar-brand {
-    margin-right: 10px;
 }
 
 .nav > li > a {
