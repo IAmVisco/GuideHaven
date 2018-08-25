@@ -88,7 +88,6 @@ function delete_comment(id) {
     });
 }
 
-
 function post_like(div) {
     $.ajax({
         type: "POST",

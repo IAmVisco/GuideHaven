@@ -11,7 +11,7 @@
           method="post" name="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-controller="User" asp-action="Index" asp-route-user="@User.Identity.Name">
+                <a asp-controller="User" asp-action="Index">
                     <span class="glyphicon glyphicon-user login-icon"></span> @Localizer["Hello"] @UserManager.GetUserName(User)!
                 </a>
             </li>

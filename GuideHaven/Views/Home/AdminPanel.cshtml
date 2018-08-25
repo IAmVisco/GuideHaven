@@ -43,7 +43,7 @@
 
                         <tr>
                             <td><input name="list" id="check-@i" class="check" type="checkbox" value="@name" /></td>
-                            <td>@name</td>
+                            <td><a asp-controller="User" asp-action="Index" asp-route-user="@name">@name</a></td>
                             <td>@email</td>
                             @if (await UserManager.IsInRoleAsync(user, "Admin"))
                             {

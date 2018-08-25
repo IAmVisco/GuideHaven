@@ -156,6 +156,9 @@
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="Banned" xml:space="preserve">
+    <value>Banned</value>
+  </data>
   <data name="CreateGuide" xml:space="preserve">
     <value>Create guide</value>
   </data>

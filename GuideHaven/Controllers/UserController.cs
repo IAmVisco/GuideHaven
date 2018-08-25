@@ -47,10 +47,13 @@ namespace GuideHaven.Controllers
         public int PageSize { get; set; } = 10;
 
         //[HttpGet("User/{name}")]
-        public async Task<IActionResult> Index(string user, int page = 1)
+        public async Task<IActionResult> Index(string user = null, int page = 1)
         {
             //CreateMedals();
-            await Check5StarMedal();
+
+            if (user == null)
+                user = User.Identity.Name;
+            Check5StarMedal(user);
             var userinfo = await userManager.FindByNameAsync(user);
             ProfileModel profile = new ProfileModel()
             {
@@ -62,23 +65,20 @@ namespace GuideHaven.Controllers
             return View(profile);
         }
 
-        private async Task Check5StarMedal()
+        private void Check5StarMedal(string name)
         {
-            if (User.Identity.IsAuthenticated)
+            var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == name);
+            if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
             {
-                var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-                if (guidecontext.GetGuides(guidecontext, user.Id).Any(x => x.Ratings.Any(r => r.OwnerRating == 5)) && !user.Medals.Any(x => x.MedalId == 8))
-                {
-                    AddMedal(8, user);
-                }
-                await CheckSuperMedal();
-                context.SaveChanges();
+                AddMedal(8, user);
             }
+            CheckSuperMedal(name);
+            context.SaveChanges();
         }
 
-        private async Task CheckSuperMedal()
+        private void CheckSuperMedal(string name)
         {
-            var user = await userManager.GetUserAsync(User);
+            var user = context.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == name);
             if (user.Medals.Count == context.Medals.Count() - 1)
                 AddMedal(context.Medals.Count(), user);
         }

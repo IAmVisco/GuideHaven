@@ -10,9 +10,13 @@
 }
 
 <h2 style="display: inline-block">@Localizer["RuProfile"] @Model.User.UserName@Localizer["EnProfile"] </h2>
-@if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == @Model.User.UserName), "Admin"))
+@if (await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Model.User.UserName), "Admin"))
 {
     <i class="icon-shield icon-2x" title="@Localizer["Admin"]"></i>
+}
+@if (await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Model.User.UserName), "Banned"))
+{
+    <i class="icon-legal icon-2x" title="@Localizer["Banned"]"></i>
 }
 @if (self)
 {
