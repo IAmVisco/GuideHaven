@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ClickingHere" xml:space="preserve">
+    <value>нажав здесь</value>
+  </data>
+  <data name="ConfEmail" xml:space="preserve">
+    <value>Подтвердите почту</value>
+  </data>
+  <data name="PlsConfirm" xml:space="preserve">
+    <value>Пожалуйста, подтвердите свой аккаунт</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Главная страница</value>
   </data>
