@@ -21,6 +21,17 @@ namespace GuideHaven.Models
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IdentityContext identityContext;
 
+        public class CommentOutput
+        {
+            public int CommentId { get; set; }
+            public string Owner { get; set; }
+            public string Liked { get; set; }
+            public int Count { get; set; }
+            public string Content { get; set; }
+            public string CreationDate { get; set; }
+            public string Delete { get; set; }
+        }
+
         public GuideController(GuideContext context, UserManager<ApplicationUser> userManager, IdentityContext identityContext)
         {
             this.context = context;
@@ -183,7 +194,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> PostComment(int guideId, string comment)
+        public async Task<ActionResult<CommentOutput>> PostComment(int guideId, string comment)
         {
             Comment newComment = new Comment()
             {
@@ -194,7 +205,7 @@ namespace GuideHaven.Models
             var guide = context.GetGuide(context, guideId);
             guide.Comments.Add(newComment);
             context.SaveChanges();
-            string output = await CreateComment(context.GetGuide(context, guideId).Comments.Last());
+            var output = await CreateComment(context.GetGuide(context, guideId).Comments.Last());
             await CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
             return output;
         }
@@ -208,12 +219,12 @@ namespace GuideHaven.Models
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<string>> GetComments(int guideId)
+        public async Task<ActionResult<List<CommentOutput>>> GetComments(int guideId)
         {
-            string output = "";
+            List<CommentOutput> output = new List<CommentOutput>();
             foreach (var item in context.GetGuide(context, guideId).Comments)
             {
-                output += await CreateComment(item);
+                output.Add(await CreateComment(item));
             }
             return output;
         }
@@ -383,7 +394,7 @@ namespace GuideHaven.Models
             return guides;
         }
 
-        private async Task<string> CreateComment(Comment item)
+        private async Task<CommentOutput> CreateComment(Comment item)
         {
             string liked = "", delete = "";
             if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
@@ -393,22 +404,18 @@ namespace GuideHaven.Models
             if (item.Owner == userManager.GetUserName(User) ||
                 (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
                 delete = "<button href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
-            return "<div id=\""+ item.CommentId +"\"><label class=\"commenter\"><a href=\"../../User?user=" + item.Owner + "\">" + item.Owner + "</a>:</label>"
-                    + "<div class=\"comment-wrap\">"
-                        + delete
-                        + "<div class=\"comment-block\">"
-                            + "<input id=\"commentId\" hidden value=\"" + item.CommentId + "\" />"
-                            + "<p>" + item.Content + "</p>"
-                            + "<div class=\"bottom-comment\">"
-                                + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
-                                + "<div class=\"comment-actions\">"
-                                    + "<input" + liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\"/>"
-                                    + "<label for=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
-                                    + "<span class=\"like-count\">" + item.Likes.Count + "</span>"
-                                + "</div>"
-                            + "</div>"
-                        + "</div>"
-                    + "</div></div>";
+
+            CommentOutput output = new CommentOutput()
+            {
+                CommentId = item.CommentId,
+                Count = item.Likes.Count,
+                CreationDate = item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy"),
+                Liked = liked,
+                Delete =  delete,
+                Owner = item.Owner,
+                Content = item.Content
+            };
+            return output;
         }
     }
 }

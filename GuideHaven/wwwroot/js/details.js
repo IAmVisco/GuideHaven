@@ -6,7 +6,8 @@ var connection = new signalR.HubConnectionBuilder()
     .build();
 
 connection.on('addcomment', function (comment) {
-    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comment);
+    let output = create_comment(comment);
+    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', output);
 
     $(".like-lbl").off("click");
 
@@ -58,6 +59,7 @@ function get_comments() {
         url: '/Guide/GetComments',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
+            console.log(response);
             addComments(response);
         }
     });
@@ -98,7 +100,13 @@ function post_like(div) {
 
 function addComments(comments) {
     document.getElementById("posted-comments").innerHTML = "";
-    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', comments);
+    let output = "";
+    comments.forEach(function (item) {
+        output += create_comment(item);
+    });
+        
+
+    document.getElementById("posted-comments").insertAdjacentHTML('beforeend', output);
 
     $(".like-lbl").on("click", function () {
         let likes = parseInt(this.nextSibling.innerHTML);
@@ -148,7 +156,7 @@ $(document).ready(function () {
     //});
 
     setInterval(get_likes, 3000);
-    setTimeout(join_group, 500);
+    setTimeout(join_group, 700);
 
     function showPopover() {
         $(".rating").popover("toggle");
@@ -247,3 +255,22 @@ $(document).keydown(function (e) {
         $($("#side-menu").children()[step]).css("margin-left", "-15px"); 
     }
 });
+
+function create_comment(item) {
+    return "<div id=\"" + item.commentId + "\"><label class=\"commenter\"><a href=\"../../User?user=" + item.owner + "\">" + item.owner + "</a>:</label>"
+        + "<div class=\"comment-wrap\">"
+        + item.delete
+        + "<div class=\"comment-block\">"
+        + "<input id=\"commentId\" hidden value=\"" + item.CommentId + "\" />"
+        + "<p>" + item.content + "</p>"
+        + "<div class=\"bottom-comment\">"
+        + "<div class=\"comment-date\">" + item.creationDate+ "</div>"
+        + "<div class=\"comment-actions\">"
+        + "<input" + item.liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.commentId + "\" value=\"" + item.commentId + "\"/>"
+        + "<label for=\"like-" + item.commentId + "\" value=\"" + item.commentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
+        + "<span class=\"like-count\">" + item.count + "</span>"
+        + "</div>"
+        + "</div>"
+        + "</div>"
+        + "</div></div>";
+}
