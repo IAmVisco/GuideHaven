@@ -730,6 +730,10 @@ footer > a {
     margin-left: 5px;
 }
 
+.btn-social {
+    margin-bottom: 10px;
+}
+
 @media screen and (max-width: 991px) {
     .row {
         margin: 0;
