@@ -16,11 +16,11 @@
             <div class="guide-img-div">
                 @if (item.Image == null)
                 {
-                    <img src="~/images/no-image.jpg" class="guide-img" />
+                    <img src="~/images/no-image.jpg" class="guide-img" alt="no-image" />
                 }
                 else
                 {
-                    <img id="@item.GuideId" src="@item.Image" class="guide-img" />
+                    <img src="@item.Image" class="guide-img" />
                 }
             </div>
 
