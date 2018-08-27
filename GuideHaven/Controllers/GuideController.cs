@@ -378,7 +378,7 @@ namespace GuideHaven.Models
             var guides = context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).AsQueryable(); ;
             if (!String.IsNullOrEmpty(searchText))
             {
-                guides = Search(searchText);
+                guides = Search(searchText).Union(SearchTags(searchText));
                 ViewBag.searchText = searchText;
             }
             else if (!String.IsNullOrEmpty(category))

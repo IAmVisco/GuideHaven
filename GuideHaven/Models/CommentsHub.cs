@@ -24,5 +24,10 @@ namespace GuideHaven.Models
             return Clients.Group(id.ToString()).SendAsync("addcomment", comment);
         }
 
+        public Task DeleteComment(int id, int commentId)
+        {
+            return Clients.Group(id.ToString()).SendAsync("deletecomment", commentId);
+        }
+
     }
 }

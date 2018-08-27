@@ -31,6 +31,10 @@ connection.on('addcomment', function (comment) {
     });
 });
 
+connection.on('deletecomment', function (id) {
+    $("#" + id).remove();
+});
+
 connection.start();
 
 function join_group() {
@@ -59,7 +63,6 @@ function get_comments() {
         url: '/Guide/GetComments',
         data: { guideId: $("#guideId").attr("value") },
         success: function (response) {
-            console.log(response);
             addComments(response);
         }
     });
@@ -85,7 +88,7 @@ function delete_comment(id) {
         url: '/Guide/DeleteComment',
         data: { id: id, guideId: $("#guideId").attr("value") },
         success: function (response) {
-            $("#" + id).remove();
+            connection.invoke("deletecomment", $("#guideId").attr("value"), id);
         }
     });
 }
@@ -156,7 +159,14 @@ $(document).ready(function () {
     //});
 
     setInterval(get_likes, 3000);
-    setTimeout(join_group, 700);
+
+    try {
+        setTimeout(join_group, 700);
+    }
+    catch{
+        setTimeout(join_group, 500);
+    } 
+    
 
     function showPopover() {
         $(".rating").popover("toggle");
