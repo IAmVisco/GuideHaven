@@ -57,7 +57,7 @@ namespace GuideHaven.Controllers
             var userinfo = await userManager.FindByNameAsync(user);
             ProfileModel profile = new ProfileModel()
             {
-                Guides = guidecontext.GetGuides(guidecontext, (await userManager.FindByNameAsync(user)).Id).AsQueryable().ToPagedList(page, PageSize),
+                Guides = guidecontext.GetGuides(guidecontext, (await userManager.FindByNameAsync(user)).Id).OrderByDescending(x => x.CreationDate).AsQueryable().ToPagedList(page, PageSize),
                 User = userinfo,
                 Medals = context.Medals.Where(x => x.Users.Any(m => m.UserId == userinfo.Id)).ToList()
             };
