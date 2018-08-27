@@ -151,7 +151,7 @@ $(document).ready(function () {
     try {
         setTimeout(join_group, 700);
     }
-    catch{
+    catch {
         setTimeout(join_group, 500);
     } 
     
@@ -255,20 +255,21 @@ $(document).keydown(function (e) {
 });
 
 function create_comment(item) {
-    return "<div id=\"" + item.commentId + "\"><label class=\"commenter\"><a href=\"../../User?user=" + item.owner + "\">" + item.owner + "</a>:</label>"
-        + "<div class=\"comment-wrap\">"
-        + item.delete
-        + "<div class=\"comment-block\">"
-        + "<input id=\"commentId\" hidden value=\"" + item.CommentId + "\" />"
-        + "<p>" + item.content + "</p>"
-        + "<div class=\"bottom-comment\">"
-        + "<div class=\"comment-date\">" + item.creationDate+ "</div>"
-        + "<div class=\"comment-actions\">"
-        + "<input" + item.liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.commentId + "\" value=\"" + item.commentId + "\"/>"
-        + "<label for=\"like-" + item.commentId + "\" value=\"" + item.commentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
-        + "<span class=\"like-count\">" + item.count + "</span>"
-        + "</div>"
-        + "</div>"
-        + "</div>"
-        + "</div></div>";
+    return '<div id="' + item.commentId + '"><label class="commenter"><a href="../../User?user=' + item.owner + '">' + item.owner + '</a>:</label>'
+                + '<div class="comment-wrap">'
+                    + item.delete
+                        + '<div class="comment-block">'
+                            + '<input id="commentId" hidden value="' + item.CommentId + '" />'
+                            + '<p>' + item.content + '</p>'
+                            + '<div class="bottom-comment">'
+                                + '<div class="comment-date">' + item.creationDate + '</div>'
+                                + '<div class="comment-actions">'
+                                    + '<input' + item.liked + ' type="checkbox" class="like-btn" id="like-' + item.commentId + '" value="' + item.commentId + '"/>'
+                                    + '<label for="like-' + item.commentId + '" value="' + item.commentId + '" class="like-lbl" title="Like!"></label>'
+                                    + '<span class="like-count">' + item.count + '</span>'
+                                + '</div>'
+                           + '</div>'
+                    + '</div>'
+            + '</div>'
+        + '</div>';
 }
