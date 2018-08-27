@@ -117,121 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AreUSure" xml:space="preserve">
-    <value>Are you sure?</value>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
   </data>
-  <data name="AreUSureMsg" xml:space="preserve">
-    <value>Are you sure you want to delete</value>
+  <data name="Authors" xml:space="preserve">
+    <value>Authors</value>
   </data>
-  <data name="BackToGuide" xml:space="preserve">
-    <value>Back to Guide</value>
-  </data>
-  <data name="CannotBeUndone" xml:space="preserve">
-    <value>This action cannot be undone</value>
-  </data>
-  <data name="Content" xml:space="preserve">
-    <value>Content</value>
-  </data>
-  <data name="Create" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="CreateGuide" xml:space="preserve">
-    <value>Create guide</value>
-  </data>
-  <data name="CreateNew" xml:space="preserve">
-    <value>Create New</value>
-  </data>
-  <data name="CreateStep" xml:space="preserve">
-    <value>Create step</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="EditGuide" xml:space="preserve">
-    <value>Edit guide</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Guide</value>
-  </data>
-  <data name="Index" xml:space="preserve">
-    <value>Index</value>
-  </data>
-  <data name="loc" xml:space="preserve">
-    <value>en</value>
-  </data>
-  <data name="NoDelete" xml:space="preserve">
-    <value>No, I've changed my mind</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="ShortDescription" xml:space="preserve">
-    <value>Short description</value>
-  </data>
-  <data name="Step" xml:space="preserve">
-    <value>Step</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="YesDelete" xml:space="preserve">
-    <value>Yes, delete that guide</value>
-  </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Back to List</value>
-  </data>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
-  </data>
-  <data name="Image" xml:space="preserve">
-    <value>Image</value>
-  </data>
-  <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
-  </data>
-  <data name="ArrowsTip" xml:space="preserve">
-    <value>You can use left and right arrows on your keyboard to navigate through steps.</value>
-  </data>
-  <data name="by" xml:space="preserve">
+  <data name="By" xml:space="preserve">
     <value>by</value>
   </data>
-  <data name="Created" xml:space="preserve">
-    <value>Created</value>
+  <data name="CreatedWith" xml:space="preserve">
+    <value>Created with</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="DescPt1" xml:space="preserve">
+    <value>This site is an entry project, representing a platfrom for creating and sharing guides of all sorts.</value>
   </data>
-  <data name="Rating" xml:space="preserve">
-    <value>Rating</value>
+  <data name="Love" xml:space="preserve">
+    <value>Love</value>
   </data>
-  <data name="Tip" xml:space="preserve">
-    <value>Tip!</value>
+  <data name="Soft" xml:space="preserve">
+    <value>Soft used:</value>
   </data>
-  <data name="Views" xml:space="preserve">
-    <value>views</value>
-  </data>
-  <data name="AddComment" xml:space="preserve">
-    <value>Add comment...</value>
-  </data>
-  <data name="GuideName" xml:space="preserve">
-    <value>Guide Name</value>
-  </data>
-  <data name="Header" xml:space="preserve">
-    <value>Header</value>
-  </data>
-  <data name="Send" xml:space="preserve">
-    <value>Send</value>
-  </data>
-  <data name="Images" xml:space="preserve">
-    <value>Images</value>
-  </data>
-  <data name="TagsComma" xml:space="preserve">
-    <value>Tags, separated by comma</value>
+  <data name="Techs" xml:space="preserve">
+    <value>Technologies and dependencies used:</value>
   </data>
 </root>

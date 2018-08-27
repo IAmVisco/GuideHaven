@@ -5,21 +5,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Korzh.EasyQuery.Linq;
 using GuideHaven.Areas.Identity.Data;
 using Rotativa.AspNetCore;
-using GuideHaven.Models;
+using PagedList.Core;
 
 namespace GuideHaven.Models
 {
     [Authorize]
     public class GuideController : Controller
     {
+        public int PageSize { get; set; } = 10;
+
         private readonly GuideContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IdentityContext identityContext;
+
+        public class CommentOutput
+        {
+            public int CommentId { get; set; }
+            public string Owner { get; set; }
+            public string Liked { get; set; }
+            public int Count { get; set; }
+            public string Content { get; set; }
+            public string CreationDate { get; set; }
+            public string Delete { get; set; }
+        }
 
         public GuideController(GuideContext context, UserManager<ApplicationUser> userManager, IdentityContext identityContext)
         {
@@ -32,50 +43,32 @@ namespace GuideHaven.Models
 
         // GET: Guide
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string searchText, string tag, string category, int page = 1)
         {
-            return View(await context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).ToListAsync());
+            var guides = CheckInput(searchText, tag, category);
+            return View(guides.OrderByDescending(x => x.GuideId).ToPagedList(page, PageSize));
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> Search(string searchText)
+        public IQueryable<Guide> Search(string searchText)
         {
             if (!string.IsNullOrEmpty(searchText))
             {
-                var list1 = context.Guide.Include(g => g.GuideTags).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
-                var list2 = context.Steps.Include(x => x.Guide).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
-                return View("Index", list1.Union(list2).ToList());
+                var list1 = context.Guide.Include(x => x.Ratings).Include(g => g.GuideSteps).FromSql($"select * FROM Guide WHERE FREETEXT( * , {searchText})").ToList();
+                var list2 = context.Steps.Include(x => x.Guide).ThenInclude(guide => guide.Ratings).FromSql($"select * FROM Step WHERE FREETEXT( * , {searchText})").Select(x => x.Guide).ToList();
+                return list1.Union(list2).AsQueryable();
             }
             else
-                return View("Index", await context.Guide.ToListAsync());
+                return context.Guide.Include(x => x.Ratings).AsQueryable();
         }
 
-        [AllowAnonymous]
-        [HttpPost("Tags/{searchText}")]
-        [HttpGet("Tags/{searchText}")]
-        public async Task<IActionResult> SearchTags(string searchText)
+        public IQueryable<Guide> SearchTags(string tag)
         {
-            var guides = context.GetGuides(context);
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                return View("Index", guides.Where(x => x.GuideTags.Any(t => t.TagId == searchText)).ToList());
-            }
-            else
-                return View("Index");
+            return context.GetGuides(context).Where(x => x.GuideTags.Any(t => t.TagId == tag)).AsQueryable();
         }
 
-        [AllowAnonymous]
-        [HttpGet("Categories/{category}")]
-        public async Task<IActionResult> GetGuidesByCategory(string category)
+        public IQueryable<Guide> GetGuidesByCategory(string category)
         {
-            var guides = context.GetGuides(context);
-            if (!string.IsNullOrEmpty(category))
-            {
-                return View("Index", guides.Where(x => x.Category == category).ToList());
-            }
-            else
-                return View("Index");
+            return context.Guide.Include(x => x.Ratings).FromSql($"select * FROM Guide WHERE FREETEXT( Category , {category})");
         }
 
         // GET: Guide/Details/5
@@ -95,6 +88,15 @@ namespace GuideHaven.Models
             context.Guide.FirstOrDefault(x => x.GuideId == id).Views++;
             await context.SaveChangesAsync();
             return View(guide);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteComment(int id, int guideId)
+        {
+            var guide = context.GetGuide(context, guideId);
+            guide.Comments.RemoveAll(x => x.CommentId == id);
+            context.SaveChanges();
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -119,25 +121,20 @@ namespace GuideHaven.Models
         {
             if (ModelState.IsValid)
             {
-                if (tags != null)
-                {
-                    var tagsList = TagListCreator(tags);
-                    CreateGuideTagsConnection(guide, tagsList);
-                    context.SaveTags(context, tagsList, null);
-                }
+                AddTags(guide, tags, null);
                 guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
-                guide.Owner = await userManager.GetUserIdAsync(await userManager.GetUserAsync(User));
+                guide.Owner = (await userManager.GetUserAsync(User)).Id;
                 guide.CreationDate = DateTime.Now;
                 context.Add(guide);
                 await context.SaveChangesAsync();
-                await CheckMedals(new int[] { 1 }, 7, 7, context.Guide.Where(x => x.Owner == guide.Owner).ToList());
-                return RedirectToAction(nameof(Index));
+                await CheckMedals(new int[] { 1 }, 7, 7, context.GetGuides(context, guide.Owner));
+                return RedirectToAction("Details", new { id = context.Guide.LastOrDefault(x => x.GuideName == guide.GuideName).GuideId });
             }
             return View(guide);
         }
 
         // GET: Guide/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -157,7 +154,7 @@ namespace GuideHaven.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, 
+        public async Task<IActionResult> Edit(int id,
             [Bind("GuideId, GuideName, GuideSteps, Owner, Description, Image, Views, CreationDate, Category")] Guide guide, string tags = null)
         {
             if (id != guide.GuideId)
@@ -169,16 +166,11 @@ namespace GuideHaven.Models
             {
                 try
                 {
-                    if (tags != null)
-                    {
-                        var tagsList = TagListCreator(tags);
-                        CreateGuideTagsConnection(guide, tagsList);
-                        context.SaveTags(context, tagsList, id);
-                    }
+                    AddTags(guide, tags, id);
                     guide.GuideSteps.RemoveAll(x => x.Header == null && x.Content == null);
                     context.Steps.RemoveRange(context.Steps.Where(x => x.GuideId == guide.GuideId));
                     context.Update(guide);
-                    if (tags == null)
+                    if (string.IsNullOrEmpty(tags))
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.Clear();
                     else
                         context.Guide.Include(x => x.GuideTags).FirstOrDefault(x => x.GuideId == id).GuideTags.RemoveAll(x => !TagListCreator(tags).Any(t => t.TagId == x.TagId));
@@ -202,7 +194,7 @@ namespace GuideHaven.Models
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> PostComment(int guideId, string comment)
+        public async Task<ActionResult<CommentOutput>> PostComment(int guideId, string comment)
         {
             Comment newComment = new Comment()
             {
@@ -213,7 +205,7 @@ namespace GuideHaven.Models
             var guide = context.GetGuide(context, guideId);
             guide.Comments.Add(newComment);
             context.SaveChanges();
-            string output = CreateComment(context.GetGuide(context, guideId).Comments.Last());
+            var output = await CreateComment(context.GetGuide(context, guideId).Comments.Last());
             await CheckMedals(new int[] { 1, 10 }, 3, 4, context.Comments.Where(x => x.Owner == User.Identity.Name).ToList());
             return output;
         }
@@ -227,12 +219,12 @@ namespace GuideHaven.Models
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult<string> GetComments(int guideId)
+        public async Task<ActionResult<List<CommentOutput>>> GetComments(int guideId)
         {
-            string output = "";
+            List<CommentOutput> output = new List<CommentOutput>();
             foreach (var item in context.GetGuide(context, guideId).Comments)
             {
-                output += CreateComment(item);
+                output.Add(await CreateComment(item));
             }
             return output;
         }
@@ -266,10 +258,10 @@ namespace GuideHaven.Models
             }
             else
             {
-                context.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
+                guide.Ratings.FirstOrDefault(x => x.Owner == User.Identity.Name).OwnerRating = rating;
             }
             context.SaveChanges();
-            await CheckRateMedals();
+            await CheckMedals(new int[] { 1, 10 }, 5, 6, context.Ratings.Where(x => x.Owner == User.Identity.Name).ToList());
             return Ok();
         }
 
@@ -299,19 +291,28 @@ namespace GuideHaven.Models
         // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id, string returnUrl = null)
+        public async Task<IActionResult> DeleteConfirmed(int? id, string returnUrl, string user)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl + ("?user=" + user ?? "") ?? Url.Content("~/");
             var guide = context.GetGuide(context, id);
             context.Guide.Remove(guide);
             await context.SaveChangesAsync();
             return LocalRedirect(returnUrl);
-            //return RedirectToAction(nameof(Index));
         }
 
         private bool GuideExists(int id)
         {
             return context.Guide.Any(e => e.GuideId == id);
+        }
+
+        private void AddTags(Guide guide, string tags, int? id)
+        {
+            if (!string.IsNullOrEmpty(tags))
+            {
+                var tagsList = TagListCreator(tags);
+                CreateGuideTagsConnection(guide, tagsList);
+                context.SaveTags(context, tagsList, id);
+            }
         }
 
         private List<Tag> TagListCreator(string tags)
@@ -320,23 +321,23 @@ namespace GuideHaven.Models
             List<Tag> tagsList = new List<Tag>();
             foreach (var item in tagsArray.Select(s => s.Trim().ToLower()))
             {
-                Tag tag = new Tag() { TagId = item };
-                tagsList.Add(tag);
+                if (item.Length <= 24)
+                {
+                    Tag tag = new Tag() { TagId = item };
+                    tagsList.Add(tag);
+                }
             }
             return tagsList;
         }
 
         private void CreateGuideTagsConnection(Guide guide, List<Tag> tags)
         {
-            List<GuideTag> list = new List<GuideTag>();
             foreach (var item in tags)
             {
                 GuideTag guideTag = new GuideTag() { Guide = guide, TagId = item.TagId, Tag = item, GuideId = guide.GuideId };
-                list.Add(guideTag);
                 item.GuideTags = new List<GuideTag>();
                 item.GuideTags.Add(guideTag);
             }
-            //guide.GuideTags = list;
         }
 
         private async Task CheckMedals<T>(int[] conditions, int startMedalIndex, int endMedalIndex, List<T> list)
@@ -360,22 +361,6 @@ namespace GuideHaven.Models
             }
         }
 
-        private async Task CheckRateMedals()
-        {
-            var user = identityContext.Users.Include(x => x.Medals).FirstOrDefault(x => x.UserName == User.Identity.Name);
-            int ratings = context.Ratings.Where(x => x.Owner == User.Identity.Name).Count();
-            if (ratings >= 1 && !user.Medals.Any(x => x.MedalId == 5))
-            {
-                AddMedal(5, user);
-            }
-            if (ratings >= 10 && !user.Medals.Any(x => x.MedalId == 6))
-            {
-                AddMedal(6, user);
-            }
-            await CheckSuperMedal();
-            identityContext.SaveChanges();
-        }
-
         private async Task CheckSuperMedal()
         {
             var user = await userManager.GetUserAsync(User);
@@ -389,26 +374,48 @@ namespace GuideHaven.Models
             identityContext.Medals.Include(x => x.Users).FirstOrDefault(x => x.Id == id).Users.Add(newMedal);
         }
 
-        private string CreateComment(Comment item)
+        private IQueryable<Guide> CheckInput(string searchText, string tag, string category) {
+            var guides = context.Guide.Include(x => x.Ratings).OrderByDescending(x => x.GuideId).AsQueryable(); ;
+            if (!String.IsNullOrEmpty(searchText))
+            {
+                guides = Search(searchText).Union(SearchTags(searchText));
+                ViewBag.searchText = searchText;
+            }
+            else if (!String.IsNullOrEmpty(category))
+            {
+                guides = GetGuidesByCategory(category);
+                ViewBag.category = category;
+            }
+            else if (!String.IsNullOrEmpty(tag))
+            {
+                guides = SearchTags(tag);
+                ViewBag.tag = tag;
+            }
+            return guides;
+        }
+
+        private async Task<CommentOutput> CreateComment(Comment item)
         {
-            string liked = "";
+            string liked = "", delete = "";
             if (item.Likes.FirstOrDefault(x => x.Owner == User.Identity.Name) != null)
                 liked += " checked ";
-            return "<label class=\"commenter\">" + item.Owner + ":</label>"
-                    + "<div class=\"comment-wrap\">"
-                        + "<div class=\"comment-block\">"
-                            + "<input id=\"commentId\" hidden value=" + item.CommentId + " />"
-                            + "<p>" + item.Content + "</p>"
-                            + "<div class=\"bottom-comment\">"
-                                + "<div class=\"comment-date\">" + item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy") + "</div>"
-                                + "<div class=\"comment-actions\">"
-                                    + "<input" + liked + " type = \"checkbox\" class=\"like-btn\" id=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\"/>"
-                                    + "<label for=\"like-" + item.CommentId + "\" value=\"" + item.CommentId + "\" class=\"like-lbl\" title=\"Like!\"></label>"
-                                    + "<span class=\"like-count\">" + item.Likes.Count + "</span>"
-                                + "</div>"
-                            + "</div>"
-                        + "</div>"
-                    + "</div>";
+            if (!User.Identity.IsAuthenticated)
+                liked += " disabled ";
+            if (item.Owner == userManager.GetUserName(User) ||
+                (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin")))
+                delete = "<button href=\"#\" title=\"\" value=\"" + item.CommentId + "\" class=\"btn-link cmnt-delete\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
+
+            CommentOutput output = new CommentOutput()
+            {
+                CommentId = item.CommentId,
+                Count = item.Likes.Count,
+                CreationDate = item.CreationTime.ToString("HH:mm:ss dd.MM.yyyy"),
+                Liked = liked,
+                Delete =  delete,
+                Owner = item.Owner,
+                Content = item.Content
+            };
+            return output;
         }
     }
 }

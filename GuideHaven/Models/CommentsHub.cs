@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static GuideHaven.Models.GuideController;
 
 namespace GuideHaven.Models
 {
@@ -18,9 +19,14 @@ namespace GuideHaven.Models
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, id.ToString());
         }
 
-        public Task AddComment(int id, string comment)
+        public Task AddComment(int id, CommentOutput comment)
         {
             return Clients.Group(id.ToString()).SendAsync("addcomment", comment);
+        }
+
+        public Task DeleteComment(int id, int commentId)
+        {
+            return Clients.Group(id.ToString()).SendAsync("deletecomment", commentId);
         }
 
     }

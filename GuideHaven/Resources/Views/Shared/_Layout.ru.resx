@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdminPanel" xml:space="preserve">
-    <value>Админка</value>
+    <value>Панель</value>
   </data>
   <data name="Authors" xml:space="preserve">
     <value>Авторы</value>
@@ -137,8 +137,5 @@
   </data>
   <data name="ToggleNav" xml:space="preserve">
     <value>Показать меню</value>
-  </data>
-  <data name="WhatsThis" xml:space="preserve">
-    <value>Что это?</value>
   </data>
 </root>

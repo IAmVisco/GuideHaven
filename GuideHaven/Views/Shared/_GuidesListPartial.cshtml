@@ -7,20 +7,20 @@
 @{ int i = 0; }
 @foreach (var item in Model)
 {
-    bool allowDelete = ((string)ViewData["AllowDelete"] == "Profile" || (string)ViewData["AllowDelete"] == "Index") 
+    bool deleteAllowed = ((string)ViewData["AllowDelete"] == "Profile" || (string)ViewData["AllowDelete"] == "Index") 
         && User.Identity.IsAuthenticated && (await userManager.FindByIdAsync(item.Owner) == await userManager.GetUserAsync(User) ||
-             await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"));
+        await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"));
     i++;
     <a href="~/Guide/Details/@item.GuideId" style="color: inherit; text-decoration: none;">
-        <div class="guide-entry @if (allowDelete) { <text>guide-delete</text> }">
+        <div class="guide-entry @if (deleteAllowed) { <text>guide-delete</text> }">
             <div class="guide-img-div">
                 @if (item.Image == null)
                 {
-                    <img src="~/images/no-image.jpg" class="guide-img" />
+                    <img src="~/images/no-image.jpg" class="guide-img" alt="no-image" />
                 }
                 else
                 {
-                    <img id="@item.GuideId" src="@item.Image" class="guide-img" />
+                    <img src="@item.Image" class="guide-img" />
                 }
             </div>
 
@@ -66,13 +66,15 @@
                     <span>@Localizer["NoRatingsYet"]</span>
                 }
                 <span class="guide-views guide-info" title="@item.Views  @Localizer["Views"]"><i class="icon-eye-open"></i>  @item.Views</span>
-                <span class="guide-date guide-info" title="@Localizer["Created"]: @item.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")"><i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")</span>
+                <span class="guide-date guide-info" title="@Localizer["Created"]: @item.CreationDate.ToString("HH:mm:ss dd.MM.yyyy")">
+                    <i class="icon-calendar"></i>  @item.CreationDate.ToString("dd.MM.yyyy")
+                </span>
 
                 <p>@item.Description</p>
             </div>
         </div>
     </a>
-    @if (allowDelete)
+    @if (deleteAllowed)
     {
         <button href="#" data-toggle="modal" data-target="#modal-@item.GuideId" title="@Localizer["Delete"]" class="btn-link outer-delete">
             <span class="glyphicon glyphicon-remove"></span>
@@ -89,7 +91,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["NoDelete"]</button>
-                        <form asp-action="Delete" asp-controller="Guide" 
+                        <form asp-action="Delete" asp-controller="Guide"
+                              asp-route-user ="@ViewData["UserName"]"
                               asp-route-returnUrl="@ViewContext.HttpContext.Request.Path" 
                               asp-route-id="@item.GuideId" method="post" style="display: inline-block;">
                             <input type="submit" class="btn btn-danger" value="@Localizer["YesDelete"]" />

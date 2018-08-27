@@ -10,9 +10,13 @@
 }
 
 <h2 style="display: inline-block">@Localizer["RuProfile"] @Model.User.UserName@Localizer["EnProfile"] </h2>
-@if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == @Model.User.UserName), "Admin"))
+@if (await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Model.User.UserName), "Admin"))
 {
     <i class="icon-shield icon-2x" title="@Localizer["Admin"]"></i>
+}
+@if (await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == Model.User.UserName), "Banned"))
+{
+    <i class="icon-legal icon-2x" title="@Localizer["Banned"]"></i>
 }
 @if (self)
 {
@@ -31,8 +35,9 @@
                 @Localizer["UserGuides"]
             }
         </h3>
-        @await Html.PartialAsync("_GuidesListPartial", Model.Guides,
-            new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Profile" } })
+        @await Html.PartialAsync("_GuidesListPartial", Model.Guides.ToList(),
+            new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Profile" }, { "UserName", Model.User.UserName} })
+        <pager class="pager-container" list="@Model.Guides" asp-action="Index" asp-controller="User" asp-route-user="@ViewBag.user" />
     </div>
     <div class="col-md-4">
         <h3>
@@ -50,9 +55,7 @@
             foreach (var item in Model.Medals)
             {
                 <div class="medal">
-                    @*<div class="medal-img-container">*@
                     <img src="@item.Image" class="medal-img" />
-                    @*</div>*@
                     <div class="medal-inner">
                         <h3>@Localizer[item.Name]</h3>
                         <p>@Localizer[item.Description]</p>

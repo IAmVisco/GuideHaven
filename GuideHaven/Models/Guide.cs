@@ -10,7 +10,7 @@ namespace GuideHaven.Models
     {
         public int GuideId { get; set; }
         [Required]
-        [StringLength(60, ErrorMessage = "LengthWarning", MinimumLength = 6)]
+        [StringLength(40, ErrorMessage = "LengthWarning", MinimumLength = 6)]
         [Display(Name = "Title")]
         public string GuideName { get; set; }
         public string Owner { get; set; }

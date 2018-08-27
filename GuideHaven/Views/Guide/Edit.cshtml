@@ -65,7 +65,7 @@
                 " id="desc-img" class="desc-img" />
 
                 <label class="control-label">@Localizer["Tags"]</label>
-                <input name="tags" type="text" placeholder="@Localizer[" Tags"]...">
+                <input name="tags" type="text" placeholder="@Localizer["TagsComma"]...">
 
                 <label asp-for="Category" class="control-label">@Localizer["Category"]</label>
                 <select name="category" asp-for="Category" asp-items="options" class="form-control">
@@ -97,11 +97,17 @@
 <script src="~/js/step_functions.js"></script>
 <script src="~/js/edit_functions.js"></script>
 <script>
-    var tags = new TIB(document.querySelector('input[name="tags"]'), config = { alert: false });
+    var tags = new TIB(document.querySelector('input[name="tags"]'),
+        config = {
+            alert: false,
+            update: function () {
+                $(".tags").height($(".tags")[0].scrollHeight - 10);
+            }
+        });
     var arr = new Array();
     @foreach (var tag in Model.GuideTags)
     {
-        @:arr.push("@tag.TagId");
+        @:arr.push(he.decode("@tag.TagId"));
     }
     tags.update(arr);
     widget.value('@Model.Image');
@@ -110,7 +116,7 @@
 @for (int i = 0; i < Model.GuideSteps.Count; i++)
 {
     string imgs = "";
-    @if (@Model.GuideSteps[index].Images != null)
+    @if (Model.GuideSteps[index].Images != null)
     {
         imgs = Model.GuideSteps[index].Images.Split(',')[0];
     }

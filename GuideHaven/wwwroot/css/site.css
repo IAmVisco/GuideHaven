@@ -6,6 +6,10 @@
     background: #eee;
 }
 
+#qrCode {
+    margin: 15px;
+}
+
 .body-content {
     padding: 15px;
 }
@@ -29,6 +33,7 @@
 .brand-img {
     max-width: 105px;
 }
+
 .glyphicon-ok {
     color: #11da7e;
 }
@@ -43,10 +48,6 @@
 
 .login-icon {
     padding-right: 5px;
-}
-
-.navbar-brand {
-    margin-right: 10px;
 }
 
 .nav > li > a {
@@ -98,8 +99,33 @@ th {
     background-color: #4b7ada;
 }
 
+.pager-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.pagination > li> a {
+    padding: 6px 13px;
+}
+
 label {
     font-weight: 500;
+}
+
+.dropdown-menu {
+    border-radius: 8px;
 }
 
 .switch-input {
@@ -462,7 +488,7 @@ footer > a {
 }
 
 .search-field:focus {
-    width: 190px;
+    width: 170px;
     border-color: #4b7ada;
     box-shadow: 0 0 4px rgba(109,207,246,.5);
 }
@@ -498,6 +524,7 @@ footer > a {
 
 .guide-inner {
     display: inline;
+    max-width: 80%;
 }
 
 .guide-author {
@@ -535,11 +562,12 @@ footer > a {
 
 .guide-header {
     margin-bottom: 0;
-    max-width: 80%;
 }
 
 .create-btn {
     font-size: 14pt;
+    margin: 0 auto 10px;
+    display: table;
 }
 
 .index-side {
@@ -577,6 +605,7 @@ footer > a {
 .plus-header {
     display: inline;
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .nav-tabs a:hover,
@@ -701,6 +730,10 @@ footer > a {
     margin-left: 5px;
 }
 
+.btn-social {
+    margin-bottom: 10px;
+}
+
 @media screen and (max-width: 991px) {
     .row {
         margin: 0;
@@ -728,7 +761,7 @@ footer > a {
     }
 
     .sidenav {
-        top: 330px;
+        top: 350px;
     }
 
     .create-fields {
@@ -737,8 +770,8 @@ footer > a {
     }
 
     .banner {
-        margin-left: 0 ;
-        margin-right: 0 ;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .steps-wrap {
@@ -752,7 +785,7 @@ footer > a {
     }
 
     .index-side {
-        margin-top: 0;
+        margin-top: 30px;
     }
 
     .tab .nav-tabs li {

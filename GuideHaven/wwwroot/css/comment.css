@@ -22,7 +22,6 @@ p {
     margin-top: 2.5rem;
     margin-bottom: 5em;
     max-width: 60.75rem;
-    padding: 0 1.25rem;
     width: 70%;
 }
 
@@ -57,10 +56,22 @@ p {
 }
 
 .comment-wrap {
+    position: relative;
     margin-bottom: 1.25rem;
     display: table;
     width: 100%;
     min-height: 5.3125rem;
+}
+
+.cmnt-delete {
+    position: absolute;
+    top: 2px;
+    right: 0;
+}
+
+.cmnt-delete > span {
+    color: #acb4c2;
+    font-size: 0.875em;
 }
 
 .photo {
@@ -97,6 +108,7 @@ p {
 
 .comment-block > p {
     padding-bottom: 5px;
+    max-width: 95%;
 }
 
 .comment-text {
@@ -123,6 +135,13 @@ p {
 
 .comment-actions {
     float: right;
+}
+
+@media screen and (max-width: 991px)
+{
+    .comments {
+        padding: 0 1.25rem;
+    }
 }
 
 @media screen and (max-width: 767px) {

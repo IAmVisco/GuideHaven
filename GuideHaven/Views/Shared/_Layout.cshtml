@@ -14,9 +14,19 @@
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
           asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
           asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/light.css" id="theme" />
-    <script async src="~/js/theme.js"></script>
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/light.min.css" id="theme" />
+    <script async src="~/js/theme.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101216558-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-101216558-3');
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <link href='https://fonts.googleapis.com/css?family=Product+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
@@ -44,12 +54,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @*<li><a asp-area="" asp-controller="Guide" asp-action="Index">@Localizer["Guides"]</a></li>*@
-                    @if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(userManager.Users.First(x => x.UserName == User.Identity.Name), "Admin"))
+                    @if (User.Identity.IsAuthenticated && await userManager.IsInRoleAsync(await userManager.GetUserAsync(User), "Admin"))
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="AdminPanel">@Localizer["AdminPanel"]</a></li>
                     }
                     <li>
-                        <form asp-controller="Guide" asp-action="Search" method="post">
+                        <form asp-controller="Guide" asp-action="Index" method="get">
                             <input type="search" placeholder="@Localizer["Search"]..." name="searchText" class="search-field">
                         </form>
                     </li>
@@ -69,8 +79,7 @@
         <footer>
             <p style="display:inline-block;">&copy; 2018 - Guide Haven</p>
             <a asp-controller="Home" asp-action="Index">@Localizer["HomePage"]</a>
-            <a asp-controller="Home" asp-action="OwO">@Localizer["WhatsThis"]</a>
-            <a asp-controller="Home" asp-action="About">@Localizer["Authors"]</a>
+            <a asp-controller="Home" asp-action="Authors">@Localizer["Authors"]</a>
             @await Html.PartialAsync("_SelectLanguagePartial")
         </footer>
     </div>
@@ -80,7 +89,8 @@
             crossorigin="anonymous"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
     </script>
-    <script src="~/js/site.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="~/js/site.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

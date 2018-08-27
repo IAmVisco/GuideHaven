@@ -1,6 +1,7 @@
 ﻿var index = 0,
-    visual_index = 0,
-    imgs = "";
+    visual_index = 0;
+var imgs = "",
+    step_loc = "";
 
 var widget = uploadcare.Widget('[role=uploadcare-uploader]');
 
@@ -41,22 +42,24 @@ multiWidget.onUploadComplete(function (info) {
 
 function createStep(step, header, content, images) {
 	index++;
-	visual_index++;
+    visual_index++;
+    step_loc = step;
     document.getElementById("step_holder").insertAdjacentHTML(
         'beforeend', '<div id="step' + (index + 1) + '" style="position:relative">'
         + '<hr/><label id="step_count_' + index + '" class="control-label" style="display: block">' + step + ' ' + (visual_index + 1) + '</label>'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Header">' + header + '</label>'
-        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" class="form-control">'
-        + '<label class="control-label" for="GuideSteps_' + index + '__Content">' + content + '</label>'
 
+        + '<label class="control-label" for="GuideSteps_' + index + '__Header">' + header + '</label>'
+        + '<input type="text" id="GuideSteps_' + index + '__Header" name="GuideSteps[' + index + '].Header" required class="form-control">'
+
+        + '<label class="control-label" for="GuideSteps_' + index + '__Content">' + content + '</label>'
         + '<textarea id="DummyArea' + index + '" class="bs-textarea mdhtmlform-md" data-mdhtmlform-group="' + index + '" rows="5"></textarea>'
+
+        + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
+        + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
         + '<label class="control-label" style="margin-right: 3px;">' + images + '</label>'
         + '<input id="images' + index + '" hidden name="GuideSteps[' + index + '].Images" />'
         + '<input type="hidden" id="multi' + index + '" name="content" data-images-only data-multiple />'
-
-        + '<textarea id="GuideSteps_' + index + '__Content" name="GuideSteps[' + index + '].Content" '
-        + 'class="mdhtmlform-html" data-mdhtmlform-group="' + index + '" style="display: none"></textarea>'
 
         + '<button type="button" class="btn-link delete-btn" value="Delete" onclick="deleteStep(' + (index + 1) + ')">'
         + '<span class="glyphicon glyphicon-remove"></span></button></div >'
@@ -82,8 +85,8 @@ function deleteStep(id) {
 	document.getElementById("step" + id).style.display = "none";
 	for (var i = 1; i <= index; i++) {
 		let obj;
-		if ((obj = document.getElementById("step_count_" + i)) !== null) {
-			obj.innerHTML = "Step " + step++;
+        if ((obj = document.getElementById("step_count_" + i)) !== null) {
+            obj.innerHTML = step_loc + " " + step++;
 		}
 	}
 	visual_index--;

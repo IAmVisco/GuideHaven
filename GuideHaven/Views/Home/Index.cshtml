@@ -16,48 +16,46 @@
 <div class="row">
     <div class="col-md-9">
         <div class="tab" role="tabpanel">
-            <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#latest" aria-controls="latest" role="tab" data-toggle="tab">@Localizer["LatestGuides"]</a></li>
                 <li role="presentation"><a href="#popular" aria-controls="popular" role="tab" data-toggle="tab">@Localizer["PopularGuides"]</a></li>
                 <li role="presentation"><a href="#rated" aria-controls="rated" role="tab" data-toggle="tab">@Localizer["MostRatedGuides"]</a></li>
             </ul>
-            <!-- Tab panes -->
             <div class="tab-content tabs">
                 <div role="tabpanel" class="tab-pane fade in active guides-wrap" id="latest">
                     @await Html.PartialAsync("_GuidesListPartial",
-                        Model.Guides,
+                        Model.Guides.Take(10).ToList(),
                         new ViewDataDictionary(this.ViewData) { { "mode", "l" }, { "AllowDelete", "Home" } }
                     )
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="popular">
                     @await Html.PartialAsync("_GuidesListPartial",
-                        Model.Guides.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count),
+                        Model.Guides.OrderByDescending(x => x.Views).ThenByDescending(x => x.Comments.Count).Take(10).ToList(),
                         new ViewDataDictionary(this.ViewData) { { "mode", "p" }, { "AllowDelete", "Home" } }
                     )
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="rated">
                     @await Html.PartialAsync("_GuidesListPartial",
-                        Model.Guides.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count),
+                        Model.Guides.OrderByDescending(x => x.GetRating()).ThenByDescending(x => x.Ratings.Count).Take(10).ToList(),
                         new ViewDataDictionary(this.ViewData) { { "mode", "r" }, { "AllowDelete", "Home" } }
                     )
                 </div>
             </div>
         </div>
-
+        <a asp-action="Index" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["ViewAll"]</a>
     </div>
     <div class="col-md-3 index-side">
         @if (User.Identity.IsAuthenticated)
         {
-            @*<a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>*@
+            <a asp-action="Create" asp-controller="Guide" class="btn btn-primary create-btn">@Localizer["CreateGuide"]</a>
         }
         <div id="tagcloud">
-            <h3>Tags cloud</h3>
-            @foreach (var tag in Model.Tags.OrderByDescending(x => x.GuideTags.Count).Take(20))
+            <h3>@Localizer["TagsCloud"]</h3>
+            @foreach (var tag in Model.Tags.OrderByDescending(x => x.GuideTags.Count).Take(20).OrderBy(x => x.TagId))
             {
                 //if (tag.GuideTags.Count > 0)
                 {
-                    <a asp-action="SearchTags" asp-controller="Guide" asp-route-searchText="@tag.TagId" rel="@tag.GuideTags.Count">@tag.TagId</a>
+                    <a asp-action="Index" asp-controller="Guide" asp-route-tag="@tag.TagId" rel="@tag.GuideTags.Count">@tag.TagId</a>
                 }
             }
         </div>
@@ -72,7 +70,7 @@
                 }
                 foreach (var pair in categories.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value))
                 {
-                    <a asp-action="GetGuidesByCategory" asp-controller="Guide" asp-route-category="@pair.Key" class="category">@pair.Value</a>
+                    <a asp-action="Index" asp-controller="Guide" asp-route-category="@pair.Key" class="category">@pair.Value</a>
                 }
             }
         </div>
