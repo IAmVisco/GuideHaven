@@ -488,7 +488,7 @@ footer > a {
 }
 
 .search-field:focus {
-    width: 190px;
+    width: 170px;
     border-color: #4b7ada;
     box-shadow: 0 0 4px rgba(109,207,246,.5);
 }
