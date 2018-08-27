@@ -78,7 +78,7 @@ namespace GuideHaven.Controllers
             //await CreateUserRoles();
             GuidesAndTags gnt = new GuidesAndTags()
             {
-                Guides = await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.GuideId).ToListAsync(),
+                Guides = await context.Guide.Include(x => x.Ratings).Include(x => x.Comments).OrderByDescending(x => x.CreationDate).ToListAsync(),
                 Tags = await context.Tags.Include(x => x.GuideTags).ToListAsync()
             };
             return View(gnt);
